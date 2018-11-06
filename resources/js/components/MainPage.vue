@@ -2,7 +2,6 @@
 <div id="main">
     <book-bar />
     <time-table />
-    <div>aaa</div>
 </div>
 </template>
 <script>

@@ -3,7 +3,7 @@
     <div id="time-table">
 
     </div>
-    <table class="table">
+    <table class="table table-bordered">
         <tr>
             <th v-for="(day_name, index) in day_list" :key="index">
                 {{ day_name }}

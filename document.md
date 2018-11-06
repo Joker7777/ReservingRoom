@@ -87,6 +87,7 @@ https://qiita.com/_P0cChi_/items/ebf8fbf035b36218a37e
 
 ### コンパイル
 > 特定の環境のWebpackでは、ファイル変更時に更新されないことがあります。自分のシステムでこれが起きた場合は、watch-pollコマンドを使用してください。
+
 ``` npm run watch ```の代わりに、``` npm run watch-poll ```
 https://readouble.com/laravel/5.4/ja/mix.html
 
@@ -98,4 +99,6 @@ https://readouble.com/laravel/5.4/ja/mix.html
 表示するのは週ごと、GoogleCalendar参照(予定がdivでした)
 ページアクセス->その週に該当する予定のみ取ってくる->週ごとの配列に突っ込む->週ごとにforeach
 
-* 20181105 
+* 20181107 0:09
+予約をテーブル内に表示したい。
+store.js L101: vuex, actions, stateが読みこめてない

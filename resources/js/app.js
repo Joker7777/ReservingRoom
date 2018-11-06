@@ -18,8 +18,6 @@ import store from './store/store'
  */
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
-// Vue.component('time-table', require('./components/TimeTable.vue'));
-// Vue.component('book-bar', require('./components/BookBar.vue'));
 
 Vue.component('main-page', require('./components/MainPage.vue'));
 
