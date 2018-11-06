@@ -84,11 +84,30 @@ const Form = {
                     minute: 50,
                 }
             }
-        ]
+        ],
+        BookList: {
+            2:{
+                9: { // 火曜8限　きききき
+                    name: 'きききき',
+                },
+            },
+        }
+    },
+    mutation: {
 
     },
-    mutation: {},
-    actions: {}
+    actions: {
+        BookExist (state, arg) {
+            console.log(state.TimeTable)
+            if (typeof state.BookList[arg['day']] !== undefined) {
+                // if (typeof state.BookList[arg['day']][arg['time']] !== undefined) {
+                //     return true
+                // }
+                return true
+            }
+            return false
+        }
+    }
 }
 
 export default new Vuex.Store({
