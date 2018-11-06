@@ -1,4 +1,5 @@
-#
+# 部室予約表
+
 ## 仕様まとめ
 1. 表示
 * 最小時間: 10min
@@ -14,30 +15,30 @@
 1. Node.js v8.12.0
 公式インストーラ
 1. Composer v1.7.2
-公式インストーラ
-環境変数とかの設定なしで使えました
+    公式インストーラ
+    環境変数とかの設定なしで使えました
 1. Laravel Installer 1.5.0
-```
-composer global require "laravel/installer=~1.1"
-```
-環境変数などの登録をしなくても使えた。コマンドはGitHubディレクトリにて
+    ```
+    composer global require "laravel/installer=~1.1"
+    ```
+    環境変数などの登録をしなくても使えた。コマンドはGitHubディレクトリにて
 1. Laravelプロジェクト作成
-```
-laravel new プロジェクト名
-cd プロジェクト名
-composer install            # この前に、php.iniを変更した(extension=fileinfoのコメントを外した)
-php artisan -v              # Laravel Framwork 5.7.11, 正常にインストールされたか確認のため
-php artisan key:generate    # 初期起動前にはkeyの生成が必要
-php artisan serve           # ようやく起動、started:<url>のurlにアクセスしてLaravelと出ればok
-```
+    ```
+    laravel new プロジェクト名
+    cd プロジェクト名
+    composer install            # この前に、php.iniを変更した(extension=fileinfoのコメントを外した)
+    php artisan -v              # Laravel Framwork 5.7.11, 正常にインストールされたか確認のため
+    php artisan key:generate    # 初期起動前にはkeyの生成が必要
+    php artisan serve           # ようやく起動、started:<url>のurlにアクセスしてLaravelと出ればok
+    ```
 1. Vue.js, ES2015=>ES5, Sass=>CSS
-よくわからんがインストールがいるらしい, package.jsonの下部分？
-```
-npm install
-```
-* resources/views/welcome.blade.php を編集、Vue.jsが使えているか確認
-2018/10/31 1:03 できない　->　2018/10/31/11:15 app.jsが読みこめてなかったらしい
-http://blog.asial.co.jp/1496
+    よくわからんがインストールがいるらしい, package.jsonの下部分？
+    ```
+    npm install
+    ```
+    * resources/views/welcome.blade.php を編集、Vue.jsが使えているか確認
+    2018/10/31 1:03 できない　->　2018/10/31/11:15 app.jsが読みこめてなかったらしい
+    http://blog.asial.co.jp/1496
 
 
 ### サーバ起動
@@ -85,7 +86,7 @@ https://qiita.com/mgn/items/6154ccd2e23b2e65c769
 https://qiita.com/_P0cChi_/items/ebf8fbf035b36218a37e
 
 ### コンパイル
->>> 特定の環境のWebpackでは、ファイル変更時に更新されないことがあります。自分のシステムでこれが起きた場合は、watch-pollコマンドを使用してください。
+> 特定の環境のWebpackでは、ファイル変更時に更新されないことがあります。自分のシステムでこれが起きた場合は、watch-pollコマンドを使用してください。
 ``` npm run watch ```の代わりに、``` npm run watch-poll ```
 https://readouble.com/laravel/5.4/ja/mix.html
 
