@@ -6,6 +6,8 @@ Vue.use(Vuex)
 const Form = {
     namespaced: true,
     state: {
+        today: new Date(2018, 6, 8), // 中心となる日付をそのうちどこかで制御、これは初期値
+        DayList: ['日', '月', '火', '水', '木', '金', '土'],
         TimeTable: [
             {
                 name: '0限',
@@ -97,16 +99,6 @@ const Form = {
 
     },
     actions: {
-        BookExist (state, arg) {
-            console.log(state.TimeTable)
-            if (typeof state.BookList[arg['day']] !== undefined) {
-                // if (typeof state.BookList[arg['day']][arg['time']] !== undefined) {
-                //     return true
-                // }
-                return true
-            }
-            return false
-        }
     }
 }
 

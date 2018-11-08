@@ -1,11 +1,16 @@
 <template>
 <div class=booking-box>
-    test
+    {{ book.name }}
 </div>
 </template>
 <script>
 export default {
     name: 'booking',
+    props: {
+        book: {
+            type: Object,
+        },
+    },
 }
 </script>
 <style lang="scss" scoped>

@@ -1,13 +1,15 @@
 <template>
 <div id="calendar">
-    <div id="time-table">
-
-    </div>
     <table class="table table-bordered">
         <tr>
             <th>時間</th>
-            <th v-for="(DayName, index) in DayList" :key="index">
-                {{ DayName }}
+            <th v-for="(date, index) in getDates" :key="index">
+                <span>
+                    {{ getDayName(date) }}<br>
+                </span>
+                <span>
+                    {{ date.getMonth() }} / {{ date.getDate() }}
+                </span>
             </th>
         </tr>
         <tr
@@ -20,7 +22,9 @@
             <td
                 v-for="(DayName, index_day) in DayList"
                 :key="index_day">
-                <booking v-if="BookExist(index_day, index_frame)"/>
+                <booking
+                    v-if="BookExist(index_day, index_frame)"
+                    :book="getBookList[index_day][index_frame]" />
             </td>
         </tr>
     </table>
@@ -34,33 +38,61 @@ export default {
     components: {
         Booking,
     },
+    props: {
+        today: {
+            type: Date,
+            default: new Date()
+        }
+    },
     data () {
         return {
-            DayList: ['日', '月', '火', '水', '木', '金', '土'],
-            today: new Date (),
         }
     },
     computed: {
-        day () {
-            return this.DayList[this.today.getDay()]
+        DayList () {
+            return this.$store.state.Form.DayList
+        },
+        getDates () { // 日付など返す
+            var date = new Array(7) 
+            for (var i = 1; this.today.getDay() - i >= 0; i++) { // 昨日まで
+                date[this.today.getDay() - i] = new Date (
+                    this.today.getFullYear(),
+                    this.today.getMonth(),
+                    this.today.getDate() - i
+                )
+            }
+            for (var i = 0; i + this.today.getDay() < 7; i++) { // 今日から
+                date[this.today.getDay() + i] = new Date (
+                    this.today.getFullYear(),
+                    this.today.getMonth(),
+                    this.today.getDate() + i
+                )
+            }
+            return date
         },
         TimeFrames () {
             return this.$store.state.Form.TimeTable
         },
+        getBookList (day, time) {
+            // console.log(this.$store.state.Form.BookList[day][time])
+            return this.$store.state.Form.BookList//[day][time]
+        },
     },
     methods: {
         BookExist (day, time) {
-            console.log(day, time)
-            var res = this.$store.dispatch(
-                'Form/BookExist',
-                {
-                    'day': day,
-                    'time': time,
-                }
-            )
-            console.log(res)
-            return res
-        }
+            var BookList = this.$store.state.Form.BookList
+
+            if (BookList[day] === undefined) {
+                return false
+            } else if (BookList[day][time] === undefined) {
+                return false
+            } else {
+                return true
+            }
+        },
+        getDayName (date) {
+            return this.DayList[date.getDay()]
+        },
     }
 }
 </script>
@@ -70,5 +102,8 @@ export default {
 th {
     color: #fff;
     background-color: $green;
+}
+td {
+    width: 12.5%;
 }
 </style>

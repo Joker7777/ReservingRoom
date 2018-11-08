@@ -1,18 +1,25 @@
 <template>
 <div id="main">
     <book-bar />
-    <time-table />
+    <calendar
+        class="container"
+        :today="today" />
 </div>
 </template>
 <script>
 import BookBar from './BookBar.vue'
-import TimeTable from './TimeTable.vue'
+import Calendar from './Calendar.vue'
 
 export default {
     name: 'main-page',
     components: {
         BookBar,
-        TimeTable
+        Calendar
+    },
+    computed: {
+        today () {
+            return this.$store.state.Form.today
+        }
     }
 }
 </script>
