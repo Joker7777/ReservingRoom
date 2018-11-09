@@ -110,3 +110,13 @@ store.js L101: vuex, actions, stateが読みこめてない
     つまったところ
     1. computedは引数を取れないのでmethod(とる方法はあるが複雑、今回はいらない)
 
+* 20181109 14:00
+    マイグレーションできない、エラーで検索
+    1. not findに対して
+        https://stackoverflow.com/questions/42557693/laravel-pdoexception-could-not-find-driver
+        php.ini:
+        extension=pdo_mysql のコメントを外した
+    1. too longに対して
+        https://laravel-news.com/laravel-5-4-key-too-long-error
+        Schema::defaultStringLength(191);
+    1. $table->charsetは使えない？？コメントアウトした

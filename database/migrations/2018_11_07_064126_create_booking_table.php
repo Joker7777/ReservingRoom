@@ -13,13 +13,13 @@ class CreateBookingTable extends Migration
      */
     public function up()
     {
-        Schema::create('booking', function (Blueprint $table) {
-            $table->charset = 'utf8';
+        Schema::create('booklist', function (Blueprint $table) {
+            // $table->charset = 'utf8';
             $table->increments('id');
             $table->text('name')->comment('バンド名など');
             $table->date('date')->comment('予約日');
             $table->integer('frame')->comment('予約時限');
-            $table->boolean('every_week')->comment('毎週か')->default(false);
+            $table->integer('every_week_id')->comment('毎週予約ID')->default(null);
             $table->timestamps();
         });
     }
