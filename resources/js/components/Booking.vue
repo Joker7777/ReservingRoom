@@ -1,5 +1,7 @@
 <template>
-<div class=booking-box>
+<div
+    class=booking-box
+    @click="toEditForm" >
     {{ book.name }}
 </div>
 </template>
@@ -10,7 +12,23 @@ export default {
         book: {
             type: Object,
         },
+        day: {
+            type: Number,
+        },
+        frame: {
+            type: Number,
+        }
     },
+    methods: {
+        toEditForm () {
+            this.$emit('click-book',
+                {
+                    'day': this.day,
+                    'frame': this.frame
+                }
+            )
+        }
+    }
 }
 </script>
 <style lang="scss" scoped>

@@ -6,7 +6,7 @@ Vue.use(Vuex)
 const Form = {
     namespaced: true,
     state: {
-        today: new Date(2018, 6, 8), // 中心となる日付をそのうちどこかで制御、これは初期値
+        today: new Date(), // 中心となる日付をそのうちどこかで制御、これは初期値
         DayList: ['日', '月', '火', '水', '木', '金', '土'],
         TimeTable: [
             {
@@ -91,6 +91,11 @@ const Form = {
             2:{
                 9: { // 火曜8限　きききき
                     name: 'きききき',
+                    date: {
+                        year: 2018,
+                        month: 6,
+                        date: 10,
+                    },
                 },
             },
         }

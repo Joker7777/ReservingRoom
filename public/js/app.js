@@ -48569,7 +48569,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
 var Form = {
     namespaced: true,
     state: {
-        today: new Date(2018, 6, 8), // 中心となる日付をそのうちどこかで制御、これは初期値
+        today: new Date(), // 中心となる日付をそのうちどこかで制御、これは初期値
         DayList: ['日', '月', '火', '水', '木', '金', '土'],
         TimeTable: [{
             name: '0限',
@@ -48641,7 +48641,12 @@ var Form = {
         BookList: {
             2: {
                 9: { // 火曜8限　きききき
-                    name: 'きききき'
+                    name: 'きききき',
+                    date: {
+                        year: 2018,
+                        month: 6,
+                        date: 10
+                    }
                 }
             }
         }
@@ -48830,7 +48835,7 @@ module.exports = Component.exports
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__BookBar_vue__ = __webpack_require__(49);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__BookBar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__BookBar_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Calendar_vue__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Calendar_vue__ = __webpack_require__(55);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Calendar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__Calendar_vue__);
 //
 //
@@ -49037,23 +49042,19 @@ if (false) {
 }
 
 /***/ }),
-/* 55 */,
-/* 56 */,
-/* 57 */,
-/* 58 */,
-/* 59 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(60)
+  __webpack_require__(56)
 }
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(62)
+var __vue_script__ = __webpack_require__(58)
 /* template */
-var __vue_template__ = __webpack_require__(68)
+var __vue_template__ = __webpack_require__(69)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -49092,13 +49093,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 60 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(61);
+var content = __webpack_require__(57);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -49118,7 +49119,7 @@ if(false) {
 }
 
 /***/ }),
-/* 61 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(false);
@@ -49132,13 +49133,15 @@ exports.push([module.i, "\nth[data-v-052a41a9] {\n  color: #fff;\n  background-c
 
 
 /***/ }),
-/* 62 */
+/* 58 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Booking_vue__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Booking_vue__ = __webpack_require__(59);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Booking_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Booking_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__EditForm_vue__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__EditForm_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__EditForm_vue__);
 //
 //
 //
@@ -49171,13 +49174,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'calendar',
     components: {
-        Booking: __WEBPACK_IMPORTED_MODULE_0__Booking_vue___default.a
+        Booking: __WEBPACK_IMPORTED_MODULE_0__Booking_vue___default.a,
+        EditForm: __WEBPACK_IMPORTED_MODULE_1__EditForm_vue___default.a
     },
     props: {
         today: {
@@ -49186,7 +49199,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     data: function data() {
-        return {};
+        return {
+            editting: false,
+            editIndex: {
+                'day': null,
+                'frame': null
+            }
+        };
     },
 
     computed: {
@@ -49228,24 +49247,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         getDayName: function getDayName(date) {
             return this.DayList[date.getDay()];
+        },
+        editStatus: function editStatus(param) {
+            this.editting = true;
+            this.editIndex['day'] = param['day'];
+            this.editIndex['frame'] = param['frame'];
+        },
+        close: function close() {
+            this.editting = false;
+            this.editIndex['day'] = null;
+            this.editIndex['frame'] = null;
         }
     }
 });
 
 /***/ }),
-/* 63 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(64)
+  __webpack_require__(60)
 }
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(66)
+var __vue_script__ = __webpack_require__(62)
 /* template */
-var __vue_template__ = __webpack_require__(67)
+var __vue_template__ = __webpack_require__(63)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -49284,13 +49313,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 64 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(65);
+var content = __webpack_require__(61);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -49310,7 +49339,7 @@ if(false) {
 }
 
 /***/ }),
-/* 65 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(false);
@@ -49324,11 +49353,13 @@ exports.push([module.i, "\n.booking-box[data-v-28bb4584] {\n  size: 100%;\n  bac
 
 
 /***/ }),
-/* 66 */
+/* 62 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
 //
 //
 //
@@ -49340,21 +49371,37 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: {
         book: {
             type: Object
+        },
+        day: {
+            type: Number
+        },
+        frame: {
+            type: Number
+        }
+    },
+    methods: {
+        toEditForm: function toEditForm() {
+            this.$emit('click-book', {
+                'day': this.day,
+                'frame': this.frame
+            });
         }
     }
 });
 
 /***/ }),
-/* 67 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "booking-box" }, [
-    _vm._v("\r\n    " + _vm._s(_vm.book.name) + "\r\n")
-  ])
+  return _c(
+    "div",
+    { staticClass: "booking-box", on: { click: _vm.toEditForm } },
+    [_vm._v("\r\n    " + _vm._s(_vm.book.name) + "\r\n")]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -49367,6 +49414,196 @@ if (false) {
 }
 
 /***/ }),
+/* 64 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(65)
+}
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(67)
+/* template */
+var __vue_template__ = __webpack_require__(68)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-64596f4e"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/EditForm.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-64596f4e", Component.options)
+  } else {
+    hotAPI.reload("data-v-64596f4e", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 65 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(66);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(4)("d17c7a82", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-64596f4e\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./EditForm.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-64596f4e\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./EditForm.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 66 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.modal-enter-active[data-v-64596f4e], .modal-leave-active[data-v-64596f4e] {\n  -webkit-transition: opacity 1s;\n  transition: opacity 1s;\n}\n.modal-enter[data-v-64596f4e], .modal-leave-to[data-v-64596f4e] {\n  opacity: 0;\n}\n.modal-mask[data-v-64596f4e] {\n  position: fixed;\n  z-index: 9998;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.5);\n  display: table;\n  -webkit-transition: opacity .3s ease;\n  transition: opacity .3s ease;\n}\n.modal-container[data-v-64596f4e] {\n  margin: 0px auto;\n  padding: 20px 30px;\n  background-color: #fff;\n  border-radius: 2px;\n  -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);\n          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);\n  -webkit-transition: all .3s ease;\n  transition: all .3s ease;\n  font-family: Helvetica, Arial, sans-serif;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 67 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        book: {
+            type: Object
+        }
+    },
+    data: function data() {
+        return {
+            EveryWeek: false // 毎週予約か
+        };
+    },
+
+    computed: {
+        DayList: function DayList() {
+            return this.$store.state.Form.DayList;
+        },
+        years: function years() {
+            // var arr = [...Array(new Date.getFullYear()+1).keys()].map(i=>i+2017)
+            // console.log(new Date.getFullYear() + 1)
+            // console.log(arr)
+            // return arr
+        }
+    },
+    methods: {
+        close: function close() {
+            this.$emit('close');
+        },
+        changeEveryWeek: function changeEveryWeek() {
+            EveryWeek = !EveryWeek;
+        }
+    }
+});
+
+/***/ }),
 /* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -49374,79 +49611,225 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { attrs: { id: "calendar" } }, [
-    _c(
-      "table",
-      { staticClass: "table table-bordered" },
-      [
-        _c(
-          "tr",
-          [
-            _c("th", [_vm._v("時間")]),
-            _vm._v(" "),
-            _vm._l(_vm.getDates, function(date, index) {
-              return _c("th", { key: index }, [
-                _c("span", [
-                  _vm._v(
-                    "\r\n                    " + _vm._s(_vm.getDayName(date))
-                  ),
-                  _c("br")
-                ]),
-                _vm._v(" "),
-                _c("span", [
-                  _vm._v(
-                    "\r\n                    " +
-                      _vm._s(date.getMonth()) +
-                      " / " +
-                      _vm._s(date.getDate()) +
-                      "\r\n                "
-                  )
-                ])
-              ])
-            })
-          ],
-          2
-        ),
+  return _c("transition", { attrs: { name: "modal" } }, [
+    _c("div", { staticClass: "modal-mask" }, [
+      _c("div", { staticClass: "container modal-container" }, [
+        _c("div", { staticClass: "modal-header" }, [
+          _c("h3", { staticClass: "header" }, [_vm._v("予約")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "close", on: { click: _vm.close } }, [
+            _vm._v("&;")
+          ])
+        ]),
         _vm._v(" "),
-        _vm._l(_vm.TimeFrames, function(frame, index_frame) {
-          return index_frame < 10
-            ? _c(
-                "tr",
-                { key: index_frame },
-                [
-                  _c("th", [
-                    _vm._v(
-                      "\r\n                " +
-                        _vm._s(frame.name) +
-                        "\r\n            "
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _vm._l(_vm.DayList, function(DayName, index_day) {
+        _c("div", { staticClass: "modal-body" }, [
+          _c("div", { staticClass: "input-name" }, [
+            _c("span", { attrs: { label: "name" } }, [
+              _vm._v("バンド名, 使用用途: ")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              attrs: { type: "text", name: "name" },
+              domProps: { value: _vm.book.name }
+            })
+          ]),
+          _vm._v(" "),
+          !_vm.EveryWeek
+            ? _c("div", { staticClass: "input-date" }, [
+                _c("span", { attrs: { label: "date" } }, [_vm._v("使用日: ")]),
+                _vm._v(
+                  "\r\n                    " +
+                    _vm._s(_vm.book.date) +
+                    "\r\n                    "
+                ),
+                _c(
+                  "select",
+                  {
+                    attrs: { name: "date-year" },
+                    domProps: { value: _vm.book.date.year }
+                  },
+                  _vm._l(_vm.years, function(year) {
                     return _c(
-                      "td",
-                      { key: index_day },
+                      "option",
+                      { key: year, domProps: { value: year } },
                       [
-                        _vm.BookExist(index_day, index_frame)
-                          ? _c("booking", {
-                              attrs: {
-                                book: _vm.getBookList[index_day][index_frame]
-                              }
-                            })
-                          : _vm._e()
-                      ],
-                      1
+                        _vm._v(
+                          "\r\n                            " +
+                            _vm._s(year) +
+                            "\r\n                        "
+                        )
+                      ]
                     )
                   })
-                ],
-                2
-              )
-            : _vm._e()
-        })
-      ],
-      2
-    )
+                ),
+                _vm._v("\r\n                    年\r\n                    "),
+                _c(
+                  "select",
+                  {
+                    attrs: { name: "date-month" },
+                    domProps: { value: _vm.book.date.month }
+                  },
+                  _vm._l(12, function(month) {
+                    return _c("option", { key: month }, [
+                      _vm._v(
+                        "\r\n                            " +
+                          _vm._s(month) +
+                          "\r\n                        "
+                      )
+                    ])
+                  })
+                ),
+                _vm._v("\r\n                    月\r\n                    "),
+                _c(
+                  "select",
+                  { attrs: { name: "date-date" } },
+                  _vm._l(_vm.dates, function(date) {
+                    return _c("option", { key: date })
+                  })
+                ),
+                _vm._v("\r\n                    日  \r\n                ")
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.EveryWeek
+            ? _c("div", { staticClass: "input-day" }, [
+                _c("span", { attrs: { label: "day" } }, [_vm._v("使用曜日: ")]),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  { attrs: { name: "day" } },
+                  _vm._l(_vm.DayList, function(DayName, key) {
+                    return _c("option", { key: key }, [
+                      _vm._v(
+                        "\r\n                            " +
+                          _vm._s(DayName) +
+                          "\r\n                        "
+                      )
+                    ])
+                  })
+                )
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _c("input", {
+            attrs: { type: "checkbox" },
+            on: { click: _vm.changeEveryWeek }
+          }),
+          _vm._v("\r\n                うまくいってない\r\n            ")
+        ])
+      ])
+    ])
   ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-64596f4e", module.exports)
+  }
+}
+
+/***/ }),
+/* 69 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { attrs: { id: "calendar" } },
+    [
+      _c(
+        "table",
+        { staticClass: "table table-bordered" },
+        [
+          _c(
+            "tr",
+            [
+              _c("th", [_vm._v("時間")]),
+              _vm._v(" "),
+              _vm._l(_vm.getDates, function(date, index) {
+                return _c("th", { key: index }, [
+                  _c("span", [
+                    _vm._v(
+                      "\r\n                    " + _vm._s(_vm.getDayName(date))
+                    ),
+                    _c("br")
+                  ]),
+                  _vm._v(" "),
+                  _c("span", [
+                    _vm._v(
+                      "\r\n                    " +
+                        _vm._s(date.getMonth()) +
+                        " / " +
+                        _vm._s(date.getDate()) +
+                        "\r\n                "
+                    )
+                  ])
+                ])
+              })
+            ],
+            2
+          ),
+          _vm._v(" "),
+          _vm._l(_vm.TimeFrames, function(frame, index_frame) {
+            return index_frame < 10
+              ? _c(
+                  "tr",
+                  { key: index_frame },
+                  [
+                    _c("th", [
+                      _vm._v(
+                        "\r\n                " +
+                          _vm._s(frame.name) +
+                          "\r\n            "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.DayList, function(DayName, index_day) {
+                      return _c(
+                        "td",
+                        { key: index_day },
+                        [
+                          _vm.BookExist(index_day, index_frame)
+                            ? _c("booking", {
+                                attrs: {
+                                  book: _vm.getBookList[index_day][index_frame],
+                                  day: index_day,
+                                  frame: index_frame
+                                },
+                                on: { "click-book": _vm.editStatus }
+                              })
+                            : _c("div", { on: { click: _vm.editStatus } })
+                        ],
+                        1
+                      )
+                    })
+                  ],
+                  2
+                )
+              : _vm._e()
+          })
+        ],
+        2
+      ),
+      _vm._v(" "),
+      _vm.editting
+        ? _c("edit-form", {
+            attrs: {
+              book:
+                _vm.getBookList[_vm.editIndex["day"]][_vm.editIndex["frame"]]
+            },
+            on: { close: _vm.close }
+          })
+        : _vm._e()
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -49459,7 +49842,6 @@ if (false) {
 }
 
 /***/ }),
-/* 69 */,
 /* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 

@@ -24,19 +24,29 @@
                 :key="index_day">
                 <booking
                     v-if="BookExist(index_day, index_frame)"
-                    :book="getBookList[index_day][index_frame]" />
+                    :book="getBookList[index_day][index_frame]"
+                    :day="index_day"
+                    :frame="index_frame"
+                    @click-book="editStatus" />
+                <div v-else @click="editStatus" />
             </td>
         </tr>
     </table>
+    <edit-form
+        v-if="editting"
+        :book="getBookList[editIndex['day']][editIndex['frame']]"
+        @close="close" />
 </div>
 </template>
 <script>
 import Booking from './Booking.vue'
+import EditForm from './EditForm.vue'
 
 export default {
     name: 'calendar',
     components: {
         Booking,
+        EditForm,
     },
     props: {
         today: {
@@ -46,6 +56,11 @@ export default {
     },
     data () {
         return {
+            editting: false,
+            editIndex: {
+                'day': null,
+                'frame': null,
+            }
         }
     },
     computed: {
@@ -93,6 +108,16 @@ export default {
         getDayName (date) {
             return this.DayList[date.getDay()]
         },
+        editStatus (param) {
+            this.editting = true
+            this.editIndex['day'] = param['day']
+            this.editIndex['frame'] = param['frame']
+        },
+        close () {
+            this.editting = false
+            this.editIndex['day'] = null
+            this.editIndex['frame'] = null
+        }
     }
 }
 </script>

@@ -5,8 +5,8 @@
 * 最小時間: 10min
 * 表の大きさは完全に横幅に依存、%表記
 * 必ず他の予定とかぶらないようにする
-* 入力フォームを横に用意する
-* divクリック、フォームに反映して編集
+* divクリック、モーダル
+* 前後の週へ移動ボタン、日を渡して再読み込み
 
 ## 環境構築
 1. MySQL
@@ -120,3 +120,15 @@ store.js L101: vuex, actions, stateが読みこめてない
         https://laravel-news.com/laravel-5-4-key-too-long-error
         Schema::defaultStringLength(191);
     1. $table->charsetは使えない？？コメントアウトした
+
+    DBアクセス
+    1. CRUDをやるあれ
+
+    モーダルウィンドウ
+    Vue.jsの```<transition name="modal">```が大変便利そう
+    https://jp.vuejs.org/v2/examples/modal.html
+    情報の受け渡しなど大丈夫そう
+
+* 20181111
+連番のリスト(年生成)　携帯
+新規登録
