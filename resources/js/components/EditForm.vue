@@ -4,17 +4,17 @@
         <div class="container modal-container">
             <div class="modal-header">
                 <h3 class="header">予約</h3>
-                <div class="close" @click="close">&;</div>
+                {{book}}
+                <div class="close" @click="close">&times;</div>
             </div>
             <div class="modal-body">
                 <div class="input-name">
                     <span label="name">バンド名, 使用用途: </span>
-                    <input type="text" name="name" :value="book.name">
+                    <input type="text" name="name" v-model="book.name">
                 </div>
                 <div class="input-date" v-if="!EveryWeek">
                     <span label="date">使用日: </span>
-                    {{ book.date }}
-                    <select name="date-year" :value="book.date.year">
+                    <select name="date-year" v-model.number="book.date.year">
                         <option
                             v-for="year in years"
                             :key="year"
@@ -23,7 +23,7 @@
                         </option>
                     </select>
                     年
-                    <select name="date-month" :value="book.date.month">
+                    <select name="date-month" v-model.number="book.date.month">
                         <option
                             v-for="month in 12"
                             :key="month">
@@ -31,10 +31,11 @@
                         </option>
                     </select>
                     月
-                    <select name="date-date">
+                    <select name="date-date" v-model.number="book.date.date">
                         <option
                             v-for="date in dates"
                             :key="date">
+                            {{ date }}
                         </option>
                     </select>
                     日  
@@ -49,8 +50,11 @@
                         </option>
                     </select>
                 </div>
-                <input type="checkbox" @click="changeEveryWeek">
-                うまくいってない
+                <input
+                    type="checkbox"
+                    id="every-week"
+                    @click="changeEveryWeek">
+                <label for="every-week">毎週予約</label>
             </div>
         </div>
     </div>
@@ -73,11 +77,18 @@ export default {
         DayList () {
             return this.$store.state.Form.DayList
         },
+        test () {
+            return this.book
+        },
         years () {
             // var arr = [...Array(new Date.getFullYear()+1).keys()].map(i=>i+2017)
             // console.log(new Date.getFullYear() + 1)
             // console.log(arr)
             // return arr
+        },
+        dates () {
+            console.log(this.book)
+            return new Date(this.book.date.year, this.book.date.month, 0).getDate();
         }
     },
     methods: {
@@ -85,7 +96,7 @@ export default {
             this.$emit('close')
         },
         changeEveryWeek () {
-            EveryWeek = !EveryWeek
+            this.EveryWeek = !this.EveryWeek
         }
     }
 }

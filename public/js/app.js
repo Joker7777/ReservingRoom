@@ -48638,18 +48638,497 @@ var Form = {
                 minute: 50
             }
         }],
-        BookList: {
-            2: {
-                9: { // 火曜8限　きききき
-                    name: 'きききき',
-                    date: {
-                        year: 2018,
-                        month: 6,
-                        date: 10
-                    }
-                }
+        BookList: [[{
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
             }
-        }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }], [{
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }], [{
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, { // 火曜8限　きききき
+            name: 'きききき',
+            date: {
+                year: 2018,
+                month: 6,
+                date: 10
+            }
+        }], [{
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }], [{
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }], [{
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }], [{
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }, {
+            name: '',
+            date: {
+                year: 0,
+                month: 0,
+                date: 0
+            }
+        }]]
     },
     mutation: {},
     actions: {}
@@ -49127,7 +49606,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "\nth[data-v-052a41a9] {\n  color: #fff;\n  background-color: #38c172;\n}\ntd[data-v-052a41a9] {\n  width: 12.5%;\n}\n", ""]);
+exports.push([module.i, "\nth[data-v-052a41a9] {\n  color: #fff;\n  background-color: #38c172;\n}\ntd[data-v-052a41a9] {\n  width: 12.5%;\n}\ntd empty[data-v-052a41a9] {\n    display: block;\n    width: 100%;\n    height: 50px;\n}\n", ""]);
 
 // exports
 
@@ -49142,6 +49621,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Booking_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Booking_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__EditForm_vue__ = __webpack_require__(64);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__EditForm_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__EditForm_vue__);
+//
+//
+//
+//
+//
 //
 //
 //
@@ -49249,6 +49733,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return this.DayList[date.getDay()];
         },
         editStatus: function editStatus(param) {
+            console.log(param);
             this.editting = true;
             this.editIndex['day'] = param['day'];
             this.editIndex['frame'] = param['frame'];
@@ -49569,6 +50054,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
@@ -49586,11 +50075,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         DayList: function DayList() {
             return this.$store.state.Form.DayList;
         },
+        test: function test() {
+            return this.book;
+        },
         years: function years() {
             // var arr = [...Array(new Date.getFullYear()+1).keys()].map(i=>i+2017)
             // console.log(new Date.getFullYear() + 1)
             // console.log(arr)
             // return arr
+        },
+        dates: function dates() {
+            console.log(this.book);
+            return new Date(this.book.date.year, this.book.date.month, 0).getDate();
         }
     },
     methods: {
@@ -49598,7 +50094,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.$emit('close');
         },
         changeEveryWeek: function changeEveryWeek() {
-            EveryWeek = !EveryWeek;
+            this.EveryWeek = !this.EveryWeek;
         }
     }
 });
@@ -49616,9 +50112,11 @@ var render = function() {
       _c("div", { staticClass: "container modal-container" }, [
         _c("div", { staticClass: "modal-header" }, [
           _c("h3", { staticClass: "header" }, [_vm._v("予約")]),
-          _vm._v(" "),
+          _vm._v(
+            "\r\n                " + _vm._s(_vm.book) + "\r\n                "
+          ),
           _c("div", { staticClass: "close", on: { click: _vm.close } }, [
-            _vm._v("&;")
+            _vm._v("×")
           ])
         ]),
         _vm._v(" "),
@@ -49629,24 +50127,63 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.book.name,
+                  expression: "book.name"
+                }
+              ],
               attrs: { type: "text", name: "name" },
-              domProps: { value: _vm.book.name }
+              domProps: { value: _vm.book.name },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.book, "name", $event.target.value)
+                }
+              }
             })
           ]),
           _vm._v(" "),
           !_vm.EveryWeek
             ? _c("div", { staticClass: "input-date" }, [
                 _c("span", { attrs: { label: "date" } }, [_vm._v("使用日: ")]),
-                _vm._v(
-                  "\r\n                    " +
-                    _vm._s(_vm.book.date) +
-                    "\r\n                    "
-                ),
+                _vm._v(" "),
                 _c(
                   "select",
                   {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model.number",
+                        value: _vm.book.date.year,
+                        expression: "book.date.year",
+                        modifiers: { number: true }
+                      }
+                    ],
                     attrs: { name: "date-year" },
-                    domProps: { value: _vm.book.date.year }
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return _vm._n(val)
+                          })
+                        _vm.$set(
+                          _vm.book.date,
+                          "year",
+                          $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        )
+                      }
+                    }
                   },
                   _vm._l(_vm.years, function(year) {
                     return _c(
@@ -49666,8 +50203,35 @@ var render = function() {
                 _c(
                   "select",
                   {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model.number",
+                        value: _vm.book.date.month,
+                        expression: "book.date.month",
+                        modifiers: { number: true }
+                      }
+                    ],
                     attrs: { name: "date-month" },
-                    domProps: { value: _vm.book.date.month }
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return _vm._n(val)
+                          })
+                        _vm.$set(
+                          _vm.book.date,
+                          "month",
+                          $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        )
+                      }
+                    }
                   },
                   _vm._l(12, function(month) {
                     return _c("option", { key: month }, [
@@ -49682,9 +50246,45 @@ var render = function() {
                 _vm._v("\r\n                    月\r\n                    "),
                 _c(
                   "select",
-                  { attrs: { name: "date-date" } },
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model.number",
+                        value: _vm.book.date.date,
+                        expression: "book.date.date",
+                        modifiers: { number: true }
+                      }
+                    ],
+                    attrs: { name: "date-date" },
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return _vm._n(val)
+                          })
+                        _vm.$set(
+                          _vm.book.date,
+                          "date",
+                          $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        )
+                      }
+                    }
+                  },
                   _vm._l(_vm.dates, function(date) {
-                    return _c("option", { key: date })
+                    return _c("option", { key: date }, [
+                      _vm._v(
+                        "\r\n                            " +
+                          _vm._s(date) +
+                          "\r\n                        "
+                      )
+                    ])
                   })
                 ),
                 _vm._v("\r\n                    日  \r\n                ")
@@ -49712,10 +50312,11 @@ var render = function() {
             : _vm._e(),
           _vm._v(" "),
           _c("input", {
-            attrs: { type: "checkbox" },
+            attrs: { type: "checkbox", id: "every-week" },
             on: { click: _vm.changeEveryWeek }
           }),
-          _vm._v("\r\n                うまくいってない\r\n            ")
+          _vm._v(" "),
+          _c("label", { attrs: { for: "every-week" } }, [_vm._v("毎週予約")])
         ])
       ])
     ])
@@ -49804,7 +50405,25 @@ var render = function() {
                                 },
                                 on: { "click-book": _vm.editStatus }
                               })
-                            : _c("div", { on: { click: _vm.editStatus } })
+                            : _c(
+                                "div",
+                                {
+                                  staticClass: "empty",
+                                  on: {
+                                    click: function($event) {
+                                      _vm.editStatus({
+                                        day: index_day,
+                                        frame: index_frame
+                                      })
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\r\n                    storeの形式を変更したため、v-ifが常にTrue、文字がないから表示されないだけ\r\n                "
+                                  )
+                                ]
+                              )
                         ],
                         1
                       )

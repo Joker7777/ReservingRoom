@@ -28,7 +28,12 @@
                     :day="index_day"
                     :frame="index_frame"
                     @click-book="editStatus" />
-                <div v-else @click="editStatus" />
+                <div
+                    class="empty"
+                    v-else
+                    @click="editStatus({'day': index_day, 'frame': index_frame})">
+                    storeの形式を変更したため、v-ifが常にTrue、文字がないから表示されないだけ
+                </div>
             </td>
         </tr>
     </table>
@@ -109,6 +114,7 @@ export default {
             return this.DayList[date.getDay()]
         },
         editStatus (param) {
+            console.log(param)
             this.editting = true
             this.editIndex['day'] = param['day']
             this.editIndex['frame'] = param['frame']
@@ -130,5 +136,11 @@ th {
 }
 td {
     width: 12.5%;
+
+    empty { // 空欄になぜか高さを持たせられない
+        display: block;
+        width: 100%;
+        height: 50px;
+    }
 }
 </style>
