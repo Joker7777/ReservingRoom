@@ -8,7 +8,7 @@
                     {{ getDayName(date) }}<br>
                 </span>
                 <span>
-                    {{ date.getMonth() }} / {{ date.getDate() }}
+                    {{ date.getMonth()+1 }} / {{ date.getDate() }}
                 </span>
             </th>
         </tr>
@@ -31,16 +31,16 @@
                 <div
                     class="empty"
                     v-else
-                    @click="editStatus({'day': index_day, 'frame': index_frame})">
-                    storeの形式を変更したため、v-ifが常にTrue、文字がないから表示されないだけ
+                    @click="editStatus({'day': index_day, 'frame': index_frame})">a
                 </div>
             </td>
         </tr>
     </table>
     <edit-form
         v-if="editting"
-        :book="getBookList[editIndex['day']][editIndex['frame']]"
+        :params="editParam"
         @close="close" />
+    <div>{{ editParam }}</div>
 </div>
 </template>
 <script>
@@ -62,10 +62,11 @@ export default {
     data () {
         return {
             editting: false,
-            editIndex: {
+            editParam: {
                 'day': null,
                 'frame': null,
-            }
+                'date': null,
+            },
         }
     },
     computed: {
@@ -93,9 +94,8 @@ export default {
         TimeFrames () {
             return this.$store.state.Form.TimeTable
         },
-        getBookList (day, time) {
-            // console.log(this.$store.state.Form.BookList[day][time])
-            return this.$store.state.Form.BookList//[day][time]
+        getBookList () {
+            return this.$store.state.Form.BookList
         },
     },
     methods: {
@@ -114,15 +114,21 @@ export default {
             return this.DayList[date.getDay()]
         },
         editStatus (param) {
-            console.log(param)
             this.editting = true
-            this.editIndex['day'] = param['day']
-            this.editIndex['frame'] = param['frame']
+            this.editParam['day'] = param['day']
+            this.editParam['frame'] = param['frame']
+            let dateObj = this.getDates[param['day']]
+            this.editParam['date'] = {
+                'year': dateObj.getFullYear(),
+                'month': dateObj.getMonth()+1,
+                'date': dateObj.getDate(),
+            }
         },
         close () {
             this.editting = false
-            this.editIndex['day'] = null
-            this.editIndex['frame'] = null
+            this.editParam['day'] = null
+            this.editParam['frame'] = null
+            this.editParam['date'] = null
         }
     }
 }

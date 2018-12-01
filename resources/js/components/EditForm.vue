@@ -11,35 +11,9 @@
                 <div class="input-name">
                     <span label="name">バンド名, 使用用途: </span>
                     <input type="text" name="name" v-model="book.name">
+                    {{ book }}
                 </div>
-                <div class="input-date" v-if="!EveryWeek">
-                    <span label="date">使用日: </span>
-                    <select name="date-year" v-model.number="book.date.year">
-                        <option
-                            v-for="year in years"
-                            :key="year"
-                            :value="year">
-                            {{ year }}
-                        </option>
-                    </select>
-                    年
-                    <select name="date-month" v-model.number="book.date.month">
-                        <option
-                            v-for="month in 12"
-                            :key="month">
-                            {{ month }}
-                        </option>
-                    </select>
-                    月
-                    <select name="date-date" v-model.number="book.date.date">
-                        <option
-                            v-for="date in dates"
-                            :key="date">
-                            {{ date }}
-                        </option>
-                    </select>
-                    日  
-                </div>
+                <input-date />
                 <div class="input-day" v-if="EveryWeek">
                     <span label="day">使用曜日: </span>
                     <select name="day">
@@ -64,7 +38,7 @@
 <script>
 export default {
     props: {
-        book: {
+        params: {
             type: Object,
         }
     },
@@ -77,17 +51,28 @@ export default {
         DayList () {
             return this.$store.state.Form.DayList
         },
-        test () {
-            return this.book
+        book () {
+            let booklist = this.$store.state.Form.BookList
+            if (booklist[this.day] != undefined) {
+                if (booklist[this.day][this.frame] != undefined) {
+                    return this.$store.state.Form.BookList[this.day][this.frame]
+                }
+            }
+            let template = this.$store.state.Form.BookTemplate
+            console.log(template)
+            template['date'] = {
+                year: this.params['date']['year'],
+                month: this.params['date']['month'],
+                date: this.params['date']['date'],
+            }
+            return template
         },
         years () {
-            // var arr = [...Array(new Date.getFullYear()+1).keys()].map(i=>i+2017)
-            // console.log(new Date.getFullYear() + 1)
-            // console.log(arr)
-            // return arr
+            let year = new Date().getFullYear()
+            let arr = [...Array(year-2018+2).keys()].map(v => v+2018)
+            return arr
         },
         dates () {
-            console.log(this.book)
             return new Date(this.book.date.year, this.book.date.month, 0).getDate();
         }
     },
