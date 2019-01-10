@@ -11,6 +11,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $faker = \Faker\Factory::create();
+
+        $item = new \App\BookList();
+
+        $item->name = $faker->name;
+        $item->one_time_date = date('Y-m-d', time());
+        // $item->every_week_start_date = null;
+        // $item->every_week_end_date = null;
+        // $item->every_week_day = null;
+        $item->frame = 5;
+        // $item->every_week_id = null;
+        $item->save();
+
         // $this->call(UsersTableSeeder::class);
     }
 }

@@ -93,10 +93,18 @@ Route::get('/page', 'Controller@function')で、リクエストurlに対して�
 
 ### DB
 * マイグレーション
-php artisan make:migration {table_name}
-php artisan migrate
-php artisan migrate:reset
-php artisan migration:status
+```
+    php artisan make:model {TableName} --controller --resource
+    php artisan migrate
+    php artisan migrate:reset
+    php artisan migration:status
+```
+
+database/seed/DatabaseSeeder.phpに初期値を登録
+``` php artisan db:seed ```
+注意！:
+    テーブル名が勝手に(スネークケース&複数形)に修正される。防ぐために、Modelファイルに以下を記載することで、テーブル名を指定することができる。
+    ``` protected $table = 'TableName' ```
 
 * 文字コード
 デフォルトでutf8mb4
@@ -118,6 +126,12 @@ https://qiita.com/_P0cChi_/items/ebf8fbf035b36218a37e
 
 ``` npm run watch ```の代わりに、``` npm run watch-poll ```
 https://readouble.com/laravel/5.4/ja/mix.html
+
+### PHP
+* date('Y-M-D', time())
+Y: 2018
+M: Jan,     m: 1
+D: 曜日,    d: 日付
 
 ### 進捗
 * 20181031 21:57
@@ -166,3 +180,13 @@ DBのカラム、Vuexの概要を決定
 API使用にする。使い方を調査中
 変数、関数名などをlowerCamelCaseに
 値が変化しないのはUpperCamelCaseにしよう
+
+* 20190110
+DBマイグレーション再度、初期値設定
+http://blog.asial.co.jp/1498
+モデルクラスとコントローラ作成
+コントローラを呼び出すルーティング作成 ``` php artisan route:list ```
+コントローラ編集
+http://localhost:8000/api/items でjsonゲット
+モデルクラスでテーブル参照する？
+バリデーション前まで読んだ(テストすっとばし)
