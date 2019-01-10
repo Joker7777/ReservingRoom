@@ -81,6 +81,10 @@
 
 
 ## 開発メモ
+### API
+* モデルクラスとコントローラ作成 http://blog.asial.co.jp/1498
+``` php artisan make:model {name} --controller --resource ```
+
 ### Routing
 * app/Http/Controllers/Controller.php
 関数に対してview(name.blade.php)を指定する。'name'で呼び出せる。
