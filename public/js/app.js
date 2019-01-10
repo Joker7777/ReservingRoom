@@ -48569,7 +48569,8 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
 var Form = {
     namespaced: true,
     state: {
-        today: new Date(), // 起点はサーバから
+        today: new Date(), // 起点はサーバ
+        stdDate: new Date(), // 初期値、移動で変化、サーバで
         DayList: ['日', '月', '火', '水', '木', '金', '土'],
         TimeTable: [{
             name: '0限',
@@ -48630,34 +48631,38 @@ var Form = {
             start: {
                 hour: 21,
                 minute: 20
-            }
-        }, {
-            name: '終了',
-            start: {
+            },
+            end: {
                 hour: 22,
                 minute: 50
             }
         }],
-        BookList: {
+        bookList: {
             2: {
                 9: { // 火曜8限　きききき
+                    // 編集可能事項を全て含む
                     name: 'きききき',
-                    date: {
+                    everyWeek: false,
+                    onceTimeData: {
                         year: 2018,
                         month: 6,
                         date: 10
-                    }
+                    },
+                    everyWeekData: {}
                 }
             }
         },
-        BookTemplate: {
+        bookTemplate: {
             name: '',
-            date: {
-                year: 0,
-                month: 0,
-                date: 0
-            }
-        }
+            everyWeek: false,
+            onceTimeData: {
+                year: null,
+                month: null,
+                date: null
+            },
+            everyWeekData: {}
+        },
+        selectedBook: null
     },
     mutation: {},
     actions: {}
@@ -48851,8 +48856,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 
 
@@ -48863,11 +48866,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         BookBar: __WEBPACK_IMPORTED_MODULE_0__BookBar_vue___default.a,
         Calendar: __WEBPACK_IMPORTED_MODULE_1__Calendar_vue___default.a
     },
-    computed: {
-        today: function today() {
-            return this.$store.state.Form.today;
-        }
-    }
+    computed: {}
 });
 
 /***/ }),
@@ -49194,7 +49193,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 
 
@@ -49204,12 +49202,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     components: {
         Booking: __WEBPACK_IMPORTED_MODULE_0__Booking_vue___default.a,
         EditForm: __WEBPACK_IMPORTED_MODULE_1__EditForm_vue___default.a
-    },
-    props: {
-        today: {
-            type: Date,
-            default: new Date()
-        }
     },
     data: function data() {
         return {
@@ -49228,14 +49220,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         getDates: function getDates() {
             // 日付など返す
+            var stdDate = this.$store.state.Form.stdDate;
             var date = new Array(7);
-            for (var i = 1; this.today.getDay() - i >= 0; i++) {
+            for (var i = 1; stdDate.getDay() - i >= 0; i++) {
                 // 昨日まで
-                date[this.today.getDay() - i] = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate() - i);
+                date[stdDate.getDay() - i] = new Date(stdDate.getFullYear(), stdDate.getMonth(), stdDate.getDate() - i);
             }
-            for (var i = 0; i + this.today.getDay() < 7; i++) {
+            for (var i = 0; i + stdDate.getDay() < 7; i++) {
                 // 今日から
-                date[this.today.getDay() + i] = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate() + i);
+                date[stdDate.getDay() + i] = new Date(stdDate.getFullYear(), stdDate.getMonth(), stdDate.getDate() + i);
             }
             return date;
         },
@@ -49243,16 +49236,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return this.$store.state.Form.TimeTable;
         },
         getBookList: function getBookList() {
-            return this.$store.state.Form.BookList;
+            return this.$store.state.Form.bookList;
         }
     },
     methods: {
-        BookExist: function BookExist(day, time) {
-            var BookList = this.$store.state.Form.BookList;
+        bookExist: function bookExist(day, time) {
+            var bookList = this.$store.state.Form.bookList;
 
-            if (BookList[day] === undefined) {
+            if (bookList[day] === undefined) {
                 return false;
-            } else if (BookList[day][time] === undefined) {
+            } else if (bookList[day][time] === undefined) {
                 return false;
             } else {
                 return true;
@@ -49772,57 +49765,55 @@ var render = function() {
             2
           ),
           _vm._v(" "),
-          _vm._l(_vm.TimeFrames, function(frame, index_frame) {
-            return index_frame < 10
-              ? _c(
-                  "tr",
-                  { key: index_frame },
-                  [
-                    _c("th", [
-                      _vm._v(
-                        "\r\n                " +
-                          _vm._s(frame.name) +
-                          "\r\n            "
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _vm._l(_vm.DayList, function(DayName, index_day) {
-                      return _c(
-                        "td",
-                        { key: index_day },
-                        [
-                          _vm.BookExist(index_day, index_frame)
-                            ? _c("booking", {
-                                attrs: {
-                                  book: _vm.getBookList[index_day][index_frame],
-                                  day: index_day,
-                                  frame: index_frame
-                                },
-                                on: { "click-book": _vm.editStatus }
-                              })
-                            : _c(
-                                "div",
-                                {
-                                  staticClass: "empty",
-                                  on: {
-                                    click: function($event) {
-                                      _vm.editStatus({
-                                        day: index_day,
-                                        frame: index_frame
-                                      })
-                                    }
-                                  }
-                                },
-                                [_vm._v("a\r\n                ")]
-                              )
-                        ],
-                        1
-                      )
-                    })
-                  ],
-                  2
-                )
-              : _vm._e()
+          _vm._l(_vm.TimeFrames, function(frame, indexFrame) {
+            return _c(
+              "tr",
+              { key: indexFrame },
+              [
+                _c("th", [
+                  _vm._v(
+                    "\r\n                " +
+                      _vm._s(frame.name) +
+                      "\r\n            "
+                  )
+                ]),
+                _vm._v(" "),
+                _vm._l(_vm.DayList, function(DayName, indexDay) {
+                  return _c(
+                    "td",
+                    { key: indexDay },
+                    [
+                      _vm.bookExist(indexDay, indexFrame)
+                        ? _c("booking", {
+                            attrs: {
+                              book: _vm.getBookList[indexDay][indexFrame],
+                              day: indexDay,
+                              frame: indexFrame
+                            },
+                            on: { "click-book": _vm.editStatus }
+                          })
+                        : _c(
+                            "div",
+                            {
+                              staticClass: "empty",
+                              on: {
+                                click: function($event) {
+                                  _vm.editStatus({
+                                    day: indexDay,
+                                    frame: indexFrame
+                                  })
+                                }
+                              }
+                            },
+                            [_vm._v("a\r\n                ")]
+                          )
+                    ],
+                    1
+                  )
+                })
+              ],
+              2
+            )
           })
         ],
         2
@@ -49861,11 +49852,7 @@ var render = function() {
   return _c(
     "div",
     { attrs: { id: "main" } },
-    [
-      _c("book-bar"),
-      _vm._v(" "),
-      _c("calendar", { staticClass: "container", attrs: { today: _vm.today } })
-    ],
+    [_c("calendar", { staticClass: "container" })],
     1
   )
 }

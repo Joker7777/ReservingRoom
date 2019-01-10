@@ -6,7 +6,8 @@ Vue.use(Vuex)
 const Form = {
     namespaced: true,
     state: {
-        today: new Date(), // 起点はサーバから
+        today: new Date(), // 起点はサーバ
+        stdDate: new Date(), // 初期値、移動で変化、サーバで
         DayList: ['日', '月', '火', '水', '木', '金', '土'],
         TimeTable: [
             {
@@ -77,36 +78,42 @@ const Form = {
                 start: {
                     hour: 21,
                     minute: 20,
-                }
-            },
-            {
-                name: '終了',
-                start: {
+                },
+                end: {
                     hour: 22,
                     minute: 50,
                 }
-            }
+            },
         ],
-        BookList: {
+        bookList: {
             2: {
                 9: { // 火曜8限　きききき
+                    // 編集可能事項を全て含む
                     name: 'きききき',
-                    date: {
+                    everyWeek: false,
+                    onceTimeData: {
                         year: 2018,
                         month: 6,
                         date: 10,
                     },
+                    everyWeekData: {
+
+                    },
                 },
             },
         },
-        BookTemplate: {
+        bookTemplate: {
             name: '',
-            date: {
-                year: 0,
-                month: 0,
-                date: 0,
+            everyWeek: false,
+            onceTimeData: {
+                year: null,
+                month: null,
+                date: null,
+            },
+            everyWeekData: {
             },
         },
+        selectedBook: null,
     },
     mutation: {
 

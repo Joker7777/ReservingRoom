@@ -13,25 +13,24 @@
             </th>
         </tr>
         <tr
-            v-for="(frame, index_frame) in TimeFrames"
-            :key="index_frame"
-            v-if="index_frame < 10">
+            v-for="(frame, indexFrame) in TimeFrames"
+            :key="indexFrame">
             <th>
                 {{ frame.name }}
             </th>
             <td
-                v-for="(DayName, index_day) in DayList"
-                :key="index_day">
+                v-for="(DayName, indexDay) in DayList"
+                :key="indexDay">
                 <booking
-                    v-if="BookExist(index_day, index_frame)"
-                    :book="getBookList[index_day][index_frame]"
-                    :day="index_day"
-                    :frame="index_frame"
+                    v-if="bookExist(indexDay, indexFrame)"
+                    :book="getBookList[indexDay][indexFrame]"
+                    :day="indexDay"
+                    :frame="indexFrame"
                     @click-book="editStatus" />
                 <div
                     class="empty"
                     v-else
-                    @click="editStatus({'day': index_day, 'frame': index_frame})">a
+                    @click="editStatus({'day': indexDay, 'frame': indexFrame})">a
                 </div>
             </td>
         </tr>
@@ -53,12 +52,6 @@ export default {
         Booking,
         EditForm,
     },
-    props: {
-        today: {
-            type: Date,
-            default: new Date()
-        }
-    },
     data () {
         return {
             editting: false,
@@ -74,19 +67,20 @@ export default {
             return this.$store.state.Form.DayList
         },
         getDates () { // 日付など返す
+            var stdDate = this.$store.state.Form.stdDate
             var date = new Array(7) 
-            for (var i = 1; this.today.getDay() - i >= 0; i++) { // 昨日まで
-                date[this.today.getDay() - i] = new Date (
-                    this.today.getFullYear(),
-                    this.today.getMonth(),
-                    this.today.getDate() - i
+            for (var i = 1; stdDate.getDay() - i >= 0; i++) { // 昨日まで
+                date[stdDate.getDay() - i] = new Date (
+                    stdDate.getFullYear(),
+                    stdDate.getMonth(),
+                    stdDate.getDate() - i
                 )
             }
-            for (var i = 0; i + this.today.getDay() < 7; i++) { // 今日から
-                date[this.today.getDay() + i] = new Date (
-                    this.today.getFullYear(),
-                    this.today.getMonth(),
-                    this.today.getDate() + i
+            for (var i = 0; i + stdDate.getDay() < 7; i++) { // 今日から
+                date[stdDate.getDay() + i] = new Date (
+                    stdDate.getFullYear(),
+                    stdDate.getMonth(),
+                    stdDate.getDate() + i
                 )
             }
             return date
@@ -95,16 +89,16 @@ export default {
             return this.$store.state.Form.TimeTable
         },
         getBookList () {
-            return this.$store.state.Form.BookList
+            return this.$store.state.Form.bookList
         },
     },
     methods: {
-        BookExist (day, time) {
-            var BookList = this.$store.state.Form.BookList
+        bookExist (day, time) {
+            var bookList = this.$store.state.Form.bookList
 
-            if (BookList[day] === undefined) {
+            if (bookList[day] === undefined) {
                 return false
-            } else if (BookList[day][time] === undefined) {
+            } else if (bookList[day][time] === undefined) {
                 return false
             } else {
                 return true

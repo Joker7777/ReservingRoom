@@ -1,9 +1,7 @@
 <template>
 <div id="main">
-    <book-bar />
     <calendar
-        class="container"
-        :today="today" />
+        class="container" />
 </div>
 </template>
 <script>
@@ -17,9 +15,6 @@ export default {
         Calendar
     },
     computed: {
-        today () {
-            return this.$store.state.Form.today
-        }
     }
 }
 </script>

@@ -16,66 +16,68 @@
     1. DBから選択した週の情報
 
 ## 環境構築
-1. MySQL
-インストーラを使った
-1. PHP v7.2.3
-たぶん公式インストーラ
-1. Node.js v8.12.0
-公式インストーラ
-1. Composer v1.7.2
-    公式インストーラ
-    環境変数とかの設定なしで使えました
-1. Laravel Installer 1.5.0
+* 
+    ### 手順
+    1. MySQL(xampp)
+        xamppのインストーラで
+    1. PHP v7.2.3
+        たぶん公式インストーラ
+    1. Node.js v8.12.0
+        公式インストーラ
+    1. Composer v1.7.2
+        公式インストーラ
+        環境変数とかの設定なしで使えました
+    1. Laravel Installer 1.5.0
+        ```
+        composer global require "laravel/installer=~1.1"
+        ```
+        環境変数などの登録をしなくても使えた。コマンドはGitHubディレクトリにて
+    1. Laravelプロジェクト作成
+        ```
+        laravel new プロジェクト名
+        cd プロジェクト名
+        composer install            # この前に、php.iniを変更した(extension=fileinfoのコメントを外した)
+        php artisan -v              # Laravel Framwork 5.7.11, 正常にインストールされたか確認のため
+        php artisan key:generate    # 初期起動前にはkeyの生成が必要
+        php artisan serve           # ようやく起動、started:<url>のurlにアクセスしてLaravelと出ればok
+        ```
+    1. Vue.js, ES2015=>ES5, Sass=>CSS
+        よくわからんがインストールがいるらしい, package.jsonの下部分？
+        ```
+        npm install
+        ```
+        * resources/views/welcome.blade.php を編集、Vue.jsが使えているか確認
+        2018/10/31 1:03 できない　->　2018/10/31/11:15 app.jsが読みこめてなかったらしい
+        http://blog.asial.co.jp/1496
+
+
+    ### サーバ起動
     ```
-    composer global require "laravel/installer=~1.1"
+    php artisan serve   # server
+    npm run watch       # compiler
     ```
-    環境変数などの登録をしなくても使えた。コマンドはGitHubディレクトリにて
-1. Laravelプロジェクト作成
-    ```
-    laravel new プロジェクト名
-    cd プロジェクト名
-    composer install            # この前に、php.iniを変更した(extension=fileinfoのコメントを外した)
-    php artisan -v              # Laravel Framwork 5.7.11, 正常にインストールされたか確認のため
-    php artisan key:generate    # 初期起動前にはkeyの生成が必要
-    php artisan serve           # ようやく起動、started:<url>のurlにアクセスしてLaravelと出ればok
-    ```
-1. Vue.js, ES2015=>ES5, Sass=>CSS
-    よくわからんがインストールがいるらしい, package.jsonの下部分？
-    ```
-    npm install
-    ```
-    * resources/views/welcome.blade.php を編集、Vue.jsが使えているか確認
-    2018/10/31 1:03 できない　->　2018/10/31/11:15 app.jsが読みこめてなかったらしい
+
+    ### 参考
+    1. LaravelインストールからVueまで, mix()の件
+    https://qiita.com/fruitriin/items/e0f2c9aa035c3ff2c874
+    1. Composer インストール後から？とても丁寧な気がしたがわからん
     http://blog.asial.co.jp/1496
-
-
-### サーバ起動
-```
-php artisan serve   # server
-npm run watch       # compiler
-```
-
-### 参考
-1. LaravelインストールからVueまで, mix()の件
-https://qiita.com/fruitriin/items/e0f2c9aa035c3ff2c874
-1. Composer インストール後から？とても丁寧な気がしたがわからん
-http://blog.asial.co.jp/1496
-1. Laravel + Vue.js (Mac)
-https://qiita.com/A_zara/items/b552b4135006dc1e69f3
-1. Laravel + vue.js? (windows)
-https://qiita.com/somebody_gp/items/2d31471bebf9164425fe
-1. Laravel プロジェクト作成
-https://qiita.com/33yuki/items/5ee27163b603d7f68250https://qiita.com/A_zara/items/b552b4135006dc1e69f3
-1. autoload.php
-https://qiita.com/pugiemonn/items/3d000ac0486987dd92df
-1. fileinfo
-https://qiita.com/ms2sato/items/79a2bcfd90385a8484ac
-1. artisan key:generate
-https://qiita.com/pugiemonn/items/641718fd241320384972
-1. npm install
-https://qiita.com/somebody_gp/items/2d31471bebf9164425fe
-1. npm install の失敗について
-https://qiita.com/quotto/items/1357bfb91346535f40bf
+    1. Laravel + Vue.js (Mac)
+    https://qiita.com/A_zara/items/b552b4135006dc1e69f3
+    1. Laravel + vue.js? (windows)
+    https://qiita.com/somebody_gp/items/2d31471bebf9164425fe
+    1. Laravel プロジェクト作成
+    https://qiita.com/33yuki/items/5ee27163b603d7f68250https://qiita.com/A_zara/items/b552b4135006dc1e69f3
+    1. autoload.php
+    https://qiita.com/pugiemonn/items/3d000ac0486987dd92df
+    1. fileinfo
+    https://qiita.com/ms2sato/items/79a2bcfd90385a8484ac
+    1. artisan key:generate
+    https://qiita.com/pugiemonn/items/641718fd241320384972
+    1. npm install
+    https://qiita.com/somebody_gp/items/2d31471bebf9164425fe
+    1. npm install の失敗について
+    https://qiita.com/quotto/items/1357bfb91346535f40bf
 
 
 ## 開発メモ
@@ -84,6 +86,20 @@ https://qiita.com/quotto/items/1357bfb91346535f40bf
 関数に対してview(name.blade.php)を指定する。'name'で呼び出せる。
 * routes/web.php
 Route::get('/page', 'Controller@function')で、リクエストurlに対してコントローラの関数を呼び出す。
+
+### DB
+* マイグレーション
+php artisan make:migration {table_name}
+php artisan migrate
+php artisan migrate:reset
+php artisan migration:status
+
+* 文字コード
+デフォルトでutf8mb4
+utf-8で扱えない4バイト文字(絵文字)を取り扱う。特に理由がなければそのままで。
+
+* timestamps()
+名前入れない。文法エラー。自動でupdated_atとcreated_atを作ってくれる。
 
 ### scss
 * プロパティ記述順序
@@ -139,3 +155,10 @@ store.js L101: vuex, actions, stateが読みこめてない
 * 20181111
 連番のリスト(年生成)　携帯
 新規登録
+
+* 20190109
+DBのカラム、Vuexの概要を決定
+マイグレーションした
+API使用にする。使い方を調査中
+変数、関数名などをlowerCamelCaseに
+値が変化しないのはUpperCamelCaseにしよう
