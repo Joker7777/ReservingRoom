@@ -4,14 +4,14 @@
         <div class="container modal-container">
             <div class="modal-header">
                 <h3 class="header">予約</h3>
-                {{book}}
+                <!-- {{book}} -->
                 <div class="close" @click="close">&times;</div>
             </div>
             <div class="modal-body">
                 <div class="input-name">
                     <span label="name">バンド名, 使用用途: </span>
                     <input type="text" name="name" v-model="book.name">
-                    {{ book }}
+                    <!-- {{ book }} -->
                 </div>
                 <input-date />
                 <div class="input-day" v-if="EveryWeek">
@@ -52,13 +52,13 @@ export default {
             return this.$store.state.Form.DayList
         },
         book () {
-            let booklist = this.$store.state.Form.BookList
+            let booklist = this.$store.state.Form.bookList
             if (booklist[this.day] != undefined) {
                 if (booklist[this.day][this.frame] != undefined) {
-                    return this.$store.state.Form.BookList[this.day][this.frame]
+                    return booklist[this.day][this.frame]
                 }
             }
-            let template = this.$store.state.Form.BookTemplate
+            let template = this.$store.state.Form.bookTemplate
             console.log(template)
             template['date'] = {
                 year: this.params['date']['year'],

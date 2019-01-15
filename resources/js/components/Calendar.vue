@@ -30,7 +30,7 @@
                 <div
                     class="empty"
                     v-else
-                    @click="editStatus({'day': indexDay, 'frame': indexFrame})">a
+                    @click="editStatus({'day': indexDay, 'frame': indexFrame})">空き
                 </div>
             </td>
         </tr>
