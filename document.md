@@ -85,6 +85,19 @@
 * モデルクラスとコントローラ作成 http://blog.asial.co.jp/1498
 ``` php artisan make:model {name} --controller --resource ```
 
+* 接続順序
+    1. フロントエンドからAPIリクエスト(ajax?)
+        route/api.phpによってコントローラが呼ばれる
+        httpメソッドの種類によって呼ばれる関数が変わる
+
+        * /api/{api.phpで指定した名前}/(index) --- index()
+        * /api/{api.phpで指定した名前}/1 --- そのほか
+            php artisan route:list でメソッドと関数の対応を確認
+    1. ほか
+
+* 引数追加の方法
+
+
 ### Routing
 * app/Http/Controllers/Controller.php
 関数に対してview(name.blade.php)を指定する。'name'で呼び出せる。
@@ -120,6 +133,11 @@ https://qiita.com/mgn/items/6154ccd2e23b2e65c769
 ### Vuex
 * 導入参考
 https://qiita.com/_P0cChi_/items/ebf8fbf035b36218a37e
+
+* オブジェクトの追加とDOMへの反映
+通常オブジェクトはリアクティブでない(Vue全体)
+Vue.set((this.$set)を用いることでリアクティブな配列更新が可能
+オブジェクトは作成し直すことでリアクティブにできる
 
 ### コンパイル
 > 特定の環境のWebpackでは、ファイル変更時に更新されないことがあります。自分のシステムでこれが起きた場合は、watch-pollコマンドを使用してください。
@@ -190,3 +208,10 @@ http://blog.asial.co.jp/1498
 http://localhost:8000/api/items でjsonゲット
 モデルクラスでテーブル参照する？
 バリデーション前まで読んだ(テストすっとばし)
+
+* 20190112
+API動作確認
+
+* 20190115
+Storeとcomponentの連携修正
+次回：APIの引数を調査
