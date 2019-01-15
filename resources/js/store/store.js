@@ -1,13 +1,15 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+import BookListAPI from '../api/booklist'
+
 Vue.use(Vuex)
 
 const Form = {
     namespaced: true,
     state: {
-        today: new Date(), // 起点はサーバ
-        stdDate: new Date(), // 初期値、移動で変化、サーバで
+        today: new Date(),
+        stdDate: new Date(), // 初期値today
         DayList: ['日', '月', '火', '水', '木', '金', '土'],
         TimeTable: [
             {
@@ -86,21 +88,6 @@ const Form = {
             },
         ],
         bookList: {
-            2: {
-                9: { // 火曜8限　きききき
-                    // 編集可能事項を全て含む
-                    name: 'きききき',
-                    everyWeek: false,
-                    onceTimeData: {
-                        year: 2018,
-                        month: 6,
-                        date: 10,
-                    },
-                    everyWeekData: {
-
-                    },
-                },
-            },
         },
         bookTemplate: {
             name: '',
@@ -115,10 +102,33 @@ const Form = {
         },
         selectedBook: null,
     },
-    mutation: {
-
+    mutations: {
+        bookList (state, list) {
+            list.forEach(element => {
+                console.log(element)
+                if (element['every_week_id'] == true) {
+                    var day = element['every_week_day']
+                } else {
+                    var day = new Date(element['one_time_date']).getDay()
+                }
+                if (state.bookList[day]) {
+                    Vue.set(state.bookList[day], [element['frame']], element)
+                } else {
+                    let frame = element['frame']
+                    Vue.set(state.bookList, day, {[frame]: element})
+                }
+            });
+        },
+        stdDate (state, dateObj) {
+            state.stdDate = dateObj
+        }
     },
     actions: {
+        getBookList ({state, commit}) {
+            BookListAPI.getBookList(state.stdDate, (list) => {
+                commit('bookList', list) // bookListのデータ
+            })
+        }
     }
 }
 

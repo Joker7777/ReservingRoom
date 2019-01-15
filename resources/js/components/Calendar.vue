@@ -51,6 +51,10 @@ export default {
     components: {
         Booking,
         EditForm,
+        MoveWeekButton
+    },
+    created () {
+        this.$store.dispatch('Form/getBookList')
     },
     data () {
         return {
@@ -83,6 +87,13 @@ export default {
                     stdDate.getDate() + i
                 )
             }
+            this.$store.commit('Form/stdDate',
+                new Date(
+                    stdDate.getFullYear(),
+                    stdDate.getMonth(),
+                    stdDate.getDate() - stdDate.getDay()
+                )
+            )
             return date
         },
         TimeFrames () {
