@@ -18,4 +18,8 @@ use Illuminate\Http\Request;
 // });
 
 // リソースコントローラに対応するルートの定義
-Route::resource('/booklist', 'BookListController', ['except' => ['create', 'edit']]);
+// Route::resource('/booklist', 'BookListController', ['except' => ['create', 'edit']]);
+Route::get('/booklist/{std_date}', 'BookListController@getList');
+Route::get('/booklist/1/{data}', 'BookListController@add');
+Route::get('/booklist/2/{id}/{data}', 'BookListController@update');
+Route::get('/booklist/3/{id}', 'BookListController@destroy');
