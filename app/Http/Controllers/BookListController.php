@@ -12,20 +12,10 @@ class BookListController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function getList($std_date)
     {
-        //
+        // データ取得、条件もここで
         return response(BookList::all());
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -34,33 +24,25 @@ class BookListController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function add(Request $request)
     {
-        //
-    }
+        // テスト手順
+        // $data = ['content' => 'ブログを書く'];
+        // $response = $this->post('/api/items', $data);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\BookList  $bookList
-     * @return \Illuminate\Http\Response
-     */
-    public function show(BookList $bookList)
-    {
-        //
-    }
+        $booklist = new BookList();
+        // $item->name = $request->input('content');
+        // $item->one_time_date = date('Y-m-d', time());
+        // // $item->every_week_start_date = null;
+        // // $item->every_week_end_date = null;
+        // // $item->every_week_day = null;
+        // $item->frame = 5;
+        // // $item->every_week_id = null;
+        // $item->save();
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\BookList  $bookList
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(BookList $bookList)
-    {
-        //
+        return response($booklist, 201);
     }
-
+    
     /**
      * Update the specified resource in storage.
      *
@@ -70,7 +52,11 @@ class BookListController extends Controller
      */
     public function update(Request $request, BookList $bookList)
     {
-        //
+        // テスト手順
+        // $data = ['content' => 'ブログを書く'];
+        // $response = $this->patch('/api/items/1', $data);
+
+        return response('update');
     }
 
     /**
@@ -81,6 +67,9 @@ class BookListController extends Controller
      */
     public function destroy(BookList $bookList)
     {
-        //
+        // テスト手順
+        // $response = $this->delete('/api/items/1');
+
+        return response('destroy');
     }
 }
