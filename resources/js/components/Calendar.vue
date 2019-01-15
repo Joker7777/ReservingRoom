@@ -1,5 +1,9 @@
 <template>
 <div id="calendar">
+    <div style="width: 100%;">
+        <move-week-button moveTo="pre" />
+        <move-week-button moveTo="next" />
+    </div>
     <table class="table table-bordered">
         <tr>
             <th>時間</th>
@@ -45,6 +49,7 @@
 <script>
 import Booking from './Booking.vue'
 import EditForm from './EditForm.vue'
+import MoveWeekButton from './MoveWeekButton'
 
 export default {
     name: 'calendar',
