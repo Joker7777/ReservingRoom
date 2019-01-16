@@ -1,9 +1,6 @@
 <template>
 <div id="calendar">
-    <div style="width: 100%;">
-        <move-week-button moveTo="pre" />
-        <move-week-button moveTo="next" />
-    </div>
+    <move-week-button />
     <table class="table table-bordered">
         <tr>
             <th>時間</th>
@@ -23,18 +20,19 @@
                 {{ frame.name }}
             </th>
             <td
-                v-for="(DayName, indexDay) in DayList"
-                :key="indexDay">
-                <booking
-                    v-if="bookExist(indexDay, indexFrame)"
-                    :book="getBookList[indexDay][indexFrame]"
-                    :day="indexDay"
-                    :frame="indexFrame"
-                    @click-book="editStatus" />
+                v-for="(date, index) in getDates"
+                :key="index">
+                <div
+                    class="book"
+                    v-if="bookExist(index, indexFrame)"
+                    @click-book="editStatus">
+                    {{ getBookList[date.getDay()][indexFrame].name }}
+                </div>
                 <div
                     class="empty"
                     v-else
-                    @click="editStatus({'day': indexDay, 'frame': indexFrame})">空き
+                    @click="editStatus({'day': index, 'frame': indexFrame})">
+                    &#9675;
                 </div>
             </td>
         </tr>
@@ -43,18 +41,15 @@
         v-if="editting"
         :params="editParam"
         @close="close" />
-    <div>{{ editParam }}</div>
 </div>
 </template>
 <script>
-import Booking from './Booking.vue'
 import EditForm from './EditForm.vue'
 import MoveWeekButton from './MoveWeekButton'
 
 export default {
     name: 'calendar',
     components: {
-        Booking,
         EditForm,
         MoveWeekButton
     },

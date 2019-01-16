@@ -377,6 +377,33 @@ module.exports = {
 /* 1 */
 /***/ (function(module, exports) {
 
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
 /* globals __VUE_SSR_CONTEXT__ */
 
 // IMPORTANT: Do NOT use ES2015 features in this file.
@@ -480,33 +507,6 @@ module.exports = function normalizeComponent (
     options: options
   }
 }
-
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
 
 
 /***/ }),
@@ -3652,7 +3652,7 @@ Popper.Defaults = Defaults;
 /* harmony default export */ __webpack_exports__["default"] = (Popper);
 //# sourceMappingURL=popper.js.map
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))
 
 /***/ }),
 /* 8 */
@@ -25263,7 +25263,7 @@ Vue.compile = compileToFunctions;
 
 module.exports = Vue;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(41).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(41).setImmediate))
 
 /***/ }),
 /* 16 */
@@ -26215,7 +26215,7 @@ var index_esm = {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(18);
-module.exports = __webpack_require__(80);
+module.exports = __webpack_require__(75);
 
 
 /***/ }),
@@ -43428,7 +43428,7 @@ if (token) {
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(21)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(21)(module)))
 
 /***/ }),
 /* 21 */
@@ -48358,7 +48358,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
                          (typeof global !== "undefined" && global.clearImmediate) ||
                          (this && this.clearImmediate);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
 /* 42 */
@@ -48551,7 +48551,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(6)))
 
 /***/ }),
 /* 43 */
@@ -49315,7 +49315,7 @@ function hasOwnProperty(obj, prop) {
   return Object.prototype.hasOwnProperty.call(obj, prop);
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(6)))
 
 /***/ }),
 /* 46 */
@@ -49362,7 +49362,7 @@ if (typeof Object.create === 'function') {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(1)
+var normalizeComponent = __webpack_require__(2)
 /* script */
 var __vue_script__ = __webpack_require__(49)
 /* template */
@@ -49481,11 +49481,11 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(1)
+var normalizeComponent = __webpack_require__(2)
 /* script */
 var __vue_script__ = __webpack_require__(52)
 /* template */
-var __vue_template__ = __webpack_require__(79)
+var __vue_template__ = __webpack_require__(74)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -49529,25 +49529,21 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__BookBar_vue__ = __webpack_require__(53);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__BookBar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__BookBar_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Calendar_vue__ = __webpack_require__(59);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Calendar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__Calendar_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Calendar_vue__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Calendar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Calendar_vue__);
 //
 //
 //
 //
 //
 //
-
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'main-page',
     components: {
-        BookBar: __WEBPACK_IMPORTED_MODULE_0__BookBar_vue___default.a,
-        Calendar: __WEBPACK_IMPORTED_MODULE_1__Calendar_vue___default.a
+        Calendar: __WEBPACK_IMPORTED_MODULE_0__Calendar_vue___default.a
     },
     computed: {}
 });
@@ -49561,17 +49557,17 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(54)
 }
-var normalizeComponent = __webpack_require__(1)
+var normalizeComponent = __webpack_require__(2)
 /* script */
 var __vue_script__ = __webpack_require__(57)
 /* template */
-var __vue_template__ = __webpack_require__(58)
+var __vue_template__ = __webpack_require__(73)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
 var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = "data-v-72094e62"
+var __vue_scopeId__ = "data-v-052a41a9"
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
@@ -49582,7 +49578,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/js/components/BookBar.vue"
+Component.options.__file = "resources/js/components/Calendar.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -49591,9 +49587,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-72094e62", Component.options)
+    hotAPI.createRecord("data-v-052a41a9", Component.options)
   } else {
-    hotAPI.reload("data-v-72094e62", Component.options)
+    hotAPI.reload("data-v-052a41a9", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -49614,13 +49610,13 @@ var content = __webpack_require__(55);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("54b10c9d", content, false, {});
+var update = __webpack_require__(4)("157c7b19", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-72094e62\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./BookBar.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-72094e62\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./BookBar.vue");
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-052a41a9\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Calendar.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-052a41a9\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Calendar.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -49638,7 +49634,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "\n#book-bar[data-v-72094e62] {\n  padding: 10px;\n  background-color: #0f0;\n}\n", ""]);
+exports.push([module.i, "\ntable[data-v-052a41a9] {\n  height: 100%;\n}\ntable th[data-v-052a41a9] {\n    color: #fff;\n    background-color: #38c172;\n}\ntable td[data-v-052a41a9] {\n    width: 12.5%;\n    padding: 2px;\n}\ntable td .book[data-v-052a41a9] {\n      width: 100%;\n      height: 100%;\n}\ntable td .empty[data-v-052a41a9] {\n      width: 100%;\n      height: 100%;\n      background-color: rgba(52, 144, 220, 0.2);\n}\n", ""]);
 
 // exports
 
@@ -49682,158 +49678,10 @@ module.exports = function listToStyles (parentId, list) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'book-bar'
-});
-
-/***/ }),
-/* 58 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "sticky-top", attrs: { id: "book-bar" } }, [
-      _c("div", [_vm._v("部室予約")]),
-      _vm._v(" "),
-      _c("form", [
-        _c("input", { attrs: { type: "text" } }),
-        _vm._v(" "),
-        _c("button", { attrs: { type: "submit" } }, [_vm._v("予約")])
-      ])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-72094e62", module.exports)
-  }
-}
-
-/***/ }),
-/* 59 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(60)
-}
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(62)
-/* template */
-var __vue_template__ = __webpack_require__(78)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-052a41a9"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/components/Calendar.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-052a41a9", Component.options)
-  } else {
-    hotAPI.reload("data-v-052a41a9", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 60 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(61);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(4)("157c7b19", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-052a41a9\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Calendar.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-052a41a9\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Calendar.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 61 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(3)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\nth[data-v-052a41a9] {\n  color: #fff;\n  background-color: #38c172;\n}\ntd[data-v-052a41a9] {\n  width: 12.5%;\n}\ntd empty[data-v-052a41a9] {\n    display: block;\n    width: 100%;\n    height: 50px;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 62 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Booking_vue__ = __webpack_require__(63);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Booking_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Booking_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__EditForm_vue__ = __webpack_require__(68);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__EditForm_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__EditForm_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__MoveWeekButton__ = __webpack_require__(73);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__MoveWeekButton___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__MoveWeekButton__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__EditForm_vue__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__EditForm_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__EditForm_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__MoveWeekButton__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__MoveWeekButton___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__MoveWeekButton__);
 //
 //
 //
@@ -49879,10 +49727,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-
 
 
 
@@ -49890,9 +49734,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'calendar',
     components: {
-        Booking: __WEBPACK_IMPORTED_MODULE_0__Booking_vue___default.a,
-        EditForm: __WEBPACK_IMPORTED_MODULE_1__EditForm_vue___default.a,
-        MoveWeekButton: __WEBPACK_IMPORTED_MODULE_2__MoveWeekButton___default.a
+        EditForm: __WEBPACK_IMPORTED_MODULE_0__EditForm_vue___default.a,
+        MoveWeekButton: __WEBPACK_IMPORTED_MODULE_1__MoveWeekButton___default.a
     },
     created: function created() {
         this.$store.dispatch('Form/getBookList');
@@ -49970,6 +49813,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
+/* 58 */,
+/* 59 */,
+/* 60 */,
+/* 61 */,
+/* 62 */,
 /* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -49978,163 +49826,11 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(64)
 }
-var normalizeComponent = __webpack_require__(1)
+var normalizeComponent = __webpack_require__(2)
 /* script */
 var __vue_script__ = __webpack_require__(66)
 /* template */
 var __vue_template__ = __webpack_require__(67)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-28bb4584"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/components/Booking.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-28bb4584", Component.options)
-  } else {
-    hotAPI.reload("data-v-28bb4584", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 64 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(65);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(4)("33599d09", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-28bb4584\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Booking.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-28bb4584\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Booking.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 65 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(3)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.booking-box[data-v-28bb4584] {\n  size: 100%;\n  background-color: #3490dc;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 66 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'booking',
-    props: {
-        book: {
-            type: Object
-        },
-        day: {
-            type: Number
-        },
-        frame: {
-            type: Number
-        }
-    },
-    methods: {
-        toEditForm: function toEditForm() {
-            this.$emit('click-book', {
-                'day': this.day,
-                'frame': this.frame
-            });
-        }
-    }
-});
-
-/***/ }),
-/* 67 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "booking-box", on: { click: _vm.toEditForm } },
-    [_vm._v("\r\n    " + _vm._s(_vm.book.name) + "\r\n")]
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-28bb4584", module.exports)
-  }
-}
-
-/***/ }),
-/* 68 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(69)
-}
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(71)
-/* template */
-var __vue_template__ = __webpack_require__(72)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -50173,13 +49869,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 69 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(70);
+var content = __webpack_require__(65);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -50199,7 +49895,7 @@ if(false) {
 }
 
 /***/ }),
-/* 70 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(false);
@@ -50213,7 +49909,7 @@ exports.push([module.i, "\n.modal-enter-active[data-v-64596f4e], .modal-leave-ac
 
 
 /***/ }),
-/* 71 */
+/* 66 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -50312,7 +50008,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 });
 
 /***/ }),
-/* 72 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -50409,19 +50105,19 @@ if (false) {
 }
 
 /***/ }),
-/* 73 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(74)
+  __webpack_require__(69)
 }
-var normalizeComponent = __webpack_require__(1)
+var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(76)
+var __vue_script__ = __webpack_require__(71)
 /* template */
-var __vue_template__ = __webpack_require__(77)
+var __vue_template__ = __webpack_require__(72)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -50460,13 +50156,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 74 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(75);
+var content = __webpack_require__(70);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -50486,7 +50182,7 @@ if(false) {
 }
 
 /***/ }),
-/* 75 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(false);
@@ -50494,13 +50190,13 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "\n.move-week-button[data-v-27bd6abc] {\n  position: relative;\n  display: inline-block;\n  width: 100px;\n  height: 30px;\n  background-color: green;\n  color: white;\n}\n.move-week-button #move-pre-week[data-v-27bd6abc] {\n    left: 10px;\n    width: 100%;\n}\n.move-week-button #move-next-week[data-v-27bd6abc] {\n    right: 10px;\n    width: 100%;\n}\n", ""]);
+exports.push([module.i, "\n.move-week-button[data-v-27bd6abc] {\n  width: 100%;\n  padding: 10px;\n}\n.move-week-button #move-pre-week[data-v-27bd6abc], .move-week-button #move-next-week[data-v-27bd6abc] {\n    display: inline-block;\n    width: 100px;\n    height: 30px;\n    padding: 5px;\n    background-color: #38c172;\n    color: white;\n}\n.move-week-button #move-pre-week[data-v-27bd6abc] {\n    float: left;\n    text-align: right;\n}\n.move-week-button #move-next-week[data-v-27bd6abc] {\n    float: right;\n    text-align: left;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 76 */
+/* 71 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -50519,15 +50215,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: {
-        moveTo: {
-            type: String
-        }
-    },
     methods: {
         movePreWeek: function movePreWeek() {
             // 呼ばれた時にbookListロードし直す必要
@@ -50542,39 +50231,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 77 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "move-week-button" }, [
-    _vm.moveTo == "pre"
-      ? _c(
-          "div",
-          {
-            attrs: { id: "move-pre-week" },
-            on: {
-              click: function($event) {
-                _vm.movePreWeek()
-              }
-            }
-          },
-          [_vm._v("\r\n        前の週へ\r\n    ")]
-        )
-      : _c(
-          "div",
-          {
-            attrs: { id: "move-next-week" },
-            on: {
-              click: function($event) {
-                _vm.moveNextWeek()
-              }
-            }
-          },
-          [_vm._v("\r\n        次の週へ\r\n    ")]
-        )
+  return _c("div", { staticClass: "move-week-button clearfix" }, [
+    _c(
+      "div",
+      {
+        attrs: { id: "move-pre-week" },
+        on: {
+          click: function($event) {
+            _vm.movePreWeek()
+          }
+        }
+      },
+      [_c("span", [_vm._v("前の週へ")])]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        attrs: { id: "move-next-week" },
+        on: {
+          click: function($event) {
+            _vm.moveNextWeek()
+          }
+        }
+      },
+      [_c("span", [_vm._v("次の週へ")])]
+    )
   ])
 }
 var staticRenderFns = []
@@ -50588,7 +50277,7 @@ if (false) {
 }
 
 /***/ }),
-/* 78 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -50599,16 +50288,7 @@ var render = function() {
     "div",
     { attrs: { id: "calendar" } },
     [
-      _c(
-        "div",
-        { staticStyle: { width: "100%" } },
-        [
-          _c("move-week-button", { attrs: { moveTo: "pre" } }),
-          _vm._v(" "),
-          _c("move-week-button", { attrs: { moveTo: "next" } })
-        ],
-        1
-      ),
+      _c("move-week-button"),
       _vm._v(" "),
       _c(
         "table",
@@ -50656,38 +50336,46 @@ var render = function() {
                   )
                 ]),
                 _vm._v(" "),
-                _vm._l(_vm.DayList, function(DayName, indexDay) {
-                  return _c(
-                    "td",
-                    { key: indexDay },
-                    [
-                      _vm.bookExist(indexDay, indexFrame)
-                        ? _c("booking", {
-                            attrs: {
-                              book: _vm.getBookList[indexDay][indexFrame],
-                              day: indexDay,
-                              frame: indexFrame
-                            },
+                _vm._l(_vm.getDates, function(date, index) {
+                  return _c("td", { key: index }, [
+                    _vm.bookExist(index, indexFrame)
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "book",
                             on: { "click-book": _vm.editStatus }
-                          })
-                        : _c(
-                            "div",
-                            {
-                              staticClass: "empty",
-                              on: {
-                                click: function($event) {
-                                  _vm.editStatus({
-                                    day: indexDay,
-                                    frame: indexFrame
-                                  })
-                                }
+                          },
+                          [
+                            _vm._v(
+                              "\r\n                    " +
+                                _vm._s(
+                                  _vm.getBookList[date.getDay()][indexFrame]
+                                    .name
+                                ) +
+                                "\r\n                "
+                            )
+                          ]
+                        )
+                      : _c(
+                          "div",
+                          {
+                            staticClass: "empty",
+                            on: {
+                              click: function($event) {
+                                _vm.editStatus({
+                                  day: index,
+                                  frame: indexFrame
+                                })
                               }
-                            },
-                            [_vm._v("空き\r\n                ")]
-                          )
-                    ],
-                    1
-                  )
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\r\n                    ○\r\n                "
+                            )
+                          ]
+                        )
+                  ])
                 })
               ],
               2
@@ -50702,9 +50390,7 @@ var render = function() {
             attrs: { params: _vm.editParam },
             on: { close: _vm.close }
           })
-        : _vm._e(),
-      _vm._v(" "),
-      _c("div", [_vm._v(_vm._s(_vm.editParam))])
+        : _vm._e()
     ],
     1
   )
@@ -50720,7 +50406,7 @@ if (false) {
 }
 
 /***/ }),
-/* 79 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -50745,7 +50431,7 @@ if (false) {
 }
 
 /***/ }),
-/* 80 */
+/* 75 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
