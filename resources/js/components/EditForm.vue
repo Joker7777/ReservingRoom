@@ -1,22 +1,20 @@
 <template>
 <transition name="modal">
     <div class="modal-mask">
-        <div class="container modal-container">
-            <div class="modal-header">
-                <h3 class="header">予約</h3>
-                <!-- {{book}} -->
-                <div class="close" @click="close">&times;</div>
+    <div class="container modal-container">
+        <div class="modal-header">
+            <h3 class="header">予約</h3>
+            <div class="close" @click="close">&times;</div>
+        </div>
+        <div class="modal-body">
+            <div class="input-name">
+                <label for="name">バンド名, 使用用途: </label>
+                <input type="text" id="name" v-model="name">
             </div>
-            <div class="modal-body">
-                <div class="input-name">
-                    <span label="name">バンド名, 使用用途: </span>
-                    <input type="text" name="name" v-model="book.name">
-                    <!-- {{ book }} -->
-                </div>
-                <input-date />
+            <div class="input-times">
                 <div class="input-day" v-if="EveryWeek">
-                    <span label="day">使用曜日: </span>
-                    <select name="day">
+                    <label for="day">使用曜日: </label>
+                    <select id="day" >
                         <option
                             v-for="(DayName, key) in DayList"
                             :key="key">
@@ -24,6 +22,28 @@
                         </option>
                     </select>
                 </div>
+                <div class="input-date" v-else>
+                    <label for="date">使用日: </label>
+                    <input type="date" id="date">
+                </div>
+                <div class="input-frame">
+                    <select id="frame">
+                        <option
+                            v-for="(frame, index) in TimeTable"
+                            :key="index"
+                            :next="TimeTable[index+1]">
+                            {{ frame.name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="input-until" v-if="EveryWeek">
+                <label for="until">期間: </label>
+                <input type="date" id="since">
+                ~
+                <input type="date" id="until">
+            </div>
+            <div>
                 <input
                     type="checkbox"
                     id="every-week"
@@ -31,6 +51,7 @@
                 <label for="every-week">毎週予約</label>
             </div>
         </div>
+    </div>
     </div>
 </transition>
 </template>
@@ -51,33 +72,31 @@ export default {
         DayList () {
             return this.$store.state.Form.DayList
         },
-        book () {
-            let booklist = this.$store.state.Form.bookList
-            if (booklist[this.day] != undefined) {
-                if (booklist[this.day][this.frame] != undefined) {
-                    return booklist[this.day][this.frame]
-                }
-            }
-            let template = this.$store.state.Form.bookTemplate
-            console.log(template)
-            template['date'] = {
-                year: this.params['date']['year'],
-                month: this.params['date']['month'],
-                date: this.params['date']['date'],
-            }
-            return template
+        TimeTable () {
+            return this.$store.state.Form.TimeTable
         },
-        years () {
-            let year = new Date().getFullYear()
-            let arr = [...Array(year-2018+2).keys()].map(v => v+2018)
-            return arr
+        name: {
+            get () {
+                return this.$store.state.Form.bookList[this.params['day']][this.params['frame']][name]
+            },
+            set (value) {
+                this.$store.commit('Form/updateBook', {
+                    day: this.params['day'],
+                    frame: this.params['frame'],
+                    key: 'name',
+                    data: value
+                })
+            }
         },
-        dates () {
-            return new Date(this.book.date.year, this.book.date.month, 0).getDate();
-        }
     },
     methods: {
         close () {
+            if (this.params['empty']) {
+                this.$store.commit('Form/resetBook', {
+                    day: this.params['day'],
+                    frame: this.params['frame']
+                }) // 追加しようとしたデータを削除
+            }
             this.$emit('close')
         },
         changeEveryWeek () {
@@ -88,7 +107,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.modal{
+@import '../../sass/variables';
+
+.input-times {
+    div {
+        display: inline-block;
+        margin-right: 10px;
+    }
+}
+input, select {
+    border: thin solid $gray;
+}
+
+.modal {
     &-enter-active, &-leave-active {
         transition: opacity 1s;
     }
@@ -109,7 +140,7 @@ export default {
     &-container {
         margin: 0px auto;
         padding: 20px 30px;
-        background-color: #fff;
+        background-color: $body-bg;
         border-radius: 2px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
         transition: all .3s ease;

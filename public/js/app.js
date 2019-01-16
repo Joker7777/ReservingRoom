@@ -511,6 +511,300 @@ module.exports = function normalizeComponent (
 
 /***/ }),
 /* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+var utils = __webpack_require__(0);
+var normalizeHeaderName = __webpack_require__(26);
+
+var DEFAULT_CONTENT_TYPE = {
+  'Content-Type': 'application/x-www-form-urlencoded'
+};
+
+function setContentTypeIfUnset(headers, value) {
+  if (!utils.isUndefined(headers) && utils.isUndefined(headers['Content-Type'])) {
+    headers['Content-Type'] = value;
+  }
+}
+
+function getDefaultAdapter() {
+  var adapter;
+  if (typeof XMLHttpRequest !== 'undefined') {
+    // For browsers use XHR adapter
+    adapter = __webpack_require__(11);
+  } else if (typeof process !== 'undefined') {
+    // For node use HTTP adapter
+    adapter = __webpack_require__(11);
+  }
+  return adapter;
+}
+
+var defaults = {
+  adapter: getDefaultAdapter(),
+
+  transformRequest: [function transformRequest(data, headers) {
+    normalizeHeaderName(headers, 'Content-Type');
+    if (utils.isFormData(data) ||
+      utils.isArrayBuffer(data) ||
+      utils.isBuffer(data) ||
+      utils.isStream(data) ||
+      utils.isFile(data) ||
+      utils.isBlob(data)
+    ) {
+      return data;
+    }
+    if (utils.isArrayBufferView(data)) {
+      return data.buffer;
+    }
+    if (utils.isURLSearchParams(data)) {
+      setContentTypeIfUnset(headers, 'application/x-www-form-urlencoded;charset=utf-8');
+      return data.toString();
+    }
+    if (utils.isObject(data)) {
+      setContentTypeIfUnset(headers, 'application/json;charset=utf-8');
+      return JSON.stringify(data);
+    }
+    return data;
+  }],
+
+  transformResponse: [function transformResponse(data) {
+    /*eslint no-param-reassign:0*/
+    if (typeof data === 'string') {
+      try {
+        data = JSON.parse(data);
+      } catch (e) { /* Ignore */ }
+    }
+    return data;
+  }],
+
+  /**
+   * A timeout in milliseconds to abort a request. If set to 0 (default) a
+   * timeout is not created.
+   */
+  timeout: 0,
+
+  xsrfCookieName: 'XSRF-TOKEN',
+  xsrfHeaderName: 'X-XSRF-TOKEN',
+
+  maxContentLength: -1,
+
+  validateStatus: function validateStatus(status) {
+    return status >= 200 && status < 300;
+  }
+};
+
+defaults.headers = {
+  common: {
+    'Accept': 'application/json, text/plain, */*'
+  }
+};
+
+utils.forEach(['delete', 'get', 'head'], function forEachMethodNoData(method) {
+  defaults.headers[method] = {};
+});
+
+utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
+  defaults.headers[method] = utils.merge(DEFAULT_CONTENT_TYPE);
+});
+
+module.exports = defaults;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports) {
 
 /*
@@ -592,7 +886,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 4 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -817,300 +1111,6 @@ function applyToTag (styleElement, obj) {
     styleElement.appendChild(document.createTextNode(css))
   }
 }
-
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
-
-var utils = __webpack_require__(0);
-var normalizeHeaderName = __webpack_require__(26);
-
-var DEFAULT_CONTENT_TYPE = {
-  'Content-Type': 'application/x-www-form-urlencoded'
-};
-
-function setContentTypeIfUnset(headers, value) {
-  if (!utils.isUndefined(headers) && utils.isUndefined(headers['Content-Type'])) {
-    headers['Content-Type'] = value;
-  }
-}
-
-function getDefaultAdapter() {
-  var adapter;
-  if (typeof XMLHttpRequest !== 'undefined') {
-    // For browsers use XHR adapter
-    adapter = __webpack_require__(11);
-  } else if (typeof process !== 'undefined') {
-    // For node use HTTP adapter
-    adapter = __webpack_require__(11);
-  }
-  return adapter;
-}
-
-var defaults = {
-  adapter: getDefaultAdapter(),
-
-  transformRequest: [function transformRequest(data, headers) {
-    normalizeHeaderName(headers, 'Content-Type');
-    if (utils.isFormData(data) ||
-      utils.isArrayBuffer(data) ||
-      utils.isBuffer(data) ||
-      utils.isStream(data) ||
-      utils.isFile(data) ||
-      utils.isBlob(data)
-    ) {
-      return data;
-    }
-    if (utils.isArrayBufferView(data)) {
-      return data.buffer;
-    }
-    if (utils.isURLSearchParams(data)) {
-      setContentTypeIfUnset(headers, 'application/x-www-form-urlencoded;charset=utf-8');
-      return data.toString();
-    }
-    if (utils.isObject(data)) {
-      setContentTypeIfUnset(headers, 'application/json;charset=utf-8');
-      return JSON.stringify(data);
-    }
-    return data;
-  }],
-
-  transformResponse: [function transformResponse(data) {
-    /*eslint no-param-reassign:0*/
-    if (typeof data === 'string') {
-      try {
-        data = JSON.parse(data);
-      } catch (e) { /* Ignore */ }
-    }
-    return data;
-  }],
-
-  /**
-   * A timeout in milliseconds to abort a request. If set to 0 (default) a
-   * timeout is not created.
-   */
-  timeout: 0,
-
-  xsrfCookieName: 'XSRF-TOKEN',
-  xsrfHeaderName: 'X-XSRF-TOKEN',
-
-  maxContentLength: -1,
-
-  validateStatus: function validateStatus(status) {
-    return status >= 200 && status < 300;
-  }
-};
-
-defaults.headers = {
-  common: {
-    'Accept': 'application/json, text/plain, */*'
-  }
-};
-
-utils.forEach(['delete', 'get', 'head'], function forEachMethodNoData(method) {
-  defaults.headers[method] = {};
-});
-
-utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
-  defaults.headers[method] = utils.merge(DEFAULT_CONTENT_TYPE);
-});
-
-module.exports = defaults;
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports) {
-
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
 
 
 /***/ }),
@@ -26215,7 +26215,7 @@ var index_esm = {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(18);
-module.exports = __webpack_require__(75);
+module.exports = __webpack_require__(70);
 
 
 /***/ }),
@@ -47418,7 +47418,7 @@ module.exports = function(module) {
 var utils = __webpack_require__(0);
 var bind = __webpack_require__(10);
 var Axios = __webpack_require__(25);
-var defaults = __webpack_require__(5);
+var defaults = __webpack_require__(3);
 
 /**
  * Create an instance of Axios
@@ -47501,7 +47501,7 @@ function isSlowBuffer (obj) {
 "use strict";
 
 
-var defaults = __webpack_require__(5);
+var defaults = __webpack_require__(3);
 var utils = __webpack_require__(0);
 var InterceptorManager = __webpack_require__(34);
 var dispatchRequest = __webpack_require__(35);
@@ -48040,7 +48040,7 @@ module.exports = InterceptorManager;
 var utils = __webpack_require__(0);
 var transformData = __webpack_require__(36);
 var isCancel = __webpack_require__(13);
-var defaults = __webpack_require__(5);
+var defaults = __webpack_require__(3);
 var isAbsoluteURL = __webpack_require__(37);
 var combineURLs = __webpack_require__(38);
 
@@ -48551,7 +48551,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(4)))
 
 /***/ }),
 /* 43 */
@@ -48658,7 +48658,6 @@ var Form = {
     mutations: {
         bookList: function bookList(state, list) {
             list.forEach(function (element) {
-                console.log(element);
                 if (element['every_week_id'] == true) {
                     var day = element['every_week_day'];
                 } else {
@@ -48674,12 +48673,39 @@ var Form = {
         },
         stdDate: function stdDate(state, dateObj) {
             state.stdDate = dateObj;
+        },
+        addBook: function addBook(state, _ref) {
+            var day = _ref.day,
+                frame = _ref.frame;
+
+            var book = {
+                name: ''
+            };
+            if (state.bookList[day]) {
+                __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(state.bookList[day], frame, book);
+            } else {
+                __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(state.bookList, day, _defineProperty({}, frame, book));
+            }
+        },
+        updateBook: function updateBook(state, _ref2) {
+            var day = _ref2.day,
+                frame = _ref2.frame,
+                key = _ref2.key,
+                data = _ref2.data;
+
+            __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(state.bookList[day][frame], key, data);
+        },
+        resetBook: function resetBook(state, _ref3) {
+            var day = _ref3.day,
+                frame = _ref3.frame;
+
+            __WEBPACK_IMPORTED_MODULE_0_vue___default.a.delete(state.bookList[day], frame);
         }
     },
     actions: {
-        getBookList: function getBookList(_ref) {
-            var state = _ref.state,
-                commit = _ref.commit;
+        getBookList: function getBookList(_ref4) {
+            var state = _ref4.state,
+                commit = _ref4.commit;
 
             __WEBPACK_IMPORTED_MODULE_2__api_booklist__["a" /* default */].getBookList(state.stdDate, function (list) {
                 commit('bookList', list); // bookListのデータ
@@ -49315,7 +49341,7 @@ function hasOwnProperty(obj, prop) {
   return Object.prototype.hasOwnProperty.call(obj, prop);
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(4)))
 
 /***/ }),
 /* 46 */
@@ -49485,7 +49511,7 @@ var normalizeComponent = __webpack_require__(2)
 /* script */
 var __vue_script__ = __webpack_require__(52)
 /* template */
-var __vue_template__ = __webpack_require__(74)
+var __vue_template__ = __webpack_require__(69)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -49561,7 +49587,7 @@ var normalizeComponent = __webpack_require__(2)
 /* script */
 var __vue_script__ = __webpack_require__(57)
 /* template */
-var __vue_template__ = __webpack_require__(73)
+var __vue_template__ = __webpack_require__(68)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -49610,7 +49636,7 @@ var content = __webpack_require__(55);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("157c7b19", content, false, {});
+var update = __webpack_require__(6)("157c7b19", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -49629,7 +49655,7 @@ if(false) {
 /* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(false);
+exports = module.exports = __webpack_require__(5)(false);
 // imports
 
 
@@ -49678,9 +49704,9 @@ module.exports = function listToStyles (parentId, list) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__EditForm_vue__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__EditForm_vue__ = __webpack_require__(58);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__EditForm_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__EditForm_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__MoveWeekButton__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__MoveWeekButton__ = __webpack_require__(63);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__MoveWeekButton___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__MoveWeekButton__);
 //
 //
@@ -49746,7 +49772,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             editParam: {
                 'day': null,
                 'frame': null,
-                'date': null
+                'date': null,
+                'empty': false
             }
         };
     },
@@ -49796,41 +49823,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.editting = true;
             this.editParam['day'] = param['day'];
             this.editParam['frame'] = param['frame'];
-            var dateObj = this.getDates[param['day']];
-            this.editParam['date'] = {
-                'year': dateObj.getFullYear(),
-                'month': dateObj.getMonth() + 1,
-                'date': dateObj.getDate()
-            };
+            this.editParam['date'] = param['date'];
+            if (param['empty']) {
+                this.$store.commit('Form/addBook', {
+                    day: param['day'],
+                    frame: param['frame']
+                });
+                this.editParam['empty'] = true;
+            }
         },
         close: function close() {
             this.editting = false;
             this.editParam['day'] = null;
             this.editParam['frame'] = null;
             this.editParam['date'] = null;
+            this.editParam['empty'] = false;
         }
     }
 });
 
 /***/ }),
-/* 58 */,
-/* 59 */,
-/* 60 */,
-/* 61 */,
-/* 62 */,
-/* 63 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(64)
+  __webpack_require__(59)
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(66)
+var __vue_script__ = __webpack_require__(61)
 /* template */
-var __vue_template__ = __webpack_require__(67)
+var __vue_template__ = __webpack_require__(62)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -49869,17 +49894,17 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 64 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(65);
+var content = __webpack_require__(60);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("d17c7a82", content, false, {});
+var update = __webpack_require__(6)("d17c7a82", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -49895,27 +49920,46 @@ if(false) {
 }
 
 /***/ }),
-/* 65 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(false);
+exports = module.exports = __webpack_require__(5)(false);
 // imports
 
 
 // module
-exports.push([module.i, "\n.modal-enter-active[data-v-64596f4e], .modal-leave-active[data-v-64596f4e] {\n  -webkit-transition: opacity 1s;\n  transition: opacity 1s;\n}\n.modal-enter[data-v-64596f4e], .modal-leave-to[data-v-64596f4e] {\n  opacity: 0;\n}\n.modal-mask[data-v-64596f4e] {\n  position: fixed;\n  z-index: 9998;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.5);\n  display: table;\n  -webkit-transition: opacity .3s ease;\n  transition: opacity .3s ease;\n}\n.modal-container[data-v-64596f4e] {\n  margin: 0px auto;\n  padding: 20px 30px;\n  background-color: #fff;\n  border-radius: 2px;\n  -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);\n          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);\n  -webkit-transition: all .3s ease;\n  transition: all .3s ease;\n  font-family: Helvetica, Arial, sans-serif;\n}\n", ""]);
+exports.push([module.i, "\n.input-times div[data-v-64596f4e] {\n  display: inline-block;\n  margin-right: 10px;\n}\ninput[data-v-64596f4e], select[data-v-64596f4e] {\n  border: thin solid #ddd;\n}\n.modal-enter-active[data-v-64596f4e], .modal-leave-active[data-v-64596f4e] {\n  -webkit-transition: opacity 1s;\n  transition: opacity 1s;\n}\n.modal-enter[data-v-64596f4e], .modal-leave-to[data-v-64596f4e] {\n  opacity: 0;\n}\n.modal-mask[data-v-64596f4e] {\n  position: fixed;\n  z-index: 9998;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.5);\n  display: table;\n  -webkit-transition: opacity .3s ease;\n  transition: opacity .3s ease;\n}\n.modal-container[data-v-64596f4e] {\n  margin: 0px auto;\n  padding: 20px 30px;\n  background-color: #f8fafc;\n  border-radius: 2px;\n  -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);\n          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);\n  -webkit-transition: all .3s ease;\n  transition: all .3s ease;\n  font-family: Helvetica, Arial, sans-serif;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 66 */
+/* 61 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -49970,35 +50014,32 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         DayList: function DayList() {
             return this.$store.state.Form.DayList;
         },
-        book: function book() {
-            var booklist = this.$store.state.Form.bookList;
-            if (booklist[this.day] != undefined) {
-                if (booklist[this.day][this.frame] != undefined) {
-                    return booklist[this.day][this.frame];
-                }
+        TimeTable: function TimeTable() {
+            return this.$store.state.Form.TimeTable;
+        },
+
+        name: {
+            get: function get() {
+                return this.$store.state.Form.bookList[this.params['day']][this.params['frame']][name];
+            },
+            set: function set(value) {
+                this.$store.commit('Form/updateBook', {
+                    day: this.params['day'],
+                    frame: this.params['frame'],
+                    key: 'name',
+                    data: value
+                });
             }
-            var template = this.$store.state.Form.bookTemplate;
-            console.log(template);
-            template['date'] = {
-                year: this.params['date']['year'],
-                month: this.params['date']['month'],
-                date: this.params['date']['date']
-            };
-            return template;
-        },
-        years: function years() {
-            var year = new Date().getFullYear();
-            var arr = [].concat(_toConsumableArray(Array(year - 2018 + 2).keys())).map(function (v) {
-                return v + 2018;
-            });
-            return arr;
-        },
-        dates: function dates() {
-            return new Date(this.book.date.year, this.book.date.month, 0).getDate();
         }
     },
     methods: {
         close: function close() {
+            if (this.params['empty']) {
+                this.$store.commit('Form/resetBook', {
+                    day: this.params['day'],
+                    frame: this.params['frame']
+                }); // 追加しようとしたデータを削除
+            }
             this.$emit('close');
         },
         changeEveryWeek: function changeEveryWeek() {
@@ -50008,7 +50049,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 });
 
 /***/ }),
-/* 67 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -50026,48 +50067,44 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "modal-body" },
-          [
-            _c("div", { staticClass: "input-name" }, [
-              _c("span", { attrs: { label: "name" } }, [
-                _vm._v("バンド名, 使用用途: ")
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.book.name,
-                    expression: "book.name"
-                  }
-                ],
-                attrs: { type: "text", name: "name" },
-                domProps: { value: _vm.book.name },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.book, "name", $event.target.value)
-                  }
-                }
-              })
+        _c("div", { staticClass: "modal-body" }, [
+          _c("div", { staticClass: "input-name" }, [
+            _c("label", { attrs: { for: "name" } }, [
+              _vm._v("バンド名, 使用用途: ")
             ]),
             _vm._v(" "),
-            _c("input-date"),
-            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.name,
+                  expression: "name"
+                }
+              ],
+              attrs: { type: "text", id: "name" },
+              domProps: { value: _vm.name },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.name = $event.target.value
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "input-times" }, [
             _vm.EveryWeek
               ? _c("div", { staticClass: "input-day" }, [
-                  _c("span", { attrs: { label: "day" } }, [
+                  _c("label", { attrs: { for: "day" } }, [
                     _vm._v("使用曜日: ")
                   ]),
                   _vm._v(" "),
                   _c(
                     "select",
-                    { attrs: { name: "day" } },
+                    { attrs: { id: "day" } },
                     _vm._l(_vm.DayList, function(DayName, key) {
                       return _c("option", { key: key }, [
                         _vm._v(
@@ -50079,17 +50116,52 @@ var render = function() {
                     })
                   )
                 ])
-              : _vm._e(),
+              : _c("div", { staticClass: "input-date" }, [
+                  _c("label", { attrs: { for: "date" } }, [_vm._v("使用日: ")]),
+                  _vm._v(" "),
+                  _c("input", { attrs: { type: "date", id: "date" } })
+                ]),
             _vm._v(" "),
+            _c("div", { staticClass: "input-frame" }, [
+              _c(
+                "select",
+                { attrs: { id: "frame" } },
+                _vm._l(_vm.TimeTable, function(frame, index) {
+                  return _c(
+                    "option",
+                    { key: index, attrs: { next: _vm.TimeTable[index + 1] } },
+                    [
+                      _vm._v(
+                        "\r\n                            " +
+                          _vm._s(frame.name) +
+                          "\r\n                        "
+                      )
+                    ]
+                  )
+                })
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _vm.EveryWeek
+            ? _c("div", { staticClass: "input-until" }, [
+                _c("label", { attrs: { for: "until" } }, [_vm._v("期間: ")]),
+                _vm._v(" "),
+                _c("input", { attrs: { type: "date", id: "since" } }),
+                _vm._v("\r\n                ~\r\n                "),
+                _c("input", { attrs: { type: "date", id: "until" } })
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _c("div", [
             _c("input", {
               attrs: { type: "checkbox", id: "every-week" },
               on: { click: _vm.changeEveryWeek }
             }),
             _vm._v(" "),
             _c("label", { attrs: { for: "every-week" } }, [_vm._v("毎週予約")])
-          ],
-          1
-        )
+          ])
+        ])
       ])
     ])
   ])
@@ -50105,19 +50177,19 @@ if (false) {
 }
 
 /***/ }),
-/* 68 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(69)
+  __webpack_require__(64)
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(71)
+var __vue_script__ = __webpack_require__(66)
 /* template */
-var __vue_template__ = __webpack_require__(72)
+var __vue_template__ = __webpack_require__(67)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -50156,17 +50228,17 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 69 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(70);
+var content = __webpack_require__(65);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("4c63fb2f", content, false, {});
+var update = __webpack_require__(6)("4c63fb2f", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -50182,10 +50254,10 @@ if(false) {
 }
 
 /***/ }),
-/* 70 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(false);
+exports = module.exports = __webpack_require__(5)(false);
 // imports
 
 
@@ -50196,7 +50268,7 @@ exports.push([module.i, "\n.move-week-button[data-v-27bd6abc] {\n  width: 100%;\
 
 
 /***/ }),
-/* 71 */
+/* 66 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -50231,7 +50303,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 72 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -50277,7 +50349,7 @@ if (false) {
 }
 
 /***/ }),
-/* 73 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -50343,7 +50415,11 @@ var render = function() {
                           "div",
                           {
                             staticClass: "book",
-                            on: { "click-book": _vm.editStatus }
+                            on: {
+                              click: function($event) {
+                                _vm.editStatus({ date: date })
+                              }
+                            }
                           },
                           [
                             _vm._v(
@@ -50363,8 +50439,10 @@ var render = function() {
                             on: {
                               click: function($event) {
                                 _vm.editStatus({
+                                  date: date,
                                   day: index,
-                                  frame: indexFrame
+                                  frame: indexFrame,
+                                  empty: true
                                 })
                               }
                             }
@@ -50406,7 +50484,7 @@ if (false) {
 }
 
 /***/ }),
-/* 74 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -50431,7 +50509,7 @@ if (false) {
 }
 
 /***/ }),
-/* 75 */
+/* 70 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

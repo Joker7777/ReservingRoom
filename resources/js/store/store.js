@@ -105,7 +105,6 @@ const Form = {
     mutations: {
         bookList (state, list) {
             list.forEach(element => {
-                console.log(element)
                 if (element['every_week_id'] == true) {
                     var day = element['every_week_day']
                 } else {
@@ -121,6 +120,24 @@ const Form = {
         },
         stdDate (state, dateObj) {
             state.stdDate = dateObj
+        },
+        addBook (state, {day, frame}) {
+            let book = {
+                name: '',
+            }
+            if (state.bookList[day]) {
+                Vue.set(state.bookList[day], frame, book)
+            } else {
+                Vue.set(state.bookList, day, {
+                    [frame]: book
+                })
+            }
+        },
+        updateBook (state, {day, frame, key, data}) {
+            Vue.set(state.bookList[day][frame], key, data)
+        },
+        resetBook (state, {day, frame}) {
+            Vue.delete(state.bookList[day], frame)
         }
     },
     actions: {
