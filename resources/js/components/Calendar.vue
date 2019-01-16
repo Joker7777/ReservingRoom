@@ -141,17 +141,26 @@ export default {
 <style lang="scss" scoped>
 @import '../../sass/variables';
 
-th {
-    color: #fff;
-    background-color: $green;
-}
-td {
-    width: 12.5%;
+table {
+    height: 100%;
+    th {
+        color: #fff;
+        background-color: $green;
+    }
+    td {
+        width: 12.5%; // 100/7
+        padding: 2px;
 
-    empty { // 空欄になぜか高さを持たせられない
-        display: block;
-        width: 100%;
-        height: 50px;
+        .book {
+            width: 100%;
+            height: 100%;
+        }
+
+        .empty {
+            width: 100%;
+            height: 100%;
+            background-color: rgba($blue, 0.2);
+        }
     }
 }
 </style>

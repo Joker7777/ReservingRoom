@@ -1,26 +1,19 @@
 <template>
-<div class="move-week-button">
+<div class="move-week-button clearfix">
     <div
         id="move-pre-week"
-        v-if="moveTo == 'pre'"
         @click="movePreWeek()">
-        前の週へ
+        <span>前の週へ</span>
     </div>
     <div
         id="move-next-week"
-        v-else
         @click="moveNextWeek()">
-        次の週へ
+        <span>次の週へ</span>
     </div>
 </div>
 </template>
 <script>
 export default {
-    props: {
-        moveTo: {
-            type: String,
-        }
-    },
     methods: {
         movePreWeek () { // 呼ばれた時にbookListロードし直す必要
             let stdDate = this.$store.state.Form.stdDate
@@ -46,23 +39,33 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+@import '../../sass/variables';
+
 .move-week-button {
-    position: relative;
-    display: inline-block;
-    width: 100px;
-    height: 30px;
-    background-color: green;
-    color: white;
-    // 縦中央揃え
+    width: 100%;
+    padding: 10px;
+
+    %move-button {
+        display: inline-block;
+        width: 100px;
+        height: 30px;
+        padding: 5px;
+        background-color: $green;
+        color: white;
+    }
 
     #move-pre-week {
-        left: 10px;
-        width: 100%;
+        @extend %move-button;
+
+        float: left;
+        text-align: right;
         // 右揃え、左矢印
     }
     #move-next-week {
-        right: 10px; // なんかうごかないなぜ
-        width: 100%;
+        @extend %move-button;
+
+        float: right;
+        text-align: left;
         // 左揃え、右矢印
     }
 }
