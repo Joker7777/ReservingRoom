@@ -1,6 +1,9 @@
 <template>
 <div id="calendar">
     <move-week-button />
+    <div class="result">
+        {{ result }}
+    </div>
     <table class="table table-bordered">
         <tr>
             <th>時間</th>
@@ -55,6 +58,7 @@ export default {
     },
     created () {
         this.$store.dispatch('Form/getBookList')
+        setTimeout(this.$store.commit, 3000, 'Form/resetResult')
     },
     data () {
         return {
@@ -68,6 +72,9 @@ export default {
         }
     },
     computed: {
+        result () {
+            return this.$store.state.Form.result
+        },
         DayList () {
             return this.$store.state.Form.DayList
         },

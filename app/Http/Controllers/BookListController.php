@@ -45,7 +45,7 @@ class BookListController extends Controller
         }
         $booklist->save();
 
-        return response($request, 201);
+        return response($request, 201); // 成功か否かはどう返す？true/false
     }
     
     /**

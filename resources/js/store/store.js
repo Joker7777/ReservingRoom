@@ -93,7 +93,7 @@ const Form = {
     mutations: {
         bookList (state, list) {
             list.forEach(element => {
-                if (element['every_week_id'] == true) {
+                if (element['every_week'] == true) {
                     var day = element['every_week_day']
                 } else {
                     var day = new Date(element['one_time_date']).getDay()
@@ -127,6 +127,16 @@ const Form = {
         },
         resetBook (state, {day, frame}) {
             Vue.delete(state.bookList[day], frame)
+        },
+        setResult (state, result) {
+            if (result) {
+                state.result = '予約は正常に完了しました'
+            } else {
+                state.result = '予約に失敗しました、再度予約をお願いします'
+            }
+        },
+        resetResult (state) {
+            state.result = ''
         }
     },
     actions: {
@@ -135,13 +145,15 @@ const Form = {
                 commit('bookList', list) // bookListのデータ
             })
         },
-        addBook ({dispatch}, book) {
+        addBook ({commit, dispatch}, book) {
             BookListAPI.addBook(book, (result) => {
+                commit('setResult', result)
                 dispatch('getBookList')
             })
         },
-        updateBook ({dispatch}, book) {
+        updateBook ({commit, dispatch}, book) {
             BookListAPI.updateBook(book, (result) => {
+                commit('setResult', result)
                 dispatch('getBookList') // result: オブジェクト？
             })
         }
