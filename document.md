@@ -251,6 +251,7 @@ https://readouble.com/laravel/5.4/ja/mix.html
         API jsonをpost
 
     * 20190121
-        API json, postにしてみた
-        everyWeekId, everyWeekにする
+        API json, postになった、正常に動作
+        everyWeekId, everyWeekにした
         代表者名追加
+        結果表示機能実装、後はAPIでtrue/falseを返せるようにしたい
