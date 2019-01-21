@@ -26,7 +26,8 @@ export default {
     addBook(obj, callback) {
         axios.post(API_URI + '/1', JSON.stringify(obj))
             .then((response) => {
-                callback(/* bookオブジェクト? */)
+                console.log(response.data) // postで送られるjson
+                // callback(/* bookオブジェクト? */)
             })
             .catch((error) => {
                 console.error(error)
@@ -35,7 +36,7 @@ export default {
     updateBook(obj, callback) {
         axios.post(API_URI + '/2/', JSON.stringify(obj))
             .then((response) => {
-                callback(/* bookオブジェクト? */)
+                callback(/* bookオブジェクト? */) // 再読み込みでよくない？
             })
             .catch((error) => {
                 console.error(error)

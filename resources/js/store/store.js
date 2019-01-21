@@ -87,20 +87,8 @@ const Form = {
                 }
             },
         ],
-        bookList: {
-        },
-        bookTemplate: {
-            name: '',
-            everyWeek: false,
-            onceTimeData: {
-                year: null,
-                month: null,
-                date: null,
-            },
-            everyWeekData: {
-            },
-        },
-        selectedBook: null,
+        bookList: {},
+        result: '', // 送信結果
     },
     mutations: {
         bookList (state, list) {
@@ -147,14 +135,14 @@ const Form = {
                 commit('bookList', list) // bookListのデータ
             })
         },
-        addBook ({commit}, book) {
+        addBook ({dispatch}, book) {
             BookListAPI.addBook(book, (result) => {
-                commit('', result) // result: オブジェクト？
+                dispatch('getBookList')
             })
         },
-        updateBook ({state, commit}, book) {
+        updateBook ({dispatch}, book) {
             BookListAPI.updateBook(book, (result) => {
-                commit('', result) // result: オブジェクト？
+                dispatch('getBookList') // result: オブジェクト？
             })
         }
     }
