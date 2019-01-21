@@ -35,6 +35,7 @@ class BookListController extends Controller
         $booklist->name = $data->name;
         $booklist->frame = $data->frame;
         $booklist->every_week = $data->everyWeek;
+        $booklist->representative = $data->representative;
         if ($data->everyWeek) {
             $booklist->every_week_start_date = $data->everyWeekStartDate;
             $booklist->every_week_end_date = $data->everyWeekEndDate;

@@ -52,6 +52,13 @@
                     @click="changeEveryWeek">
                 <label for="every-week">毎週予約</label>
             </div>
+            <div>
+                <label for="representative">代表者名</label>
+                <input
+                    type="text"
+                    id="representative"
+                    v-model="book.representative">
+            </div>
         </div>
         <div class="modal-footer">
             <div id="save" @click="save">予約保存</div>
@@ -79,6 +86,7 @@ export default {
                 frame: this.params['frame'],
                 everyWeek: false,
                 id: null,
+                representative: '',
             },
         }
     },
