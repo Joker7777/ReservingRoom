@@ -48679,7 +48679,8 @@ var Form = {
                 frame = _ref.frame;
 
             var book = {
-                name: ''
+                name: '',
+                day: '' // 毎週予約
             };
             if (state.bookList[day]) {
                 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(state.bookList[day], frame, book);
@@ -48709,6 +48710,21 @@ var Form = {
 
             __WEBPACK_IMPORTED_MODULE_2__api_booklist__["a" /* default */].getBookList(state.stdDate, function (list) {
                 commit('bookList', list); // bookListのデータ
+            });
+        },
+        addBook: function addBook(_ref5, book) {
+            var commit = _ref5.commit;
+
+            __WEBPACK_IMPORTED_MODULE_2__api_booklist__["a" /* default */].addBook(book, function (result) {
+                commit('', result); // result: オブジェクト？
+            });
+        },
+        updateBook: function updateBook(_ref6, book) {
+            var state = _ref6.state,
+                commit = _ref6.commit;
+
+            __WEBPACK_IMPORTED_MODULE_2__api_booklist__["a" /* default */].updateBook(book, function (result) {
+                commit('', result); // result: オブジェクト？
             });
         }
     }
@@ -48745,6 +48761,20 @@ var API_URI = '/api/booklist';
         axios.get(API_URI + '/' + dateString).then(function (response) {
             callback(response.data);
         }).catch(function (error) {
+            console.error(error);
+        });
+    },
+    addBook: function addBook(obj, callback) {
+        axios.post(API_URI + '/1', JSON.stringify(obj)).then(function (response) {
+            callback();
+        } /* bookオブジェクト? */).catch(function (error) {
+            console.error(error);
+        });
+    },
+    updateBook: function updateBook(obj, callback) {
+        axios.post(API_URI + '/2/', JSON.stringify(obj)).then(function (response) {
+            callback();
+        } /* bookオブジェクト? */).catch(function (error) {
             console.error(error);
         });
     }
@@ -49823,12 +49853,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.editting = true;
             this.editParam['day'] = param['day'];
             this.editParam['frame'] = param['frame'];
-            this.editParam['date'] = param['date'];
+            var tmpDate = new Date(param['date'].getTime());
+            tmpDate = new Date(tmpDate.setDate(param['date'].getDate() + 1));
+            this.editParam['date'] = tmpDate.toISOString().match(/\d+-\d+-\d+/)[0];
             if (param['empty']) {
-                this.$store.commit('Form/addBook', {
-                    day: param['day'],
-                    frame: param['frame']
-                });
                 this.editParam['empty'] = true;
             }
         },
@@ -49997,6 +50025,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
@@ -50006,8 +50039,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     data: function data() {
         return {
-            EveryWeek: false // 毎週予約か
+            book: {
+                name: '',
+                oneTimeDate: this.params['date'],
+                everyWeekStartDate: this.params['date'],
+                everyWeekEndDate: this.params['date'],
+                everyWeekDay: this.params['day'],
+                frame: this.params['frame'],
+                everyWeek: false,
+                id: null
+            }
         };
+    },
+    created: function created() {
+        if (!this.params.empty) {
+            var book = this.$store.state.Form.bookList[this.params['day']][this.params['frame']];
+            this.$set(this.book, 'name', book.name);
+            this.$set(this.book, 'everyWeek', book.every_week_id !== null); //everyweekId?
+            this.$set(this.book, 'id', book.id);
+            if (this.book.everyWeek) {
+                this.$set(this.book, 'everyWeekStartDate', book.every_week_start_date);
+                this.$set(this.book, 'everyWeekEndDate', book.every_week_end_date);
+            } else {
+                this.$set(this.book, 'oneTimeDate', book.one_time_date);
+            }
+        }
     },
 
     computed: {
@@ -50016,34 +50072,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         TimeTable: function TimeTable() {
             return this.$store.state.Form.TimeTable;
-        },
-
-        name: {
-            get: function get() {
-                return this.$store.state.Form.bookList[this.params['day']][this.params['frame']][name];
-            },
-            set: function set(value) {
-                this.$store.commit('Form/updateBook', {
-                    day: this.params['day'],
-                    frame: this.params['frame'],
-                    key: 'name',
-                    data: value
-                });
-            }
         }
     },
     methods: {
         close: function close() {
-            if (this.params['empty']) {
-                this.$store.commit('Form/resetBook', {
-                    day: this.params['day'],
-                    frame: this.params['frame']
-                }); // 追加しようとしたデータを削除
-            }
             this.$emit('close');
         },
         changeEveryWeek: function changeEveryWeek() {
-            this.EveryWeek = !this.EveryWeek;
+            this.$set(this.book, 'everyWeek', !this.book.everyWeek);
+        },
+        save: function save() {
+            if (this.params.empty) {
+                this.$store.dispatch('Form/addBook', this.book);
+            } else {
+                this.$store.dispatch('Form/updateBook', this.book);
+            }
+            this.$emit('close');
         }
     }
 });
@@ -50062,7 +50106,7 @@ var render = function() {
         _c("div", { staticClass: "modal-header" }, [
           _c("h3", { staticClass: "header" }, [_vm._v("予約")]),
           _vm._v(" "),
-          _c("div", { staticClass: "close", on: { click: _vm.close } }, [
+          _c("div", { attrs: { id: "close" }, on: { click: _vm.close } }, [
             _vm._v("×")
           ])
         ]),
@@ -50078,25 +50122,25 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.name,
-                  expression: "name"
+                  value: _vm.book.name,
+                  expression: "book.name"
                 }
               ],
               attrs: { type: "text", id: "name" },
-              domProps: { value: _vm.name },
+              domProps: { value: _vm.book.name },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.name = $event.target.value
+                  _vm.$set(_vm.book, "name", $event.target.value)
                 }
               }
             })
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "input-times" }, [
-            _vm.EveryWeek
+            _vm.book.everyWeek
               ? _c("div", { staticClass: "input-day" }, [
                   _c("label", { attrs: { for: "day" } }, [
                     _vm._v("使用曜日: ")
@@ -50104,32 +50148,113 @@ var render = function() {
                   _vm._v(" "),
                   _c(
                     "select",
-                    { attrs: { id: "day" } },
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.book.everyWeekDay,
+                          expression: "book.everyWeekDay"
+                        }
+                      ],
+                      attrs: { id: "day" },
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.$set(
+                            _vm.book,
+                            "everyWeekDay",
+                            $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          )
+                        }
+                      }
+                    },
                     _vm._l(_vm.DayList, function(DayName, key) {
-                      return _c("option", { key: key }, [
-                        _vm._v(
-                          "\r\n                            " +
-                            _vm._s(DayName) +
-                            "\r\n                        "
-                        )
-                      ])
+                      return _c(
+                        "option",
+                        { key: key, domProps: { value: key } },
+                        [
+                          _vm._v(
+                            "\r\n                            " +
+                              _vm._s(DayName) +
+                              "\r\n                        "
+                          )
+                        ]
+                      )
                     })
                   )
                 ])
               : _c("div", { staticClass: "input-date" }, [
                   _c("label", { attrs: { for: "date" } }, [_vm._v("使用日: ")]),
                   _vm._v(" "),
-                  _c("input", { attrs: { type: "date", id: "date" } })
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.book.oneTimeDate,
+                        expression: "book.oneTimeDate"
+                      }
+                    ],
+                    attrs: { type: "date", id: "date" },
+                    domProps: { value: _vm.book.oneTimeDate },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.book, "oneTimeDate", $event.target.value)
+                      }
+                    }
+                  })
                 ]),
             _vm._v(" "),
             _c("div", { staticClass: "input-frame" }, [
               _c(
                 "select",
-                { attrs: { id: "frame" } },
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.book.frame,
+                      expression: "book.frame"
+                    }
+                  ],
+                  attrs: { id: "frame" },
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.$set(
+                        _vm.book,
+                        "frame",
+                        $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      )
+                    }
+                  }
+                },
                 _vm._l(_vm.TimeTable, function(frame, index) {
                   return _c(
                     "option",
-                    { key: index, attrs: { next: _vm.TimeTable[index + 1] } },
+                    { key: index, domProps: { value: index } },
                     [
                       _vm._v(
                         "\r\n                            " +
@@ -50143,23 +50268,112 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _vm.EveryWeek
+          _vm.book.everyWeek
             ? _c("div", { staticClass: "input-until" }, [
                 _c("label", { attrs: { for: "until" } }, [_vm._v("期間: ")]),
                 _vm._v(" "),
-                _c("input", { attrs: { type: "date", id: "since" } }),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.book.everyWeekStartDate,
+                      expression: "book.everyWeekStartDate"
+                    }
+                  ],
+                  attrs: { type: "date", id: "since" },
+                  domProps: { value: _vm.book.everyWeekStartDate },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(
+                        _vm.book,
+                        "everyWeekStartDate",
+                        $event.target.value
+                      )
+                    }
+                  }
+                }),
                 _vm._v("\r\n                ~\r\n                "),
-                _c("input", { attrs: { type: "date", id: "until" } })
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.book.everyWeekEndDate,
+                      expression: "book.everyWeekEndDate"
+                    }
+                  ],
+                  attrs: { type: "date", id: "until" },
+                  domProps: { value: _vm.book.everyWeekEndDate },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(
+                        _vm.book,
+                        "everyWeekEndDate",
+                        $event.target.value
+                      )
+                    }
+                  }
+                })
               ])
             : _vm._e(),
           _vm._v(" "),
           _c("div", [
             _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.book.everyWeek,
+                  expression: "book.everyWeek"
+                }
+              ],
               attrs: { type: "checkbox", id: "every-week" },
-              on: { click: _vm.changeEveryWeek }
+              domProps: {
+                checked: Array.isArray(_vm.book.everyWeek)
+                  ? _vm._i(_vm.book.everyWeek, null) > -1
+                  : _vm.book.everyWeek
+              },
+              on: {
+                click: _vm.changeEveryWeek,
+                change: function($event) {
+                  var $$a = _vm.book.everyWeek,
+                    $$el = $event.target,
+                    $$c = $$el.checked ? true : false
+                  if (Array.isArray($$a)) {
+                    var $$v = null,
+                      $$i = _vm._i($$a, $$v)
+                    if ($$el.checked) {
+                      $$i < 0 &&
+                        _vm.$set(_vm.book, "everyWeek", $$a.concat([$$v]))
+                    } else {
+                      $$i > -1 &&
+                        _vm.$set(
+                          _vm.book,
+                          "everyWeek",
+                          $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                        )
+                    }
+                  } else {
+                    _vm.$set(_vm.book, "everyWeek", $$c)
+                  }
+                }
+              }
             }),
             _vm._v(" "),
             _c("label", { attrs: { for: "every-week" } }, [_vm._v("毎週予約")])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "modal-footer" }, [
+          _c("div", { attrs: { id: "save" }, on: { click: _vm.save } }, [
+            _vm._v("予約保存")
           ])
         ])
       ])
@@ -50417,7 +50631,12 @@ var render = function() {
                             staticClass: "book",
                             on: {
                               click: function($event) {
-                                _vm.editStatus({ date: date })
+                                _vm.editStatus({
+                                  date: date,
+                                  day: index,
+                                  frame: indexFrame,
+                                  empty: false
+                                })
                               }
                             }
                           },
@@ -50425,8 +50644,7 @@ var render = function() {
                             _vm._v(
                               "\r\n                    " +
                                 _vm._s(
-                                  _vm.getBookList[date.getDay()][indexFrame]
-                                    .name
+                                  _vm.getBookList[index][indexFrame].name
                                 ) +
                                 "\r\n                "
                             )

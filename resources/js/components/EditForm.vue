@@ -111,6 +111,13 @@ export default {
         changeEveryWeek () {
             this.$set(this.book, 'everyWeek', !this.book.everyWeek)
         },
+        save () {
+            if (this.params.empty) {
+                this.$store.dispatch('Form/addBook', this.book)
+            } else {
+                this.$store.dispatch('Form/updateBook', this.book)
+            }
+            this.$emit('close')
         }
     }
 }

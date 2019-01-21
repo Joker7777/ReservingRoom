@@ -124,6 +124,7 @@ const Form = {
         addBook (state, {day, frame}) {
             let book = {
                 name: '',
+                day: '', // 毎週予約
             }
             if (state.bookList[day]) {
                 Vue.set(state.bookList[day], frame, book)
@@ -144,6 +145,16 @@ const Form = {
         getBookList ({state, commit}) {
             BookListAPI.getBookList(state.stdDate, (list) => {
                 commit('bookList', list) // bookListのデータ
+            })
+        },
+        addBook ({commit}, book) {
+            BookListAPI.addBook(book, (result) => {
+                commit('', result) // result: オブジェクト？
+            })
+        },
+        updateBook ({state, commit}, book) {
+            BookListAPI.updateBook(book, (result) => {
+                commit('', result) // result: オブジェクト？
             })
         }
     }

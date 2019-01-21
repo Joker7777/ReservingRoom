@@ -240,3 +240,16 @@ https://readouble.com/laravel/5.4/ja/mix.html
         入力フォームとVuexまわり
         チェックボックス入れるとなぜか入力した内容がリセットされる
         原因究明 & 他のフォームも適用
+
+    * 20190119
+        諦めてコンポーネント依存に、保存時に送信
+        クリックした情報が反映されるように
+        配列のキーについて：
+        　arr.name: 文字列'name'がキー
+        　arr[name]: 変数nameに入った文字列がキー
+        　arr['name']: 文字列'name'がキー
+        API jsonをpost
+
+    * 20190121
+        API json, postにしてみた
+        everyWeekId, Idじゃなくてよくない？(Idが一意)

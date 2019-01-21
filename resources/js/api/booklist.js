@@ -22,5 +22,23 @@ export default {
             .catch((error) => {
                 console.error(error)
             })
+    },
+    addBook(obj, callback) {
+        axios.post(API_URI + '/1', JSON.stringify(obj))
+            .then((response) => {
+                callback(/* bookオブジェクト? */)
+            })
+            .catch((error) => {
+                console.error(error)
+            })
+    },
+    updateBook(obj, callback) {
+        axios.post(API_URI + '/2/', JSON.stringify(obj))
+            .then((response) => {
+                callback(/* bookオブジェクト? */)
+            })
+            .catch((error) => {
+                console.error(error)
+            })
     }
 }
