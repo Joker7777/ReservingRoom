@@ -4,52 +4,57 @@
     <div class="container modal-container">
         <div class="modal-header">
             <h3 class="header">予約</h3>
-            <div class="close" @click="close">&times;</div>
+            <div id="close" @click="close">&times;</div>
         </div>
         <div class="modal-body">
             <div class="input-name">
                 <label for="name">バンド名, 使用用途: </label>
-                <input type="text" id="name" v-model="name">
+                <input type="text" id="name" v-model="book.name">
             </div>
             <div class="input-times">
-                <div class="input-day" v-if="EveryWeek">
+                <div class="input-day" v-if="book.everyWeek">
                     <label for="day">使用曜日: </label>
-                    <select id="day" >
+                    <select id="day" v-model="book.everyWeekDay">
                         <option
                             v-for="(DayName, key) in DayList"
-                            :key="key">
+                            :key="key"
+                            :value="key">
                             {{ DayName }}
                         </option>
                     </select>
                 </div>
                 <div class="input-date" v-else>
                     <label for="date">使用日: </label>
-                    <input type="date" id="date">
+                    <input type="date" id="date" v-model="book.oneTimeDate">
                 </div>
                 <div class="input-frame">
-                    <select id="frame">
+                    <select id="frame" v-model="book.frame">
                         <option
                             v-for="(frame, index) in TimeTable"
                             :key="index"
-                            :next="TimeTable[index+1]">
+                            :value="index">
                             {{ frame.name }}
                         </option>
                     </select>
                 </div>
             </div>
-            <div class="input-until" v-if="EveryWeek">
+            <div class="input-until" v-if="book.everyWeek">
                 <label for="until">期間: </label>
-                <input type="date" id="since">
+                <input type="date" id="since" v-model="book.everyWeekStartDate">
                 ~
-                <input type="date" id="until">
+                <input type="date" id="until" v-model="book.everyWeekEndDate">
             </div>
             <div>
                 <input
                     type="checkbox"
                     id="every-week"
+                    v-model="book.everyWeek"
                     @click="changeEveryWeek">
                 <label for="every-week">毎週予約</label>
             </div>
+        </div>
+        <div class="modal-footer">
+            <div id="save" @click="save">予約保存</div>
         </div>
     </div>
     </div>
@@ -65,7 +70,30 @@ export default {
     },
     data () {
         return {
-            EveryWeek: false // 毎週予約か
+            book: {
+                name: '',
+                oneTimeDate: this.params['date'],
+                everyWeekStartDate: this.params['date'],
+                everyWeekEndDate: this.params['date'],
+                everyWeekDay: this.params['day'],
+                frame: this.params['frame'],
+                everyWeek: false,
+                id: null,
+            },
+        }
+    },
+    created () {
+        if (!this.params.empty) {
+            let book = this.$store.state.Form.bookList[this.params['day']][this.params['frame']]
+            this.$set(this.book, 'name', book.name)
+            this.$set(this.book, 'everyWeek', book.every_week_id !== null) //everyweekId?
+            this.$set(this.book, 'id', book.id)
+            if (this.book.everyWeek) {
+                this.$set(this.book, 'everyWeekStartDate', book.every_week_start_date)
+                this.$set(this.book, 'everyWeekEndDate', book.every_week_end_date)
+            } else {
+                this.$set(this.book, 'oneTimeDate', book.one_time_date)
+            }
         }
     },
     computed: {
@@ -75,32 +103,14 @@ export default {
         TimeTable () {
             return this.$store.state.Form.TimeTable
         },
-        name: {
-            get () {
-                return this.$store.state.Form.bookList[this.params['day']][this.params['frame']][name]
-            },
-            set (value) {
-                this.$store.commit('Form/updateBook', {
-                    day: this.params['day'],
-                    frame: this.params['frame'],
-                    key: 'name',
-                    data: value
-                })
-            }
-        },
     },
     methods: {
         close () {
-            if (this.params['empty']) {
-                this.$store.commit('Form/resetBook', {
-                    day: this.params['day'],
-                    frame: this.params['frame']
-                }) // 追加しようとしたデータを削除
-            }
             this.$emit('close')
         },
         changeEveryWeek () {
-            this.EveryWeek = !this.EveryWeek
+            this.$set(this.book, 'everyWeek', !this.book.everyWeek)
+        },
         }
     }
 }

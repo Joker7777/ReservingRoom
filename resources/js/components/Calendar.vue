@@ -25,8 +25,8 @@
                 <div
                     class="book"
                     v-if="bookExist(index, indexFrame)"
-                    @click="editStatus({'date': date})">
-                    {{ getBookList[date.getDay()][indexFrame].name }}
+                    @click="editStatus({'date': date, 'day': index, 'frame': indexFrame, 'empty': false})">
+                    {{ getBookList[index][indexFrame].name }}
                 </div>
                 <div
                     class="empty"
@@ -123,12 +123,10 @@ export default {
             this.editting = true
             this.editParam['day'] = param['day']
             this.editParam['frame'] = param['frame']
-            this.editParam['date'] = param['date']
+            let tmpDate = new Date(param['date'].getTime())
+            tmpDate = new Date(tmpDate.setDate(param['date'].getDate() + 1))
+            this.editParam['date'] = tmpDate.toISOString().match(/\d+-\d+-\d+/)[0]
             if (param['empty']) {
-                this.$store.commit('Form/addBook', {
-                    day: param['day'],
-                    frame: param['frame'],
-                })
                 this.editParam['empty'] = true
             }
         },
