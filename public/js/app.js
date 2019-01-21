@@ -48643,17 +48643,7 @@ var Form = {
             }
         }],
         bookList: {},
-        bookTemplate: {
-            name: '',
-            everyWeek: false,
-            onceTimeData: {
-                year: null,
-                month: null,
-                date: null
-            },
-            everyWeekData: {}
-        },
-        selectedBook: null
+        result: '' // 送信結果
     },
     mutations: {
         bookList: function bookList(state, list) {
@@ -48713,18 +48703,17 @@ var Form = {
             });
         },
         addBook: function addBook(_ref5, book) {
-            var commit = _ref5.commit;
+            var dispatch = _ref5.dispatch;
 
             __WEBPACK_IMPORTED_MODULE_2__api_booklist__["a" /* default */].addBook(book, function (result) {
-                commit('', result); // result: オブジェクト？
+                dispatch('getBookList');
             });
         },
         updateBook: function updateBook(_ref6, book) {
-            var state = _ref6.state,
-                commit = _ref6.commit;
+            var dispatch = _ref6.dispatch;
 
             __WEBPACK_IMPORTED_MODULE_2__api_booklist__["a" /* default */].updateBook(book, function (result) {
-                commit('', result); // result: オブジェクト？
+                dispatch('getBookList'); // result: オブジェクト？
             });
         }
     }
@@ -48766,15 +48755,17 @@ var API_URI = '/api/booklist';
     },
     addBook: function addBook(obj, callback) {
         axios.post(API_URI + '/1', JSON.stringify(obj)).then(function (response) {
-            callback();
-        } /* bookオブジェクト? */).catch(function (error) {
+            console.log(response.data); // postで送られるjson
+            // callback(/* bookオブジェクト? */)
+        }).catch(function (error) {
             console.error(error);
         });
     },
     updateBook: function updateBook(obj, callback) {
         axios.post(API_URI + '/2/', JSON.stringify(obj)).then(function (response) {
             callback();
-        } /* bookオブジェクト? */).catch(function (error) {
+        } /* bookオブジェクト? */ // 再読み込みでよくない？
+        ).catch(function (error) {
             console.error(error);
         });
     }

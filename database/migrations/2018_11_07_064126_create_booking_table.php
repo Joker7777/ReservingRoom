@@ -21,7 +21,8 @@ class CreateBookingTable extends Migration
             $table->date('every_week_end_date')->nullable()->comment('毎週予約の終了日');
             $table->integer('every_week_day')->nullable()->comment('毎週予約の予約曜日');
             $table->integer('frame')->comment('予約時限');
-            $table->integer('every_week_id')->nullable()->comment('毎週予約ID')->default(null);
+            $table->integer('every_week')->comment('毎週予約か');
+            $table->text('representative')->comment('代表者名');
             $table->timestamps();
         });
     }

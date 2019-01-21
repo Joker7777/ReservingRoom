@@ -252,4 +252,5 @@ https://readouble.com/laravel/5.4/ja/mix.html
 
     * 20190121
         API json, postにしてみた
-        everyWeekId, Idじゃなくてよくない？(Idが一意)
+        everyWeekId, everyWeekにする
+        代表者名追加

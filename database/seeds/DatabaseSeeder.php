@@ -21,7 +21,8 @@ class DatabaseSeeder extends Seeder
         // $item->every_week_end_date = null;
         // $item->every_week_day = null;
         $item->frame = 5;
-        // $item->every_week_id = null;
+        // $item->every_week = null;
+        $item->representative = $faker->name;
         $item->save();
 
         // $this->call(UsersTableSeeder::class);
