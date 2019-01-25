@@ -29,24 +29,25 @@ class BookListController extends Controller
         // テスト手順
         // $data = ['content' => 'ブログを書く'];
         // $response = $this->post('/api/items', $data);
-        $data = json_decode($request['data'], true); // jsonから連想配列に
         $booklist = new BookList();
 
-        $booklist->name = $data->name;
-        $booklist->frame = $data->frame;
-        $booklist->every_week = $data->everyWeek;
-        $booklist->representative = $data->representative;
-        if ($data->everyWeek) {
-            $booklist->every_week_start_date = $data->everyWeekStartDate;
-            $booklist->every_week_end_date = $data->everyWeekEndDate;
-            $booklist->every_week_day = $data->everyWeekDay;
+        $booklist->name = $request->input('name');
+        $booklist->frame = $request->input('frame');
+        $booklist->every_week = $request->input('everyWeek');
+        $booklist->representative = $request->input('representative');
+
+
+        if ($request->input('everyWeek')) {
+            $booklist->every_week_start_date = $request->input('everyWeekStartDate');
+            $booklist->every_week_end_date = $request->input('everyWeekEndDate');
+            $booklist->every_week_day = $request->input('everyWeekDay');
         } else {
-            $booklist->one_time_date = $data->oneTimeDate;
+            $booklist->one_time_date = $request->input('oneTimeDate');
         }
         if ($booklist->save()) {
             return response('saved', 201);
         } else {
-            return response('error', 501);
+            return response('error', 203);
         }
     }
     

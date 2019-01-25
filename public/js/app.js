@@ -48769,10 +48769,12 @@ var API_URI = '/api/booklist';
     },
     addBook: function addBook(obj, callback) {
         axios.post(API_URI + '/1', JSON.stringify(obj)).then(function (response) {
-            console.log(response.data); // postで送られるjson
-            // callback(/* bookオブジェクト? */)
+            // response.data = postで送られるjson
+            console.log(response);
+            callback(true);
         }).catch(function (error) {
             console.error(error);
+            callback(false);
         });
     },
     updateBook: function updateBook(obj, callback) {
