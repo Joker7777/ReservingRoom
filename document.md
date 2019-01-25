@@ -259,3 +259,13 @@ https://readouble.com/laravel/5.4/ja/mix.html
     * 20190125
         API json post修正、前回までは送り先でどうなってたか不明
         連想配列を送るとjsonになる、request->input('[key name]')でアクセス
+
+        not nullに値をsetしないと500エラー => バリデーションの実装
+        strage/logs/でログが見れる、echo
+
+        バグ：
+        * 移動させたのに、前の場所に残っちゃう
+        * 毎週予約、必ずチェック(DBは01, 判定はtrue, falseのせい？) 
+        * 予約完了メッセージが消えない
+        * 予約更新ボタン表示
+

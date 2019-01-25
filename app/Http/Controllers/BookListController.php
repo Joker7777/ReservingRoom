@@ -74,9 +74,7 @@ class BookListController extends Controller
             $book->every_week_end_date = null;
             $book->every_week_day = null;
         }
-        $book->save(); // error
-        return 'aa';
-        if (1) {
+        if ($book->save()) {
             return response('saved', 200);
         } else {
             return response('error', 503);
