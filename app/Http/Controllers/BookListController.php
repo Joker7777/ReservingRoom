@@ -43,9 +43,11 @@ class BookListController extends Controller
         } else {
             $booklist->one_time_date = $data->oneTimeDate;
         }
-        $booklist->save();
-
-        return response($request, 201); // 成功か否かはどう返す？true/false
+        if ($booklist->save()) {
+            return response('saved', 201);
+        } else {
+            return response('error', 501);
+        }
     }
     
     /**
