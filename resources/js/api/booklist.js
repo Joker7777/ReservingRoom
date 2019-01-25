@@ -24,7 +24,7 @@ export default {
             })
     },
     addBook(obj, callback) {
-        axios.post(API_URI + '/1', JSON.stringify(obj))
+        axios.post(API_URI + '/1', obj)
             .then((response) => {
                 // response.data = postで送られるjson
                 console.log(response)

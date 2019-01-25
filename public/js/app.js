@@ -48768,7 +48768,7 @@ var API_URI = '/api/booklist';
         });
     },
     addBook: function addBook(obj, callback) {
-        axios.post(API_URI + '/1', JSON.stringify(obj)).then(function (response) {
+        axios.post(API_URI + '/1', obj).then(function (response) {
             // response.data = postで送られるjson
             console.log(response);
             callback(true);
