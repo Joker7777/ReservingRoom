@@ -35,7 +35,7 @@ export default {
             })
     },
     updateBook(obj, callback) {
-        axios.post(API_URI + '/2/', JSON.stringify(obj))
+        axios.post(API_URI + '/2/', obj)
             .then((response) => {
                 console.log(response)
                 callback(true)

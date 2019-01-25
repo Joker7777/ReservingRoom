@@ -42,7 +42,7 @@ class BookListController extends Controller
             $booklist->one_time_date = $request->input('oneTimeDate');
         }
         if ($booklist->save()) {
-            return response('saved', 201);
+            return response('saved', 200);
         } else {
             return response('error', 503);
         }
@@ -55,29 +55,29 @@ class BookListController extends Controller
      * @param  \App\BookList  $bookList
      * @return \Illuminate\Http\Response
      */
-    public function update (Request $request, BookList $bookList)
+    public function update (Request $request, BookList $booklist)
     {
-
-
-        $booklist->name = $request->input('name');
-        $booklist->frame = $request->input('frame');
-        $booklist->every_week = $request->input('everyWeek');
-        $booklist->representative = $request->input('representative');
-
+        $book = $booklist->where('id', $request->input('id'))->firstOrFail();
+        $book->name = $request->input('name');
+        $book->frame = $request->input('frame');
+        $book->every_week = $request->input('everyWeek');
+        $book->representative = $request->input('representative');
 
         if ($request->input('everyWeek')) {
-            $booklist->one_time_date = null;
-            $booklist->every_week_start_date = $request->input('everyWeekStartDate');
-            $booklist->every_week_end_date = $request->input('everyWeekEndDate');
-            $booklist->every_week_day = $request->input('everyWeekDay');
+            $book->one_time_date = null;
+            $book->every_week_start_date = $request->input('everyWeekStartDate');
+            $book->every_week_end_date = $request->input('everyWeekEndDate');
+            $book->every_week_day = $request->input('everyWeekDay');
         } else {
-            $booklist->one_time_date = $request->input('oneTimeDate');
-            $booklist->every_week_start_date = null;
-            $booklist->every_week_end_date = null;
-            $booklist->every_week_day = null;
+            $book->one_time_date = $request->input('oneTimeDate');
+            $book->every_week_start_date = null;
+            $book->every_week_end_date = null;
+            $book->every_week_day = null;
         }
-        if ($booklist->save()) {
-            return response('saved', 201);
+        $book->save(); // error
+        return 'aa';
+        if (1) {
+            return response('saved', 200);
         } else {
             return response('error', 503);
         }

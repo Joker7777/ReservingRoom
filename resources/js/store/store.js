@@ -141,7 +141,7 @@ const Form = {
         updateBook ({commit, dispatch}, book) {
             BookListAPI.updateBook(book, (result) => {
                 commit('setResult', result)
-                dispatch('getBookList') // result: オブジェクト？
+                dispatch('getBookList')
             })
         }
     }

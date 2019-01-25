@@ -48713,7 +48713,7 @@ var Form = {
 
             __WEBPACK_IMPORTED_MODULE_2__api_booklist__["a" /* default */].updateBook(book, function (result) {
                 commit('setResult', result);
-                dispatch('getBookList'); // result: オブジェクト？
+                dispatch('getBookList');
             });
         }
     }
@@ -48763,7 +48763,7 @@ var API_URI = '/api/booklist';
         });
     },
     updateBook: function updateBook(obj, callback) {
-        axios.post(API_URI + '/2/', JSON.stringify(obj)).then(function (response) {
+        axios.post(API_URI + '/2/', obj).then(function (response) {
             console.log(response);
             callback(true);
         }).catch(function (error) {
