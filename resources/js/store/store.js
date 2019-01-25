@@ -109,19 +109,6 @@ const Form = {
         stdDate (state, dateObj) {
             state.stdDate = dateObj
         },
-        addBook (state, {day, frame}) {
-            let book = {
-                name: '',
-                day: '', // 毎週予約
-            }
-            if (state.bookList[day]) {
-                Vue.set(state.bookList[day], frame, book)
-            } else {
-                Vue.set(state.bookList, day, {
-                    [frame]: book
-                })
-            }
-        },
         updateBook (state, {day, frame, key, data}) {
             Vue.set(state.bookList[day][frame], key, data)
         },

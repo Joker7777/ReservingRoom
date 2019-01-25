@@ -255,3 +255,7 @@ https://readouble.com/laravel/5.4/ja/mix.html
         everyWeekId, everyWeekにした
         代表者名追加
         結果表示機能実装、後はAPIでtrue/falseを返せるようにしたい
+
+    * 20190125
+        API json post修正、前回までは送り先でどうなってたか不明
+        連想配列を送るとjsonになる、request->input('[key name]')でアクセス

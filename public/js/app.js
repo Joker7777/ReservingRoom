@@ -48664,31 +48664,17 @@ var Form = {
         stdDate: function stdDate(state, dateObj) {
             state.stdDate = dateObj;
         },
-        addBook: function addBook(state, _ref) {
+        updateBook: function updateBook(state, _ref) {
             var day = _ref.day,
-                frame = _ref.frame;
-
-            var book = {
-                name: '',
-                day: '' // 毎週予約
-            };
-            if (state.bookList[day]) {
-                __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(state.bookList[day], frame, book);
-            } else {
-                __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(state.bookList, day, _defineProperty({}, frame, book));
-            }
-        },
-        updateBook: function updateBook(state, _ref2) {
-            var day = _ref2.day,
-                frame = _ref2.frame,
-                key = _ref2.key,
-                data = _ref2.data;
+                frame = _ref.frame,
+                key = _ref.key,
+                data = _ref.data;
 
             __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(state.bookList[day][frame], key, data);
         },
-        resetBook: function resetBook(state, _ref3) {
-            var day = _ref3.day,
-                frame = _ref3.frame;
+        resetBook: function resetBook(state, _ref2) {
+            var day = _ref2.day,
+                frame = _ref2.frame;
 
             __WEBPACK_IMPORTED_MODULE_0_vue___default.a.delete(state.bookList[day], frame);
         },
@@ -48704,26 +48690,26 @@ var Form = {
         }
     },
     actions: {
-        getBookList: function getBookList(_ref4) {
-            var state = _ref4.state,
-                commit = _ref4.commit;
+        getBookList: function getBookList(_ref3) {
+            var state = _ref3.state,
+                commit = _ref3.commit;
 
             __WEBPACK_IMPORTED_MODULE_2__api_booklist__["a" /* default */].getBookList(state.stdDate, function (list) {
                 commit('bookList', list); // bookListのデータ
             });
         },
-        addBook: function addBook(_ref5, book) {
-            var commit = _ref5.commit,
-                dispatch = _ref5.dispatch;
+        addBook: function addBook(_ref4, book) {
+            var commit = _ref4.commit,
+                dispatch = _ref4.dispatch;
 
             __WEBPACK_IMPORTED_MODULE_2__api_booklist__["a" /* default */].addBook(book, function (result) {
                 commit('setResult', result);
                 dispatch('getBookList');
             });
         },
-        updateBook: function updateBook(_ref6, book) {
-            var commit = _ref6.commit,
-                dispatch = _ref6.dispatch;
+        updateBook: function updateBook(_ref5, book) {
+            var commit = _ref5.commit,
+                dispatch = _ref5.dispatch;
 
             __WEBPACK_IMPORTED_MODULE_2__api_booklist__["a" /* default */].updateBook(book, function (result) {
                 commit('setResult', result);
@@ -48769,7 +48755,6 @@ var API_URI = '/api/booklist';
     },
     addBook: function addBook(obj, callback) {
         axios.post(API_URI + '/1', obj).then(function (response) {
-            // response.data = postで送られるjson
             console.log(response);
             callback(true);
         }).catch(function (error) {
@@ -48779,10 +48764,11 @@ var API_URI = '/api/booklist';
     },
     updateBook: function updateBook(obj, callback) {
         axios.post(API_URI + '/2/', JSON.stringify(obj)).then(function (response) {
-            callback();
-        } /* bookオブジェクト? */ // 再読み込みでよくない？
-        ).catch(function (error) {
+            console.log(response);
+            callback(true);
+        }).catch(function (error) {
             console.error(error);
+            callback(false);
         });
     }
 });

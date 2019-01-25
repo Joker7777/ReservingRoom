@@ -26,9 +26,6 @@ class BookListController extends Controller
      */
     public function add (Request $request)
     {
-        // テスト手順
-        // $data = ['content' => 'ブログを書く'];
-        // $response = $this->post('/api/items', $data);
         $booklist = new BookList();
 
         $booklist->name = $request->input('name');
@@ -47,7 +44,7 @@ class BookListController extends Controller
         if ($booklist->save()) {
             return response('saved', 201);
         } else {
-            return response('error', 203);
+            return response('error', 503);
         }
     }
     
@@ -60,13 +57,30 @@ class BookListController extends Controller
      */
     public function update (Request $request, BookList $bookList)
     {
-        // テスト手順
-        // $data = ['content' => 'ブログを書く'];
-        // $response = $this->patch('/api/items/1', $data);
 
-        // 毎週かどうか、変更があったらそれもなんとかした方がいい
 
-        return response('update');
+        $booklist->name = $request->input('name');
+        $booklist->frame = $request->input('frame');
+        $booklist->every_week = $request->input('everyWeek');
+        $booklist->representative = $request->input('representative');
+
+
+        if ($request->input('everyWeek')) {
+            $booklist->one_time_date = null;
+            $booklist->every_week_start_date = $request->input('everyWeekStartDate');
+            $booklist->every_week_end_date = $request->input('everyWeekEndDate');
+            $booklist->every_week_day = $request->input('everyWeekDay');
+        } else {
+            $booklist->one_time_date = $request->input('oneTimeDate');
+            $booklist->every_week_start_date = null;
+            $booklist->every_week_end_date = null;
+            $booklist->every_week_day = null;
+        }
+        if ($booklist->save()) {
+            return response('saved', 201);
+        } else {
+            return response('error', 503);
+        }
     }
 
     /**
