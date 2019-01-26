@@ -263,9 +263,13 @@ https://readouble.com/laravel/5.4/ja/mix.html
         not nullに値をsetしないと500エラー => バリデーションの実装
         strage/logs/でログが見れる、echo
 
-        バグ：
+    * 20190126
+        バグ解決：
         * 移動させたのに、前の場所に残っちゃう
+            reset
         * 毎週予約、必ずチェック(DBは01, 判定はtrue, falseのせい？) 
+            every_week_idのまま変更してなかった
         * 予約完了メッセージが消えない
+            ？
         * 予約更新ボタン表示
-
+            emptyで分岐

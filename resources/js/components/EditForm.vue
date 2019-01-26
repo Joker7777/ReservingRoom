@@ -61,7 +61,7 @@
             </div>
         </div>
         <div class="modal-footer">
-            <div id="save" @click="save">予約保存</div>
+            <div id="save" @click="save">{{ submit }}</div>
         </div>
     </div>
     </div>
@@ -94,7 +94,7 @@ export default {
         if (!this.params.empty) {
             let book = this.$store.state.Form.bookList[this.params['day']][this.params['frame']]
             this.$set(this.book, 'name', book.name)
-            this.$set(this.book, 'everyWeek', book.every_week_id !== null) //everyweekId?
+            this.$set(this.book, 'everyWeek', book.every_week !== 0)
             this.$set(this.book, 'id', book.id)
             if (this.book.everyWeek) {
                 this.$set(this.book, 'everyWeekStartDate', book.every_week_start_date)
@@ -111,6 +111,13 @@ export default {
         TimeTable () {
             return this.$store.state.Form.TimeTable
         },
+        submit () {
+            if (this.params.empty) {
+                return '予約送信'
+            } else {
+                return '変更送信'
+            }
+        }
     },
     methods: {
         close () {

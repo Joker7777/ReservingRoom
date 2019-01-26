@@ -92,6 +92,7 @@ const Form = {
     },
     mutations: {
         bookList (state, list) {
+            state.bookList = [] // reset
             list.forEach(element => {
                 if (element['every_week'] == true) {
                     var day = element['every_week_day']
