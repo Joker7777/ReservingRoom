@@ -48647,6 +48647,7 @@ var Form = {
     },
     mutations: {
         bookList: function bookList(state, list) {
+            state.bookList = []; // reset
             list.forEach(function (element) {
                 if (element['every_week'] == true) {
                     var day = element['every_week_day'];
@@ -48664,20 +48665,6 @@ var Form = {
         stdDate: function stdDate(state, dateObj) {
             state.stdDate = dateObj;
         },
-        updateBook: function updateBook(state, _ref) {
-            var day = _ref.day,
-                frame = _ref.frame,
-                key = _ref.key,
-                data = _ref.data;
-
-            __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(state.bookList[day][frame], key, data);
-        },
-        resetBook: function resetBook(state, _ref2) {
-            var day = _ref2.day,
-                frame = _ref2.frame;
-
-            __WEBPACK_IMPORTED_MODULE_0_vue___default.a.delete(state.bookList[day], frame);
-        },
         setResult: function setResult(state, result) {
             if (result) {
                 state.result = '予約は正常に完了しました';
@@ -48690,26 +48677,27 @@ var Form = {
         }
     },
     actions: {
-        getBookList: function getBookList(_ref3) {
-            var state = _ref3.state,
-                commit = _ref3.commit;
+        getBookList: function getBookList(_ref) {
+            var state = _ref.state,
+                commit = _ref.commit;
 
             __WEBPACK_IMPORTED_MODULE_2__api_booklist__["a" /* default */].getBookList(state.stdDate, function (list) {
                 commit('bookList', list); // bookListのデータ
+                setTimeout(commit, 3000, 'resetResult');
             });
         },
-        addBook: function addBook(_ref4, book) {
-            var commit = _ref4.commit,
-                dispatch = _ref4.dispatch;
+        addBook: function addBook(_ref2, book) {
+            var commit = _ref2.commit,
+                dispatch = _ref2.dispatch;
 
             __WEBPACK_IMPORTED_MODULE_2__api_booklist__["a" /* default */].addBook(book, function (result) {
                 commit('setResult', result);
                 dispatch('getBookList');
             });
         },
-        updateBook: function updateBook(_ref5, book) {
-            var commit = _ref5.commit,
-                dispatch = _ref5.dispatch;
+        updateBook: function updateBook(_ref3, book) {
+            var commit = _ref3.commit,
+                dispatch = _ref3.dispatch;
 
             __WEBPACK_IMPORTED_MODULE_2__api_booklist__["a" /* default */].updateBook(book, function (result) {
                 commit('setResult', result);
@@ -48755,7 +48743,6 @@ var API_URI = '/api/booklist';
     },
     addBook: function addBook(obj, callback) {
         axios.post(API_URI + '/1', obj).then(function (response) {
-            console.log(response);
             callback(true);
         }).catch(function (error) {
             console.error(error);
@@ -48764,7 +48751,6 @@ var API_URI = '/api/booklist';
     },
     updateBook: function updateBook(obj, callback) {
         axios.post(API_URI + '/2/', obj).then(function (response) {
-            console.log(response);
             callback(true);
         }).catch(function (error) {
             console.error(error);
@@ -49791,7 +49777,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     created: function created() {
         this.$store.dispatch('Form/getBookList');
-        setTimeout(this.$store.commit, 3000, 'Form/resetResult');
     },
     data: function data() {
         return {
@@ -49807,6 +49792,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     computed: {
         result: function result() {
+            setTimeout(this.$store.commit, 3000, 'Form/resetResult');
             return this.$store.state.Form.result;
         },
         DayList: function DayList() {
@@ -50063,8 +50049,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         if (!this.params.empty) {
             var book = this.$store.state.Form.bookList[this.params['day']][this.params['frame']];
             this.$set(this.book, 'name', book.name);
-            this.$set(this.book, 'everyWeek', book.every_week_id !== null); //everyweekId?
+            this.$set(this.book, 'everyWeek', book.every_week !== 0);
             this.$set(this.book, 'id', book.id);
+            this.$set(this.book, 'representative', book.representative);
             if (this.book.everyWeek) {
                 this.$set(this.book, 'everyWeekStartDate', book.every_week_start_date);
                 this.$set(this.book, 'everyWeekEndDate', book.every_week_end_date);
@@ -50080,6 +50067,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         TimeTable: function TimeTable() {
             return this.$store.state.Form.TimeTable;
+        },
+        submit: function submit() {
+            if (this.params.empty) {
+                return '予約送信';
+            } else {
+                return '変更送信';
+            }
         }
     },
     methods: {
@@ -50408,7 +50402,7 @@ var render = function() {
         _vm._v(" "),
         _c("div", { staticClass: "modal-footer" }, [
           _c("div", { attrs: { id: "save" }, on: { click: _vm.save } }, [
-            _vm._v("予約保存")
+            _vm._v(_vm._s(_vm.submit))
           ])
         ])
       ])

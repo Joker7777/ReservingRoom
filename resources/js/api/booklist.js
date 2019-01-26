@@ -26,7 +26,6 @@ export default {
     addBook(obj, callback) {
         axios.post(API_URI + '/1', obj)
             .then((response) => {
-                console.log(response)
                 callback(true)
             })
             .catch((error) => {
@@ -37,7 +36,6 @@ export default {
     updateBook(obj, callback) {
         axios.post(API_URI + '/2/', obj)
             .then((response) => {
-                console.log(response)
                 callback(true)
             })
             .catch((error) => {

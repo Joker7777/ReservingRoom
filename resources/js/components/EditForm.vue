@@ -96,6 +96,7 @@ export default {
             this.$set(this.book, 'name', book.name)
             this.$set(this.book, 'everyWeek', book.every_week !== 0)
             this.$set(this.book, 'id', book.id)
+            this.$set(this.book, 'representative', book.representative)
             if (this.book.everyWeek) {
                 this.$set(this.book, 'everyWeekStartDate', book.every_week_start_date)
                 this.$set(this.book, 'everyWeekEndDate', book.every_week_end_date)

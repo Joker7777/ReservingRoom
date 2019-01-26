@@ -125,6 +125,7 @@ const Form = {
         getBookList ({state, commit}) {
             BookListAPI.getBookList(state.stdDate, (list) => {
                 commit('bookList', list) // bookListのデータ
+                setTimeout(commit, 3000, 'resetResult')
             })
         },
         addBook ({commit, dispatch}, book) {
