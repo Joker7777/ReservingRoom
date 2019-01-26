@@ -110,12 +110,6 @@ const Form = {
         stdDate (state, dateObj) {
             state.stdDate = dateObj
         },
-        updateBook (state, {day, frame, key, data}) {
-            Vue.set(state.bookList[day][frame], key, data)
-        },
-        resetBook (state, {day, frame}) {
-            Vue.delete(state.bookList[day], frame)
-        },
         setResult (state, result) {
             if (result) {
                 state.result = '予約は正常に完了しました'

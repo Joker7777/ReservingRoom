@@ -270,6 +270,6 @@ https://readouble.com/laravel/5.4/ja/mix.html
         * 毎週予約、必ずチェック(DBは01, 判定はtrue, falseのせい？) 
             every_week_idのまま変更してなかった
         * 予約完了メッセージが消えない
-            ？
+            Createdは最初に読みこまれた時しか動かない => 変更時に読みこむように
         * 予約更新ボタン表示
             emptyで分岐

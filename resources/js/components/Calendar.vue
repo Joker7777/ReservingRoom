@@ -58,7 +58,6 @@ export default {
     },
     created () {
         this.$store.dispatch('Form/getBookList')
-        setTimeout(this.$store.commit, 3000, 'Form/resetResult')
     },
     data () {
         return {
@@ -73,6 +72,7 @@ export default {
     },
     computed: {
         result () {
+            setTimeout(this.$store.commit, 3000, 'Form/resetResult')
             return this.$store.state.Form.result
         },
         DayList () {
