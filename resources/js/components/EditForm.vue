@@ -61,7 +61,14 @@
             </div>
         </div>
         <div class="modal-footer">
-            <div id="save" @click="save">{{ submit }}</div>
+            <button
+                type="button"
+                id="remove"
+                v-if="!params.empty"
+                @click="remove">
+                予約を取り消す
+            </button>
+            <button type="button" id="save" @click="save">{{ submit }}</button>
         </div>
     </div>
     </div>
@@ -133,7 +140,15 @@ export default {
             } else {
                 this.$store.dispatch('Form/updateBook', this.book)
             }
-            this.$emit('close')
+            this.close()
+        },
+        remove () {
+            if (this.params.empty) {
+                this.close ()
+            } else {
+                this.$store.dispatch('Form/deleteBook', this.book.id)
+                this.close()
+            }
         }
     }
 }

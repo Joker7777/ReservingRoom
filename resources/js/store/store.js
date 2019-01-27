@@ -112,9 +112,9 @@ const Form = {
         },
         setResult (state, result) {
             if (result) {
-                state.result = '予約は正常に完了しました'
+                state.result = '正常に送信されました'
             } else {
-                state.result = '予約に失敗しました、再度予約をお願いします'
+                state.result = '送信に失敗しました、再度操作をお願いします'
             }
         },
         resetResult (state) {
@@ -136,6 +136,12 @@ const Form = {
         },
         updateBook ({commit, dispatch}, book) {
             BookListAPI.updateBook(book, (result) => {
+                commit('setResult', result)
+                dispatch('getBookList')
+            })
+        },
+        deleteBook ({commit, dispatch}, id) {
+            BookListAPI.deleteBook(id, (result) => {
                 commit('setResult', result)
                 dispatch('getBookList')
             })

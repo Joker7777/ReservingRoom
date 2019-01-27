@@ -42,5 +42,16 @@ export default {
                 console.error(error)
                 callback(false)
             })
+    },
+    deleteBook(id, callback) {
+        axios.delete(API_URI + '/3/' + id)
+            .then((response) => {
+                console.log(response)
+                callback(true)
+            })
+            .catch((error) => {
+                console.error(error)
+                callback(false)
+            })
     }
 }

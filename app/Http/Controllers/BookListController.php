@@ -44,7 +44,7 @@ class BookListController extends Controller
         if ($booklist->save()) {
             return response('saved', 200);
         } else {
-            return response('error', 503);
+            return response('error', 500);
         }
     }
     
@@ -77,7 +77,7 @@ class BookListController extends Controller
         if ($book->save()) {
             return response('saved', 200);
         } else {
-            return response('error', 503);
+            return response('error', 500);
         }
     }
 
@@ -87,11 +87,12 @@ class BookListController extends Controller
      * @param  \App\BookList  $bookList
      * @return \Illuminate\Http\Response
      */
-    public function destroy (BookList $bookList)
+    public function destroy (BookList $booklist)
     {
-        // テスト手順
-        // $response = $this->delete('/api/items/1');
-
-        return response('destroy');
+        if ($booklist->delete()) {
+            return response('deleted', 202);
+        } else {
+            return response('error', 500);
+        }
     }
 }

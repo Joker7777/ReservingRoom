@@ -48667,9 +48667,9 @@ var Form = {
         },
         setResult: function setResult(state, result) {
             if (result) {
-                state.result = '予約は正常に完了しました';
+                state.result = '正常に送信されました';
             } else {
-                state.result = '予約に失敗しました、再度予約をお願いします';
+                state.result = '送信に失敗しました、再度操作をお願いします';
             }
         },
         resetResult: function resetResult(state) {
@@ -48700,6 +48700,15 @@ var Form = {
                 dispatch = _ref3.dispatch;
 
             __WEBPACK_IMPORTED_MODULE_2__api_booklist__["a" /* default */].updateBook(book, function (result) {
+                commit('setResult', result);
+                dispatch('getBookList');
+            });
+        },
+        deleteBook: function deleteBook(_ref4, id) {
+            var commit = _ref4.commit,
+                dispatch = _ref4.dispatch;
+
+            __WEBPACK_IMPORTED_MODULE_2__api_booklist__["a" /* default */].deleteBook(id, function (result) {
                 commit('setResult', result);
                 dispatch('getBookList');
             });
@@ -48751,6 +48760,15 @@ var API_URI = '/api/booklist';
     },
     updateBook: function updateBook(obj, callback) {
         axios.post(API_URI + '/2/', obj).then(function (response) {
+            callback(true);
+        }).catch(function (error) {
+            console.error(error);
+            callback(false);
+        });
+    },
+    deleteBook: function deleteBook(id, callback) {
+        axios.delete(API_URI + '/3/' + id).then(function (response) {
+            console.log(response);
             callback(true);
         }).catch(function (error) {
             console.error(error);
@@ -50023,6 +50041,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
@@ -50089,7 +50114,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             } else {
                 this.$store.dispatch('Form/updateBook', this.book);
             }
-            this.$emit('close');
+            this.close();
+        },
+        remove: function remove() {
+            if (this.params.empty) {
+                this.close();
+            } else {
+                this.$store.dispatch('Form/deleteBook', this.book.id);
+                this.close();
+            }
         }
     }
 });
@@ -50401,9 +50434,22 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "modal-footer" }, [
-          _c("div", { attrs: { id: "save" }, on: { click: _vm.save } }, [
-            _vm._v(_vm._s(_vm.submit))
-          ])
+          !_vm.params.empty
+            ? _c(
+                "button",
+                {
+                  attrs: { type: "button", id: "remove" },
+                  on: { click: _vm.remove }
+                },
+                [_vm._v("\r\n                予約を取り消す\r\n            ")]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _c(
+            "button",
+            { attrs: { type: "button", id: "save" }, on: { click: _vm.save } },
+            [_vm._v(_vm._s(_vm.submit))]
+          )
         ])
       ])
     ])
