@@ -131,7 +131,7 @@ export default {
             this.editParam['day'] = param['day']
             this.editParam['frame'] = param['frame']
             let tmpDate = new Date(param['date'].getTime())
-            tmpDate = new Date(tmpDate.setDate(param['date'].getDate() + 1))
+            tmpDate = new Date(tmpDate.setHours(param['date'].getHours() + 9))
             this.editParam['date'] = tmpDate.toISOString().match(/\d+-\d+-\d+/)[0]
             if (param['empty']) {
                 this.editParam['empty'] = true
