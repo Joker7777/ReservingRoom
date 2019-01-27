@@ -123,7 +123,10 @@ const Form = {
     },
     actions: {
         getBookList ({state, commit}) {
-            BookListAPI.getBookList(state.stdDate, (list) => {
+            let tmpDate = new Date(state.stdDate.getTime())
+            tmpDate = new Date(tmpDate.setHours(tmpDate.getHours() + 9))
+            let dateString = tmpDate.toISOString().match(/\d+-\d+-\d+/)[0]
+            BookListAPI.getBookList(dateString, (list) => {
                 commit('bookList', list) // bookListのデータ
                 setTimeout(commit, 3000, 'resetResult')
             })

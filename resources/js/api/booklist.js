@@ -10,11 +10,7 @@ export default {
      * @param {Object} dateObj 取得する週の日曜日のDateオブジェクト
      * @param {*} callback 
      */
-    getBookList(dateObj, callback) {
-        let dateString = dateObj.getFullYear()
-            + '-' + dateObj.getMonth()
-            + '-' + dateObj.getDate()
-
+    getBookList(dateString, callback) {
         axios.get(API_URI + '/' + dateString)
             .then((response) => {
                 callback(response.data)
@@ -46,7 +42,6 @@ export default {
     deleteBook(id, callback) {
         axios.delete(API_URI + '/3/' + id)
             .then((response) => {
-                console.log(response)
                 callback(true)
             })
             .catch((error) => {

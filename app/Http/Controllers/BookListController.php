@@ -55,9 +55,9 @@ class BookListController extends Controller
      * @param  \App\BookList  $bookList
      * @return \Illuminate\Http\Response
      */
-    public function update (Request $request, BookList $booklist)
+    public function update (Request $request)
     {
-        $book = $booklist->where('id', $request->input('id'))->firstOrFail();
+        $book = BookList::where('id', $request->input('id'))->firstOrFail();
         $book->name = $request->input('name');
         $book->frame = $request->input('frame');
         $book->every_week = $request->input('everyWeek');

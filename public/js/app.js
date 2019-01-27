@@ -48681,7 +48681,10 @@ var Form = {
             var state = _ref.state,
                 commit = _ref.commit;
 
-            __WEBPACK_IMPORTED_MODULE_2__api_booklist__["a" /* default */].getBookList(state.stdDate, function (list) {
+            var tmpDate = new Date(state.stdDate.getTime());
+            tmpDate = new Date(tmpDate.setHours(tmpDate.getHours() + 9));
+            var dateString = tmpDate.toISOString().match(/\d+-\d+-\d+/)[0];
+            __WEBPACK_IMPORTED_MODULE_2__api_booklist__["a" /* default */].getBookList(dateString, function (list) {
                 commit('bookList', list); // bookListのデータ
                 setTimeout(commit, 3000, 'resetResult');
             });
@@ -48741,11 +48744,10 @@ var API_URI = '/api/booklist';
      * @param {Object} dateObj 取得する週の日曜日のDateオブジェクト
      * @param {*} callback 
      */
-    getBookList: function getBookList(dateObj, callback) {
-        var dateString = dateObj.getFullYear() + '-' + dateObj.getMonth() + '-' + dateObj.getDate();
-
+    getBookList: function getBookList(dateString, callback) {
         axios.get(API_URI + '/' + dateString).then(function (response) {
-            callback(response.data);
+            console.log(response.data[1]);
+            callback(response.data[0]);
         }).catch(function (error) {
             console.error(error);
         });
@@ -48768,7 +48770,6 @@ var API_URI = '/api/booklist';
     },
     deleteBook: function deleteBook(id, callback) {
         axios.delete(API_URI + '/3/' + id).then(function (response) {
-            console.log(response);
             callback(true);
         }).catch(function (error) {
             console.error(error);
@@ -49858,7 +49859,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.editParam['day'] = param['day'];
             this.editParam['frame'] = param['frame'];
             var tmpDate = new Date(param['date'].getTime());
-            tmpDate = new Date(tmpDate.setDate(param['date'].getDate() + 1));
+            tmpDate = new Date(tmpDate.setHours(param['date'].getHours() + 9));
             this.editParam['date'] = tmpDate.toISOString().match(/\d+-\d+-\d+/)[0];
             if (param['empty']) {
                 this.editParam['empty'] = true;

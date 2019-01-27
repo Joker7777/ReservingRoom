@@ -112,6 +112,10 @@
     関数に対してview(name.blade.php)を指定する。'name'で呼び出せる。
 * routes/web.php
     Route::get('/page', 'Controller@function')で、リクエストurlに対してコントローラの関数を呼び出す。
+* ルートパラメータ
+    ```Route::get('URI/{model}/', 'functionName')```
+    ```functionName (EloquentModel $model) {$model}```
+    ルートパラメータの名前と、関数の引数のEloquentModelの変数名が同じとき、{model}をIDに持つEloquentModelの要素(レコード)が$modelに定義されて使える
 
 ### DB
 * マイグレーション
@@ -274,4 +278,7 @@ https://readouble.com/laravel/5.4/ja/mix.html
         * 予約更新ボタン表示 :ok
             emptyで分岐
         大体完了？：後はデータ取得の条件指定とバリデーション
-        削除機能の実装忘れてた
+
+    * 20190127
+        * 削除機能の実装
+            * 405: ルートパラメータを設定してなかった
