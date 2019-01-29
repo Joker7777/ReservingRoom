@@ -4,7 +4,7 @@
     <div class="container modal-container">
         <div class="modal-header">
             <h3 class="header">予約</h3>
-            <div id="close" @click="close">&times;</div>
+            <button id="close" @click="close">&times;</button>
         </div>
         <div class="modal-body">
             <div class="input-name">
@@ -156,6 +156,22 @@ export default {
 
 <style lang="scss" scoped>
 @import '../../sass/variables';
+
+button {
+    &#close {
+        // 背景なし
+        border: none;
+        background-color: none;
+    }
+    &#remove {
+        background-color: $red;
+        color: $white;
+    }
+    &#save {
+        background-color: $green;
+        color: $white;
+    }
+}
 
 .input-times {
     div {

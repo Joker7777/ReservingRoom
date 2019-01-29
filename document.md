@@ -105,6 +105,10 @@
     route/api.php Route::get()で指定するurlに。
     1. /{arg}
     1. ?argName=arg (ちゃんと調べてない)
+* ルートパラメータ
+    ```Route::get('URI/{model}/', 'functionName')```
+    ```functionName (EloquentModel $model) {$model}```
+    ルートパラメータの名前と、関数の引数のEloquentModelの変数名が同じとき、{model}をIDに持つEloquentModelの要素(レコード)が$modelに定義されて使える
 
 
 ### Routing
@@ -112,10 +116,6 @@
     関数に対してview(name.blade.php)を指定する。'name'で呼び出せる。
 * routes/web.php
     Route::get('/page', 'Controller@function')で、リクエストurlに対してコントローラの関数を呼び出す。
-* ルートパラメータ
-    ```Route::get('URI/{model}/', 'functionName')```
-    ```functionName (EloquentModel $model) {$model}```
-    ルートパラメータの名前と、関数の引数のEloquentModelの変数名が同じとき、{model}をIDに持つEloquentModelの要素(レコード)が$modelに定義されて使える
 
 ### DB
 * マイグレーション
@@ -138,6 +138,9 @@
 
 * timestamps()
     名前入れない。文法エラー。自動でupdated_atとcreated_atを作ってくれる。
+
+* クエリビルダ
+    aa
 
 ### scss
 * プロパティ記述順序
@@ -281,4 +284,10 @@ https://readouble.com/laravel/5.4/ja/mix.html
 
     * 20190127
         * 削除機能の実装
-            * 405: ルートパラメータを設定してなかった
+            405: ルートパラメータを設定してなかった
+        * クエリビルダ
+            毎週予約の条件がわからん
+
+    * 20190129
+        * ボタンデザイン
+            フラットデザイン & 色 & カーソル

@@ -26,13 +26,13 @@
                 v-for="(date, index) in getDates"
                 :key="index">
                 <div
-                    class="book"
+                    class="board book"
                     v-if="bookExist(index, indexFrame)"
                     @click="editStatus({'date': date, 'day': index, 'frame': indexFrame, 'empty': false})">
                     {{ getBookList[index][indexFrame].name }}
                 </div>
                 <div
-                    class="empty"
+                    class="board empty"
                     v-else
                     @click="editStatus({'date': date, 'day': index, 'frame': indexFrame, 'empty': true})">
                     &#9675;
@@ -160,14 +160,13 @@ table {
         width: 12.5%; // 100/7
         padding: 2px;
 
-        .book {
+        .board {
             width: 100%;
             height: 100%;
+            cursor: pointer; 
         }
 
         .empty {
-            width: 100%;
-            height: 100%;
             background-color: rgba($blue, 0.2);
         }
     }
