@@ -156,6 +156,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '../../sass/variables';
+@import '../../sass/button';
 
 #close {
     padding: 10px;
@@ -163,20 +164,12 @@ export default {
     font-size: large;
     cursor: pointer;
 }
-button {
-    padding: 5px;
-    cursor: pointer;
-    border: none;
-    color: #fff;
-
-    &#remove {
-        background-color: $red;
-    }
-    &#save {
-        background-color: $green;
-    }
+#remove {
+    @include button($red);
 }
-
+#save {
+    @include button($green);
+}
 .input-times {
     div {
         display: inline-block;

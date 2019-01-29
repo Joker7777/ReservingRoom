@@ -1,0 +1,7 @@
+@mixin button ($back) {
+    padding: 5px;
+    cursor: pointer;
+    border: none;
+    color: #fff;
+    background-color: $back;
+}
