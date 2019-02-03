@@ -49961,7 +49961,7 @@ exports = module.exports = __webpack_require__(5)(false);
 
 
 // module
-exports.push([module.i, "\n#close[data-v-64596f4e] {\n  padding: 10px;\n  background-color: #ddd;\n  font-size: large;\n  cursor: pointer;\n}\n#remove[data-v-64596f4e] {\n  padding: 5px;\n  cursor: pointer;\n  border: none;\n  color: #fff;\n  background-color: #e3342f;\n}\n#save[data-v-64596f4e] {\n  padding: 5px;\n  cursor: pointer;\n  border: none;\n  color: #fff;\n  background-color: #38c172;\n}\n.input-times div[data-v-64596f4e] {\n  display: inline-block;\n  margin-right: 10px;\n}\ninput[data-v-64596f4e], select[data-v-64596f4e] {\n  border: thin solid #ddd;\n}\n.modal-enter-active[data-v-64596f4e], .modal-leave-active[data-v-64596f4e] {\n  -webkit-transition: opacity 1s;\n  transition: opacity 1s;\n}\n.modal-enter[data-v-64596f4e], .modal-leave-to[data-v-64596f4e] {\n  opacity: 0;\n}\n.modal-mask[data-v-64596f4e] {\n  position: fixed;\n  z-index: 9998;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.5);\n  display: table;\n  -webkit-transition: opacity .3s ease;\n  transition: opacity .3s ease;\n}\n.modal-container[data-v-64596f4e] {\n  margin: 0px auto;\n  padding: 20px 30px;\n  background-color: #f8fafc;\n  border-radius: 2px;\n  -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);\n          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);\n  -webkit-transition: all .3s ease;\n  transition: all .3s ease;\n  font-family: Helvetica, Arial, sans-serif;\n}\n", ""]);
+exports.push([module.i, "\n#close[data-v-64596f4e] {\n  padding: 10px;\n  background-color: #ddd;\n  font-size: large;\n  cursor: pointer;\n}\n#remove[data-v-64596f4e] {\n  padding: 5px;\n  cursor: pointer;\n  border: none;\n  color: #fff;\n  background-color: #e3342f;\n}\n#save[data-v-64596f4e] {\n  padding: 5px;\n  cursor: pointer;\n  border: none;\n  color: #fff;\n  background-color: #38c172;\n}\ninput[data-v-64596f4e], select[data-v-64596f4e] {\n  border: thin solid #ddd;\n}\n.indent[data-v-64596f4e] {\n  margin-left: 10px;\n}\n.modal-enter-active[data-v-64596f4e], .modal-leave-active[data-v-64596f4e] {\n  -webkit-transition: opacity 1s;\n  transition: opacity 1s;\n}\n.modal-enter[data-v-64596f4e], .modal-leave-to[data-v-64596f4e] {\n  opacity: 0;\n}\n.modal-mask[data-v-64596f4e] {\n  position: fixed;\n  z-index: 9998;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.5);\n  display: table;\n  -webkit-transition: opacity .3s ease;\n  transition: opacity .3s ease;\n}\n.modal-container[data-v-64596f4e] {\n  margin: 0px auto;\n  padding: 20px 30px;\n  background-color: #f8fafc;\n  border-radius: 2px;\n  -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);\n          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);\n  -webkit-transition: all .3s ease;\n  transition: all .3s ease;\n  font-family: Helvetica, Arial, sans-serif;\n}\n", ""]);
 
 // exports
 
@@ -49972,25 +49972,6 @@ exports.push([module.i, "\n#close[data-v-64596f4e] {\n  padding: 10px;\n  backgr
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -50096,10 +50077,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         submit: function submit() {
             if (this.params.empty) {
-                return '予約送信';
+                return '予約する';
             } else {
-                return '変更送信';
+                return '変更する';
             }
+        },
+        dateFormat: function dateFormat() {
+            var date = new Date(this.book.oneTimeDate);
+            var month = date.getMonth() + 1;
+            return date.getFullYear() + '年 ' + month + '月 ' + date.getDate() + '日  ' + this.DayList[date.getDay()] + '曜日';
         }
     },
     methods: {
@@ -50150,7 +50136,7 @@ var render = function() {
         _c("div", { staticClass: "modal-body" }, [
           _c("div", { staticClass: "input-name" }, [
             _c("label", { attrs: { for: "name" } }, [
-              _vm._v("バンド名, 使用用途: ")
+              _vm._v("バンド名, 使用用途")
             ]),
             _vm._v(" "),
             _c("input", {
@@ -50177,136 +50163,30 @@ var render = function() {
           _vm._v(" "),
           _c("div", { staticClass: "input-times" }, [
             _vm.book.everyWeek
-              ? _c("div", { staticClass: "input-day" }, [
-                  _c("label", { attrs: { for: "day" } }, [
-                    _vm._v("使用曜日: ")
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "select",
-                    {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.book.everyWeekDay,
-                          expression: "book.everyWeekDay"
-                        }
-                      ],
-                      attrs: { id: "day" },
-                      on: {
-                        change: function($event) {
-                          var $$selectedVal = Array.prototype.filter
-                            .call($event.target.options, function(o) {
-                              return o.selected
-                            })
-                            .map(function(o) {
-                              var val = "_value" in o ? o._value : o.value
-                              return val
-                            })
-                          _vm.$set(
-                            _vm.book,
-                            "everyWeekDay",
-                            $event.target.multiple
-                              ? $$selectedVal
-                              : $$selectedVal[0]
-                          )
-                        }
-                      }
-                    },
-                    _vm._l(_vm.DayList, function(DayName, key) {
-                      return _c(
-                        "option",
-                        { key: key, domProps: { value: key } },
-                        [
-                          _vm._v(
-                            "\r\n                            " +
-                              _vm._s(DayName) +
-                              "\r\n                        "
-                          )
-                        ]
-                      )
-                    })
+              ? _c("span", { attrs: { id: "day" } }, [
+                  _vm._v(
+                    "使用曜日: " +
+                      _vm._s(_vm.DayList[_vm.book.everyWeekDay]) +
+                      "曜日"
                   )
                 ])
-              : _c("div", { staticClass: "input-date" }, [
-                  _c("label", { attrs: { for: "date" } }, [_vm._v("使用日: ")]),
+              : _c("span", [
+                  _c("div", [_vm._v("使用日: ")]),
                   _vm._v(" "),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.book.oneTimeDate,
-                        expression: "book.oneTimeDate"
-                      }
-                    ],
-                    attrs: { type: "date", id: "date" },
-                    domProps: { value: _vm.book.oneTimeDate },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.book, "oneTimeDate", $event.target.value)
-                      }
-                    }
-                  })
+                  _c("span", { staticClass: "indent", attrs: { id: "date" } }, [
+                    _vm._v(_vm._s(_vm.dateFormat))
+                  ])
                 ]),
             _vm._v(" "),
-            _c("div", { staticClass: "input-frame" }, [
-              _c(
-                "select",
-                {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.book.frame,
-                      expression: "book.frame"
-                    }
-                  ],
-                  attrs: { id: "frame" },
-                  on: {
-                    change: function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
-                        })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return val
-                        })
-                      _vm.$set(
-                        _vm.book,
-                        "frame",
-                        $event.target.multiple
-                          ? $$selectedVal
-                          : $$selectedVal[0]
-                      )
-                    }
-                  }
-                },
-                _vm._l(_vm.TimeTable, function(frame, index) {
-                  return _c(
-                    "option",
-                    { key: index, domProps: { value: index } },
-                    [
-                      _vm._v(
-                        "\r\n                            " +
-                          _vm._s(frame.name) +
-                          "\r\n                        "
-                      )
-                    ]
-                  )
-                })
-              )
+            _c("span", { staticClass: "indent", attrs: { id: "frame" } }, [
+              _vm._v(_vm._s(_vm.TimeTable[_vm.book.frame].name))
             ])
           ]),
           _vm._v(" "),
           _vm.book.everyWeek
-            ? _c("div", { staticClass: "input-until" }, [
+            ? _c("div", [
                 _c("label", { attrs: { for: "until" } }, [_vm._v("期間: ")]),
+                _c("br"),
                 _vm._v(" "),
                 _c("input", {
                   directives: [
@@ -50317,6 +50197,7 @@ var render = function() {
                       expression: "book.everyWeekStartDate"
                     }
                   ],
+                  staticClass: "indent",
                   attrs: { type: "date", id: "since" },
                   domProps: { value: _vm.book.everyWeekStartDate },
                   on: {
@@ -50342,6 +50223,7 @@ var render = function() {
                       expression: "book.everyWeekEndDate"
                     }
                   ],
+                  staticClass: "indent",
                   attrs: { type: "date", id: "until" },
                   domProps: { value: _vm.book.everyWeekEndDate },
                   on: {

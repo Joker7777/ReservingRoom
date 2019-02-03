@@ -8,41 +8,22 @@
         </div>
         <div class="modal-body">
             <div class="input-name">
-                <label for="name">バンド名, 使用用途: </label>
+                <label for="name">バンド名, 使用用途</label>
                 <input type="text" id="name" v-model="book.name">
             </div>
             <div class="input-times">
-                <div class="input-day" v-if="book.everyWeek">
-                    <label for="day">使用曜日: </label>
-                    <select id="day" v-model="book.everyWeekDay">
-                        <option
-                            v-for="(DayName, key) in DayList"
-                            :key="key"
-                            :value="key">
-                            {{ DayName }}
-                        </option>
-                    </select>
-                </div>
-                <div class="input-date" v-else>
-                    <label for="date">使用日: </label>
-                    <input type="date" id="date" v-model="book.oneTimeDate">
-                </div>
-                <div class="input-frame">
-                    <select id="frame" v-model="book.frame">
-                        <option
-                            v-for="(frame, index) in TimeTable"
-                            :key="index"
-                            :value="index">
-                            {{ frame.name }}
-                        </option>
-                    </select>
-                </div>
+                <span id="day" v-if="book.everyWeek">使用曜日: {{ DayList[book.everyWeekDay] }}曜日</span>
+                <span v-else>
+                    <div>使用日: </div>
+                    <span id="date" class="indent">{{ dateFormat }}</span>
+                </span>
+                <span id="frame" class="indent">{{ TimeTable[book.frame].name }}</span>
             </div>
-            <div class="input-until" v-if="book.everyWeek">
-                <label for="until">期間: </label>
-                <input type="date" id="since" v-model="book.everyWeekStartDate">
+            <div v-if="book.everyWeek">
+                <label for="until">期間: </label><br>
+                <input type="date" id="since" class="indent" v-model="book.everyWeekStartDate">
                 ~
-                <input type="date" id="until" v-model="book.everyWeekEndDate">
+                <input type="date" id="until" class="indent" v-model="book.everyWeekEndDate">
             </div>
             <div>
                 <input
@@ -121,10 +102,18 @@ export default {
         },
         submit () {
             if (this.params.empty) {
-                return '予約送信'
+                return '予約する'
             } else {
-                return '変更送信'
+                return '変更する'
             }
+        },
+        dateFormat () {
+            let date = new Date(this.book.oneTimeDate)
+            let month = date.getMonth() + 1
+            return date.getFullYear() + '年 '
+                + month + '月 '
+                + date.getDate() + '日  '
+                + this.DayList[date.getDay()] + '曜日'
         }
     },
     methods: {
@@ -170,14 +159,11 @@ export default {
 #save {
     @include button($green);
 }
-.input-times {
-    div {
-        display: inline-block;
-        margin-right: 10px;
-    }
-}
 input, select {
     border: thin solid $gray;
+}
+.indent {
+    margin-left: 10px;
 }
 
 .modal {

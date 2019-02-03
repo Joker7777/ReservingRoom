@@ -312,3 +312,14 @@ https://readouble.com/laravel/5.4/ja/mix.html
                 上に伴い、削除ボタンを2種類
             * ダブルブッキングが起こるのでeditformで日時指定を廃止(名前と責任者、期間の入力のみに)
             * スマホへの対応、レスポンシブデザインについて
+
+        * 次回：
+            1. ダブルブッキング防止のeditform修正
+            1. gitにAPI系の編集中をとりあえずpush
+            1. git checkout -b db仕様変更
+            1. migration
+            1. API周り修正
+
+    * 20190203
+        * editForm ok
+        * 
