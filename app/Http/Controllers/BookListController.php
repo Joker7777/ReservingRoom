@@ -14,8 +14,18 @@ class BookListController extends Controller
      */
     public function getList ($std_date)
     {
-        // データ取得、条件もここで
-        return response(BookList::all());
+        $date = new DateTime($std_date); //array_map('intval', explode('-', $std_date));
+        $date->modify('+7 days');
+        $list = BookList::orWhere(function ($query) {
+            $query->where('every_week', 0)
+                ->whereDate('one_time_date', '>=', $std_date)
+                ->whereDate('one_time_date', '<', $date->format('Y-m-d'));
+        })->orWhere(function ($query) {
+            $query->where('every_week', 1) // 毎週
+                ->whereDate('every_week_start_date', $date); // 期間？？
+        })
+        ->get();
+        return response([$list, $date2]);
     }
 
     /**

@@ -13,7 +13,8 @@ export default {
     getBookList(dateString, callback) {
         axios.get(API_URI + '/' + dateString)
             .then((response) => {
-                callback(response.data)
+                console.log(response.data[1])
+                callback(response.data[0])
             })
             .catch((error) => {
                 console.error(error)
