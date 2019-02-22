@@ -48746,8 +48746,7 @@ var API_URI = '/api/booklist';
      */
     getBookList: function getBookList(dateString, callback) {
         axios.get(API_URI + '/' + dateString).then(function (response) {
-            console.log(response.data[1]);
-            callback(response.data[0]);
+            callback(response.data);
         }).catch(function (error) {
             console.error(error);
         });
