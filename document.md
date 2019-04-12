@@ -27,21 +27,6 @@
     * (変更時のみ)削除
         (毎週のとき)この枠のみ削除 & 毎週予約分の全削除
 
-1. 今後やること
-    * データ構造
-        毎週予約について、期間内の全予約分レコード作成
-        => 個別削除が選択可能
-        => 期間変更の際は期間外のレコードを削除
-        * 毎週予約ID復活(null or int)
-        * 個別削除後に期間変更 => 対応しない、注意文を出す(常に)
-    * バリデーション & 既に予約が入っている場合の登録失敗
-    * かぶったところに毎週予約を入れる => その週だけ登録しない
-
-    * デザイン
-        上に伴い、削除ボタンを2種類
-    * ダブルブッキングが起こるのでeditformで日時指定を廃止(名前と責任者、期間の入力のみに)
-    * スマホへの対応、レスポンシブデザインについて
-
 1. 使用フロー
     1. 単体予約
         1. 新規登録/予約変更
@@ -67,73 +52,70 @@
                     1. 毎週予約IDで検索
                     1. 全てについて日付被りをチェック ? update, 完了 : 日付が被っている日程&管理者名
 
-
-
 ## 環境構築
-* 
-    ### 手順
-    1. MySQL(xampp)
-        xamppのインストーラで
-    1. PHP v7.2.3
-        たぶん公式インストーラ
-    1. Node.js v8.12.0
-        公式インストーラ
-    1. Composer v1.7.2
-        公式インストーラ
-        環境変数とかの設定なしで使えました
-    1. Laravel Installer 1.5.0
-        ```
-        composer global require "laravel/installer=~1.1"
-        ```
-        環境変数などの登録をしなくても使えた。コマンドはGitHubディレクトリにて
-    1. Laravelプロジェクト作成
-        ```
-        laravel new プロジェクト名
-        cd プロジェクト名
-        composer install            # この前に、php.iniを変更した(extension=fileinfoのコメントを外した)
-        php artisan -v              # Laravel Framwork 5.7.11, 正常にインストールされたか確認のため
-        php artisan key:generate    # 初期起動前にはkeyの生成が必要
-        php artisan serve           # ようやく起動、started:<url>のurlにアクセスしてLaravelと出ればok
-        ```
-    1. Vue.js, ES2015=>ES5, Sass=>CSS
-        よくわからんがインストールがいるらしい, package.jsonの下部分？
-        ```
-        npm install
-        ```
-        * resources/views/welcome.blade.php を編集、Vue.jsが使えているか確認
-        2018/10/31 1:03 できない　->　2018/10/31/11:15 app.jsが読みこめてなかったらしい
-        http://blog.asial.co.jp/1496
-
-
-    ### サーバ起動
+### 手順
+1. MySQL(xampp)
+    xamppのインストーラで
+1. PHP v7.2.3
+    たぶん公式インストーラ
+1. Node.js v8.12.0
+    公式インストーラ
+1. Composer v1.7.2
+    公式インストーラ
+    環境変数とかの設定なしで使えました
+1. Laravel Installer 1.5.0
     ```
-    php artisan serve   # server
-    (php artisan serve --port=[portnum])[portnum]を使える
-    npm run watch       # compiler
+    composer global require "laravel/installer=~1.1"
     ```
-    https://stackoverflow.com/questions/27900174/artisan-error-failed-to-listen-on-localhost8000
-
-    ### 参考
-    1. LaravelインストールからVueまで, mix()の件
-    https://qiita.com/fruitriin/items/e0f2c9aa035c3ff2c874
-    1. Composer インストール後から？とても丁寧な気がしたがわからん
+    環境変数などの登録をしなくても使えた。コマンドはGitHubディレクトリにて
+1. Laravelプロジェクト作成
+    ```
+    laravel new プロジェクト名
+    cd プロジェクト名
+    composer install            # この前に、php.iniを変更した(extension=fileinfoのコメントを外した)
+    php artisan -v              # Laravel Framwork 5.7.11, 正常にインストールされたか確認のため
+    php artisan key:generate    # 初期起動前にはkeyの生成が必要
+    php artisan serve           # ようやく起動、started:<url>のurlにアクセスしてLaravelと出ればok
+    ```
+1. Vue.js, ES2015=>ES5, Sass=>CSS
+    よくわからんがインストールがいるらしい, package.jsonの下部分？
+    ```
+    npm install
+    ```
+    * resources/views/welcome.blade.php を編集、Vue.jsが使えているか確認
+    2018/10/31 1:03 できない　->　2018/10/31/11:15 app.jsが読みこめてなかったらしい
     http://blog.asial.co.jp/1496
-    1. Laravel + Vue.js (Mac)
-    https://qiita.com/A_zara/items/b552b4135006dc1e69f3
-    1. Laravel + vue.js? (windows)
-    https://qiita.com/somebody_gp/items/2d31471bebf9164425fe
-    1. Laravel プロジェクト作成
-    https://qiita.com/33yuki/items/5ee27163b603d7f68250https://qiita.com/A_zara/items/b552b4135006dc1e69f3
-    1. autoload.php
-    https://qiita.com/pugiemonn/items/3d000ac0486987dd92df
-    1. fileinfo
-    https://qiita.com/ms2sato/items/79a2bcfd90385a8484ac
-    1. artisan key:generate
-    https://qiita.com/pugiemonn/items/641718fd241320384972
-    1. npm install
-    https://qiita.com/somebody_gp/items/2d31471bebf9164425fe
-    1. npm install の失敗について
-    https://qiita.com/quotto/items/1357bfb91346535f40bf
+
+
+### サーバ起動
+```
+php artisan serve   # server
+(php artisan serve --port=[portnum])[portnum]を使える
+npm run watch       # compiler
+```
+https://stackoverflow.com/questions/27900174/artisan-error-failed-to-listen-on-localhost8000
+
+### 参考
+1. LaravelインストールからVueまで, mix()の件
+https://qiita.com/fruitriin/items/e0f2c9aa035c3ff2c874
+1. Composer インストール後から？とても丁寧な気がしたがわからん
+http://blog.asial.co.jp/1496
+1. Laravel + Vue.js (Mac)
+https://qiita.com/A_zara/items/b552b4135006dc1e69f3
+1. Laravel + vue.js? (windows)
+https://qiita.com/somebody_gp/items/2d31471bebf9164425fe
+1. Laravel プロジェクト作成
+https://qiita.com/33yuki/items/5ee27163b603d7f68250https://qiita.com/A_zara/items/b552b4135006dc1e69f3
+1. autoload.php
+https://qiita.com/pugiemonn/items/3d000ac0486987dd92df
+1. fileinfo
+https://qiita.com/ms2sato/items/79a2bcfd90385a8484ac
+1. artisan key:generate
+https://qiita.com/pugiemonn/items/641718fd241320384972
+1. npm install
+https://qiita.com/somebody_gp/items/2d31471bebf9164425fe
+1. npm install の失敗について
+https://qiita.com/quotto/items/1357bfb91346535f40bf
 
 
 ## 開発メモ
@@ -227,7 +209,7 @@ https://readouble.com/laravel/5.4/ja/mix.html
     M: Jan,     m: 1
     D: 曜日,    d: 日付
 
-### 進捗
+## 進捗
 * a
     * 20181031 21:57
         環境はよくわからないがVueは動いたので良しとする。
@@ -383,3 +365,19 @@ https://readouble.com/laravel/5.4/ja/mix.html
                 名前とか担当者よりも日付の変更の方が需要がある？
                 =>被りチェックを実装して日時の変更を可能に
                 仕様欄に動作を記入した
+
+* 20190412
+    * さしあたってやる
+        * 使用フローの明示 ok
+        * 日付変更の復活
+        * 日付チェックの実装
+            かぶったところに毎週予約を入れる => その週だけ登録しない
+            毎週予約の期間変更：期間外を削除するのをわすれずに
+        * バリデーション
+
+    * フロントより、大した機能以外
+        * 個別削除後に期間変更 => 対応しない、注意文を出す(常に)
+    
+    * 展望
+        * 論理削除で削除一覧を表示、毎週予約で復活させられるように
+        * スマホへの対応、レスポンシブデザインについて
