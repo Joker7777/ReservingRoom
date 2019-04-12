@@ -12,11 +12,20 @@
     * 必ず他の予定とかぶらないようにする
 1. モーダル
     * クリックした場所の日付と時間をデフォルト
-    * 名前　input text
-    * 毎週　input checkbox
-    * ()日付　input date
-    * ()曜日　select
+    * 名前 input text
+    * (新規のみactive)毎週 input checkbox
+        更新時は編集不可
+    * 期間(日付*2) input date
+    * 日付 input date
+    * (変更時、毎週のみdisplay)全予約に反映する input checkbox
+        名前 & 期間の変更時はチェックで固定
+    * 曜日 select
     * 時間 select
+    * 責任者
+
+    * 送信
+    * (変更時のみ)削除
+        (毎週のとき)この枠のみ削除 & 毎週予約分の全削除
 
 1. 今後やること
     * データ構造
@@ -72,8 +81,10 @@
     ### サーバ起動
     ```
     php artisan serve   # server
+    (php artisan serve --port=[portnum])[portnum]を使える
     npm run watch       # compiler
     ```
+    https://stackoverflow.com/questions/27900174/artisan-error-failed-to-listen-on-localhost8000
 
     ### 参考
     1. LaravelインストールからVueまで, mix()の件
@@ -329,4 +340,20 @@ https://readouble.com/laravel/5.4/ja/mix.html
             * API
 
 * 仕様変更後
-    * 
+    * migration file
+    * Controller
+        * add
+            * mappingうまくいってるか ok
+            * foreachが正しく回っているか ok
+            * オブジェクト参照渡しができているか ok? updateみて
+
+            * 登録できなかった(value_set == false)日のリストを返す ok? 実行して確認
+                登録前に取得してチェックする
+
+        * update
+            * オブジェクトの参照が正しく行われているか
+            * updateする内容について要検討
+                名前とか担当者よりも日付の変更の方が需要がある？
+                =>被りチェックを実装して日時の変更を可能に
+                全部変えるかそれだけ変えるかのチェック
+                一つ変えたときIDの扱いは=>

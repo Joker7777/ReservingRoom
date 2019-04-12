@@ -22,11 +22,17 @@ export default {
     addBook(obj, callback) {
         axios.post(API_URI + '/1', obj)
             .then((response) => {
+                console.log(response)
                 callback(true)
             })
             .catch((error) => {
-                console.error(error)
-                callback(false)
+                if (error.response.status == 409) {
+                    // conflict
+                    callback(false) // あとでerror.response.dataを返すように
+                } else {
+                    console.error(error)
+                    callback(false)
+                }
             })
     },
     updateBook(obj, callback) {
