@@ -50035,6 +50035,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
@@ -50051,7 +50059,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 everyWeekEndDate: this.params['date'],
                 everyWeekDay: this.params['day'],
                 frame: this.params['frame'],
-                everyWeek: false,
+                everyWeek: false, // チェックボックスの値
+                everyWeekId: 0, // DBの値
                 id: null,
                 representative: ''
             }
@@ -50062,6 +50071,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var book = this.$store.state.Form.bookList[this.params['day']][this.params['frame']];
             this.$set(this.book, 'name', book.name);
             this.$set(this.book, 'everyWeek', book.every_week !== 0);
+            this.$set(this.book, 'everyWeekId', book.every_week);
             this.$set(this.book, 'id', book.id);
             this.$set(this.book, 'representative', book.representative);
             if (this.book.everyWeek) {
@@ -50086,11 +50096,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             } else {
                 return '変更する';
             }
-        },
-        dateFormat: function dateFormat() {
-            var date = new Date(this.book.oneTimeDate);
-            var month = date.getMonth() + 1;
-            return date.getFullYear() + '年 ' + month + '月 ' + date.getDate() + '日  ' + this.DayList[date.getDay()] + '曜日';
         }
     },
     methods: {
@@ -50168,24 +50173,111 @@ var render = function() {
           _vm._v(" "),
           _c("div", { staticClass: "input-times" }, [
             _vm.book.everyWeek
-              ? _c("span", { attrs: { id: "day" } }, [
-                  _vm._v(
-                    "使用曜日: " +
-                      _vm._s(_vm.DayList[_vm.book.everyWeekDay]) +
-                      "曜日"
-                  )
+              ? _c("span", [
+                  _c("label", { attrs: { for: "day" } }, [_vm._v("使用曜日:")]),
+                  _vm._v(" "),
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.DayList[_vm.book.everyWeekDay],
+                          expression: "DayList[book.everyWeekDay]"
+                        }
+                      ],
+                      attrs: { id: "day" },
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.$set(
+                            _vm.DayList,
+                            _vm.book.everyWeekDay,
+                            $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          )
+                        }
+                      }
+                    },
+                    _vm._l(_vm.DayList, function(dayname, key) {
+                      return _c("option", { key: key }, [
+                        _vm._v(_vm._s(dayname))
+                      ])
+                    })
+                  ),
+                  _vm._v(" "),
+                  _c("span", [_vm._v("曜日")])
                 ])
               : _c("span", [
-                  _c("div", [_vm._v("使用日: ")]),
+                  _c("label", { attrs: { for: "date" } }, [_vm._v("使用日: ")]),
                   _vm._v(" "),
-                  _c("span", { staticClass: "indent", attrs: { id: "date" } }, [
-                    _vm._v(_vm._s(_vm.dateFormat))
-                  ])
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.book.oneTimeDate,
+                        expression: "book.oneTimeDate"
+                      }
+                    ],
+                    staticClass: "indent",
+                    attrs: { type: "date", id: "date" },
+                    domProps: { value: _vm.book.oneTimeDate },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.book, "oneTimeDate", $event.target.value)
+                      }
+                    }
+                  })
                 ]),
             _vm._v(" "),
-            _c("span", { staticClass: "indent", attrs: { id: "frame" } }, [
-              _vm._v(_vm._s(_vm.TimeTable[_vm.book.frame].name))
-            ])
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.TimeTable[_vm.book.frame].name,
+                    expression: "TimeTable[book.frame].name"
+                  }
+                ],
+                staticClass: "indent",
+                attrs: { id: "frame" },
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.$set(
+                      _vm.TimeTable[_vm.book.frame],
+                      "name",
+                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                    )
+                  }
+                }
+              },
+              _vm._l(_vm.TimeTable, function(frame, key) {
+                return _c("option", { key: key }, [_vm._v(_vm._s(frame.name))])
+              })
+            )
           ]),
           _vm._v(" "),
           _vm.book.everyWeek

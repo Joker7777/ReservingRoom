@@ -12,12 +12,20 @@
                 <input type="text" id="name" v-model="book.name">
             </div>
             <div class="input-times">
-                <span id="day" v-if="book.everyWeek">使用曜日: {{ DayList[book.everyWeekDay] }}曜日</span>
-                <span v-else>
-                    <div>使用日: </div>
-                    <span id="date" class="indent">{{ dateFormat }}</span>
+                <span v-if="book.everyWeek">
+                    <label for="day">使用曜日:</label>
+                    <select id="day" v-model="DayList[book.everyWeekDay]">
+                        <option v-for="(dayname, key) in DayList" :key="key">{{ dayname }}</option>
+                    </select>
+                    <span>曜日</span>
                 </span>
-                <span id="frame" class="indent">{{ TimeTable[book.frame].name }}</span>
+                <span v-else>
+                    <label for="date">使用日: </label>
+                    <input type="date" id="date" class="indent" v-model="book.oneTimeDate">
+                </span>
+                <select id="frame" class="indent" v-model="TimeTable[book.frame].name">
+                    <option v-for="(frame, key) in TimeTable" :key="key">{{ frame.name }}</option>
+                </select>
             </div>
             <div v-if="book.everyWeek">
                 <label for="until">期間: </label><br>
@@ -72,7 +80,8 @@ export default {
                 everyWeekEndDate: this.params['date'],
                 everyWeekDay: this.params['day'],
                 frame: this.params['frame'],
-                everyWeek: false,
+                everyWeek: false, // チェックボックスの値
+                everyWeekId: 0, // DBの値
                 id: null,
                 representative: '',
             },
@@ -83,6 +92,7 @@ export default {
             let book = this.$store.state.Form.bookList[this.params['day']][this.params['frame']]
             this.$set(this.book, 'name', book.name)
             this.$set(this.book, 'everyWeek', book.every_week !== 0)
+            this.$set(this.book, 'everyWeekId', book.every_week)
             this.$set(this.book, 'id', book.id)
             this.$set(this.book, 'representative', book.representative)
             if (this.book.everyWeek) {
@@ -107,14 +117,6 @@ export default {
                 return '変更する'
             }
         },
-        dateFormat () {
-            let date = new Date(this.book.oneTimeDate)
-            let month = date.getMonth() + 1
-            return date.getFullYear() + '年 '
-                + month + '月 '
-                + date.getDate() + '日  '
-                + this.DayList[date.getDay()] + '曜日'
-        }
     },
     methods: {
         close () {
