@@ -11,7 +11,7 @@ export default {
     getBookList(dateString, callback) {
         axios.get(API_URI + '/' + dateString)
             .then((response) => {
-                console.log(reponse)
+                console.log(response.data) // ok 20190414
                 callback(response.data)
             })
             .catch((error) => {
@@ -21,7 +21,7 @@ export default {
     addBook(obj, callback) {
         axios.post(API_URI + '/1', obj)
             .then((response) => {
-                console.log(response)
+                console.log(response.data)
                 callback(true)
             })
             .catch((error) => {

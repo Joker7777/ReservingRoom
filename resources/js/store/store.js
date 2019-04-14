@@ -92,15 +92,12 @@ const Form = {
     },
     mutations: {
         bookList (state, list) {
-            state.bookList = [] // reset
+            state.bookList = {} // reset
             list.forEach(element => {
-                if (element['every_week'] == true) {
-                    var day = element['every_week_day']
-                } else {
-                    var day = new Date(element['one_time_date']).getDay()
-                }
+                let day = new Date(element['book_date']).getDay()
+
                 if (state.bookList[day]) {
-                    Vue.set(state.bookList[day], [element['frame']], element)
+                    Vue.set(state.bookList[day], element['frame'], element)
                 } else {
                     let frame = element['frame']
                     Vue.set(state.bookList, day, {[frame]: element})
@@ -128,6 +125,7 @@ const Form = {
             let dateString = tmpDate.toISOString().match(/\d+-\d+-\d+/)[0]
             BookListAPI.getBookList(dateString, (list) => {
                 commit('bookList', list) // bookListのデータ
+                // console.log(state.bookList)
                 setTimeout(commit, 3000, 'resetResult')
             })
         },

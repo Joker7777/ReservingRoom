@@ -26,7 +26,7 @@ class BookListController extends Controller
     public function getList ($std_date)
     {
         // データ取得、条件もここで
-        return response(BookList::all());
+        return response(BookList::all(), 200);
     }
 
     /**
@@ -48,7 +48,7 @@ class BookListController extends Controller
 
         $booklist->name = $data['name'];
         $booklist->frame = $data['frame'];
-        $booklist->every_week_id = $data['every_week'];
+        $booklist->every_week_id = $data['every_week_id'];
         $booklist->representative = $data['representative'];
 
         $booklist->every_week_start_date = $data['start_date'];
@@ -70,12 +70,15 @@ class BookListController extends Controller
         return [
             'name'=>$request->input('name'),
             'frame'=>intval($request->input('frame')),
-            'every_week'=>$request->input('everyWeek'),
             'representative'=>$request->input('representative'),
-            'every_week_day'=>intval($request->input('everyWeekDay')),
             'start_date'=>$request->input('everyWeekStartDate'),
             'end_date'=>$request->input('everyWeekEndDate'),
-            'book_date'=>$request->input('oneTimeDate')
+
+            'book_date'=>$request->input('oneTimeDate'),
+            'every_week_id'=>$request->input('everyWeekId'),
+
+            'is_every_week'=>$request->input('everyWeek'), // ちゃんとboolになってる？
+            'every_week_day'=>intval($request->input('everyWeekDay')),
         ];
     }
 
@@ -91,8 +94,9 @@ class BookListController extends Controller
         $res = true;
         $fail_date = [];
 
-        if ($data['every_week']) { // 期間分登録
+        if ($data['is_every_week']) { // 期間分登録
             $num = BookList::max('every_week_id');
+            $data['every_week_id'] = $num + 1;
 
             $first_datetime = strtotime( // $2から数えて最初の$1曜日のtimestamp
                 $this->day_name[$data['every_week_day']], // Sunday ~ Saturday
@@ -105,7 +109,6 @@ class BookListController extends Controller
                 $book_date = strtotime('+7 days', $book_date))
             {
                 $data['book_date'] = date('Y-m-d', $book_date);
-                $data['every_week'] = $num + 1;
                 $r = $this->value_set($data, new BookList());
                 if ($r !== true) {
                     $res = false;
@@ -149,12 +152,12 @@ class BookListController extends Controller
         // 日付の変更：
         // 他の変更：単体変更はなかったことに
 
-        if ($data['every_week'] && $data['set_all']) { // 全データの編集
-            $books = BookList::where('every_week_id', $data['every_week']);
+        if ($data['is_every_week'] && $data['set_all']) { // 全データの編集
+            $books = BookList::where('every_week_id', $data['every_week_id']);
 
             foreach ($books as $b) {
                 $data['book_date'] = date('Y-m-d', $book_date);
-                $data['every_week'] = $num + 1;
+                $data['is_every_week'] = $num + 1;
                 $r = $this->value_set($data, new BookList());
                 if ($r !== true) {
                     $res = false;
