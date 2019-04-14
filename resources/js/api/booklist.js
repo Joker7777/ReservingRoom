@@ -1,5 +1,3 @@
-import { callbackify } from 'util';
-
 const axios = require('axios');
 const API_URI = '/api/booklist';
 
@@ -13,6 +11,7 @@ export default {
     getBookList(dateString, callback) {
         axios.get(API_URI + '/' + dateString)
             .then((response) => {
+                console.log(reponse)
                 callback(response.data)
             })
             .catch((error) => {

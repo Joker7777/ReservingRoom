@@ -75,15 +75,17 @@ export default {
         return {
             book: {
                 name: '',
-                oneTimeDate: this.params['date'],
+                frame: this.params['frame'],
+                representative: '',
                 everyWeekStartDate: this.params['date'],
                 everyWeekEndDate: this.params['date'],
-                everyWeekDay: this.params['day'],
-                frame: this.params['frame'],
-                everyWeek: false, // チェックボックスの値
+
+                oneTimeDate: this.params['date'],
                 everyWeekId: 0, // DBの値
+
+                everyWeek: false, // チェックボックスの値
+                everyWeekDay: this.params['day'],
                 id: null,
-                representative: '',
             },
         }
     },
